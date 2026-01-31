@@ -11,6 +11,42 @@ from typing import Optional
 from .base import GenerativeEngine, GenerationResult
 
 
+def format_prompt_llama2_chat(prompt: str) -> str:
+    """Format prompt for LLaMA-2-Chat models."""
+    return f"<s>[INST] {prompt} [/INST]"
+
+
+def format_prompt_llama3_instruct(prompt: str) -> str:
+    """Format prompt for LLaMA-3-Instruct models."""
+    return f"<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n{prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
+
+
+def format_prompt_qwen(prompt: str) -> str:
+    """Format prompt for Qwen models."""
+    return f"<|im_start|>user\n{prompt}<|im_end|>\n<|im_start|>assistant\n"
+
+
+def format_prompt_mistral(prompt: str) -> str:
+    """Format prompt for Mistral-Instruct models."""
+    return f"<s>[INST] {prompt} [/INST]"
+
+
+def detect_prompt_format(model_name: str):
+    """Detect the appropriate prompt formatter based on model name."""
+    model_lower = model_name.lower()
+    
+    if "llama-2" in model_lower and "chat" in model_lower:
+        return format_prompt_llama2_chat
+    elif "llama-3" in model_lower and "instruct" in model_lower:
+        return format_prompt_llama3_instruct
+    elif "qwen" in model_lower:
+        return format_prompt_qwen
+    elif "mistral" in model_lower and "instruct" in model_lower:
+        return format_prompt_mistral
+    else:
+        return None
+
+
 class AutoregressiveEngine(GenerativeEngine):
     """
     Autoregressive generative engine (LLaMA-based).
@@ -39,6 +75,7 @@ class AutoregressiveEngine(GenerativeEngine):
         
         self._model = None
         self._tokenizer = None
+        self._prompt_formatter = detect_prompt_format(model_name_or_path)
         
         if not use_stub:
             self._load_model()
@@ -127,7 +164,12 @@ def solution():
         """Real generation using the loaded model."""
         import torch
         
-        inputs = self._tokenizer(prompt, return_tensors="pt").to(self._model.device)
+        if self._prompt_formatter:
+            formatted_prompt = self._prompt_formatter(prompt)
+        else:
+            formatted_prompt = prompt
+        
+        inputs = self._tokenizer(formatted_prompt, return_tensors="pt").to(self._model.device)
         input_len = inputs.input_ids.shape[1]
         
         with torch.no_grad():
