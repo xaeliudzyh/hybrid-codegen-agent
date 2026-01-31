@@ -39,9 +39,22 @@ def main():
     )
     parser.add_argument(
         "--use-stub",
+        dest="use_stub",
         action="store_true",
-        default=True,
         help="Use stub implementation instead of real model",
+    )
+    parser.add_argument(
+        "--no-use-stub",
+        dest="use_stub",
+        action="store_false",
+        help="Do not use stub; use real model",
+    )
+    parser.set_defaults(use_stub=True)
+    parser.add_argument(
+        "--device",
+        type=str,
+        default="auto",
+        help="Device to run model on (e.g., 'cuda', 'cuda:0', 'cpu')",
     )
     
     args = parser.parse_args()
@@ -49,6 +62,7 @@ def main():
     if args.engine == "autoregressive":
         engine = AutoregressiveEngine(
             model_name_or_path=args.model,
+            device=args.device,
             use_stub=args.use_stub,
         )
     else:
