@@ -16,13 +16,21 @@ from engines import AutoregressiveEngine
 from function_calling.builtin_functions import create_default_registry
 
 
+def load_task(task_arg: str) -> str:
+    """Load task from file if path exists, otherwise return as text."""
+    task_path = Path(task_arg)
+    if task_path.exists() and task_path.is_file():
+        return task_path.read_text(encoding="utf-8").strip()
+    return task_arg
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run the code generation agent")
     parser.add_argument(
         "--task",
         type=str,
         default="Write a Python function to calculate the factorial of a number",
-        help="The code generation task",
+        help="The code generation task (text or path to .txt file)",
     )
     parser.add_argument(
         "--engine",
@@ -72,6 +80,8 @@ def main():
     
     registry = create_default_registry()
     
+    task = load_task(args.task)
+    
     agent = CodeGenAgent(
         engine=engine,
         function_registry=registry,
@@ -80,11 +90,11 @@ def main():
     print(f"=" * 60)
     print(f"Code Generation Agent")
     print(f"Engine: {engine.engine_type} ({engine.model_name})")
-    print(f"Task: {args.task}")
+    print(f"Task: {task[:100]}{'...' if len(task) > 100 else ''}")
     print(f"=" * 60)
     print()
     
-    result = agent.run(args.task)
+    result = agent.run(task)
     
     print("Generated Code:")
     print("-" * 40)
