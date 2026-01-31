@@ -57,7 +57,7 @@ class AutoregressiveEngine(GenerativeEngine):
     
     def __init__(
         self,
-        model_name_or_path: str = "meta-llama/Llama-2-7b-hf",
+        model_name_or_path: str = "unsloth/llama-2-7b-chat",
         device: str = "auto",
         use_stub: bool = True,
     ):

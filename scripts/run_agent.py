@@ -34,7 +34,7 @@ def main():
     parser.add_argument(
         "--model",
         type=str,
-        default="meta-llama/Llama-2-7b-hf",
+        default="unsloth/llama-2-7b-chat",
         help="Model name or path",
     )
     parser.add_argument(
