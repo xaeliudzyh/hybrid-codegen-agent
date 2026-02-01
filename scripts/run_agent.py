@@ -57,7 +57,7 @@ def main():
         action="store_false",
         help="Do not use stub; use real model",
     )
-    parser.set_defaults(use_stub=True)
+    parser.set_defaults(use_stub=False)
     parser.add_argument(
         "--device",
         type=str,
