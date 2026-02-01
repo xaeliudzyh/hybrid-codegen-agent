@@ -154,13 +154,19 @@ Available functions will be provided in the prompt."""
             
             all_function_calls.extend(function_calls)
             
+            iteration_results = []
             for fc in function_calls:
                 exec_start = time.perf_counter()
                 result = self.function_registry.execute(fc)
                 exec_end = time.perf_counter()
                 
                 all_function_results.append((fc, result))
+                iteration_results.append((fc, result))
                 metrics.function_execution_times.append((fc.name, exec_start, exec_end))
+            
+            # if execute_code succeeded and returned output, task is likely done
+            if self._should_stop_after_execution(iteration_results):
+                break
             
             prompt = self._build_continuation_prompt(prompt, raw_output, all_function_results)
         
@@ -171,6 +177,27 @@ Available functions will be provided in the prompt."""
             metrics=metrics,
             raw_output=final_output,
         )
+    
+    def _should_stop_after_execution(
+        self,
+        iteration_results: list[tuple[FunctionCall, any]],
+    ) -> bool:
+        """
+        Determine if we should stop after this iteration.
+        
+        Returns True if:
+        - execute_code was called and succeeded with output
+        - All function calls in this iteration succeeded
+        """
+        if not iteration_results:
+            return False
+        
+        for fc, result in iteration_results:
+            if fc.name == "execute_code" and result.success:
+                if isinstance(result.result, dict) and result.result.get("stdout"):
+                    return True
+        
+        return False
     
     def _build_continuation_prompt(
         self,
@@ -183,7 +210,7 @@ Available functions will be provided in the prompt."""
             f"Function {fc.name} returned: {result}"
             for fc, result in function_results[-1:]
         )
-        return f"{original_prompt}\n\nAssistant: {last_output}\n\nFunction results:\n{results_text}\n\nContinue:"
+        return f"{original_prompt}\n\nAssistant: {last_output}\n\nFunction results:\n{results_text}\n\nIf the task is complete, summarize the result. Otherwise, continue working on it."
     
     def _extract_code(self, output: str) -> str:
         """Extract code blocks from the output."""
