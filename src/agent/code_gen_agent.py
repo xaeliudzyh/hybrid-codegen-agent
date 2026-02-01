@@ -69,9 +69,10 @@ class CodeGenAgent:
         self.system_prompt = system_prompt or self._default_system_prompt()
     
     def _default_system_prompt(self) -> str:
-        return """You are a code generation assistant. 
-You can generate code and call functions when needed.
-Available functions will be provided in the prompt."""
+        return """You are a code generation assistant.
+You MUST use the execute_code function to run any code you write.
+IMPORTANT: When calling execute_code, include ALL code in the "code" argument - function definitions, calls, and print statements.
+Never assume functions are already defined - always include full code."""
     
     def _build_prompt(self, task: str) -> str:
         """Build the full prompt including system prompt, available functions, and task."""
@@ -83,37 +84,33 @@ Available functions will be provided in the prompt."""
             "Available functions:",
             functions_description,
             "",
-            # few-shot examples:
-            "When you need to call a function, use this format:",
+            # few-shot example with clear instruction
+            "",
+            "Format for function calls:",
             "<function_call>",
             '{"name": "function_name", "arguments": {"arg": "value"}}',
             "</function_call>",
             "",
-            "Example 1: Simple code execution",
-            "User: Execute print('Hello, World!')",
-            "Assistant: I'll execute this code.",
-            "<function_call>",
-            '{"name": "execute_code", "arguments": {"code": "print(\'Hello, World!\')"}}',
-            "</function_call>",
-            "",
-            "Example 2: Writing and executing a function",
+            "Example 1: Writing and executing a function",
             "User: Write a function to calculate factorial of 5",
-            "Assistant: I'll write the factorial function and execute it.",
-            "```python",
-            "def factorial(n):",
-            "    if n <= 1:",
-            "        return 1",
-            "    return n * factorial(n-1)",
+            "Assistant: I'll write the factorial function and execute it with execute_code.",
+            "Here is the code:",
+            "def factorial(n):\\n    if n <= 1:\\n        return 1\\n    return n * factorial(n-1)\\n",
             "",
-            "result = factorial(5)",
-            "print(f'Factorial of 5 is {result}')",
-            "```",
-            "",
-            "Now I'll execute this code:",
             "<function_call>",
             '{"name": "execute_code", "arguments": {"code": "def factorial(n):\\n    if n <= 1:\\n        return 1\\n    return n * factorial(n-1)\\n\\nresult = factorial(5)\\nprint(f\'Factorial of 5 is {result}\')"}}',
+            "</function_call>"
+            "",
+            "Example 2: Writing and executing a function",
+            "User: Write a function to multiply two numbers",
+            "Assistant: I'll write the multiply function and execute it with execute_code.",
+            "Here is the code:",
+            "def mul(x,y):\\n   return x*y\\n",
+            "<function_call>",
+            '{"name": "execute_code", "arguments": {"code": "def mul(x,y):\\n   return x*y\\n\\nresult = mul(3,4)\\nprint(f\'The resul of multiplying is {result}\')"}}',
             "</function_call>",
             "",
+            "End of examples",
             "Task:",
             task,
         ]
