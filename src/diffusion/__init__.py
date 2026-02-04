@@ -1,10 +1,4 @@
-"""
-Diffusion module - diffusion-specific logic.
+""" Diffusion module - diffusion-specific logic. """
+from .diffusion_engine import DiffusionEngine
 
-fmi:
-All diffusion-specific code must be isolated in this module.
-This includes the diffusion engine and any early trigger mechanisms.
-
-NOTE: This module is a placeholder for future implementation.
-Current stage focuses on autoregressive baseline.
-"""
+__all__ = ["DiffusionEngine"]

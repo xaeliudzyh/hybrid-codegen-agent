@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from agent import CodeGenAgent
 from engines import AutoregressiveEngine
+from diffusion import DiffusionEngine
 from function_calling.builtin_functions import create_default_registry
 
 
@@ -74,9 +75,15 @@ def main():
             use_stub=args.use_stub,
         )
     else:
-        print("Error: Diffusion engine is not yet implemented")
-        print("Current stage focuses on autoregressive baseline.")
-        sys.exit(1)
+        if args.engine =="diffusion" or args.engine == "diff":
+            engine = DiffusionEngine(
+            model_name_or_path=args.model,
+            device=args.device,
+            #use_stub=args.use_stub,
+            )
+        else:
+            print("Error: unknown type of engine")
+            sys.exit(1)
     
     registry = create_default_registry()
     

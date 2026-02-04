@@ -37,7 +37,6 @@ class DiffusionEngine(GenerativeEngine):
         self._tokenizer = None
         
         self._prompt_formatter = format_prompt_llada_8b
-        
         self._load_model()
     
     def _load_model(self):
