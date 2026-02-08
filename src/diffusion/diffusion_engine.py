@@ -42,18 +42,27 @@ def get_num_transfer_tokens(mask_index: torch.Tensor, steps: int) -> torch.Tenso
     """
     Calculate how many tokens to unmask at each step.
     
-    Uses linear schedule: more tokens unmasked in later steps.
+    In the reverse process, the interval [0, 1] is uniformly discretized into steps intervals.
+    Because LLaDA employs a linear noise schedule, the expected number of tokens 
+    transitioned at each step should be consistent.
+    
+    This function precomputes the number of tokens that need to be transitioned at each step.
     """
-    mask_num = mask_index.sum(dim=-1, keepdim=True)
+    mask_num = mask_index.sum(dim=1, keepdim=True)
+    
     base = mask_num // steps
     remainder = mask_num % steps
-    num_transfer_tokens = base.repeat(1, steps)
     
-    for i in range(num_transfer_tokens.shape[0]):
+    num_transfer_tokens = torch.zeros(
+        mask_num.size(0), steps, 
+        device=mask_index.device, 
+        dtype=torch.int64
+    ) + base
+    
+    for i in range(mask_num.size(0)):
         num_transfer_tokens[i, :remainder[i]] += 1
     
-    # cumulative sum for progressive unmasking
-    return torch.cumsum(num_transfer_tokens, dim=-1)
+    return num_transfer_tokens
 
 
 class DiffusionEngine(GenerativeEngine):
@@ -163,7 +172,7 @@ class DiffusionEngine(GenerativeEngine):
         """
         LLaDA diffusion generation.
         
-        This is the core diffusion sampling loop adapted from LLaDA's generate.py.
+        This is the core diffusion sampling loop adapted from LLaDA's official generate.py.
         
         Args:
             prompt_ids: Tokenized prompt (batch, seq_len)
@@ -180,7 +189,7 @@ class DiffusionEngine(GenerativeEngine):
         batch_size = prompt_ids.shape[0]
         prompt_len = prompt_ids.shape[1]
         
-        # initialize: prompt + [MASK] * gen_length
+        # Initialize: prompt + [MASK] * gen_length
         x = torch.full(
             (batch_size, prompt_len + gen_length), 
             LLADA_MASK_ID, 
@@ -189,7 +198,7 @@ class DiffusionEngine(GenerativeEngine):
         )
         x[:, :prompt_len] = prompt_ids.clone()
         
-        # extend attention mask if provided
+        # Extend attention mask if provided
         if attention_mask is not None:
             attention_mask = torch.cat([
                 attention_mask,
@@ -198,18 +207,22 @@ class DiffusionEngine(GenerativeEngine):
         
         prompt_index = (x != LLADA_MASK_ID)
         
-        # calculate blocks for semi-autoregressive generation
-        block_length = min(self._block_length, gen_length)
-        num_blocks = gen_length // block_length
+        # Validate block configuration
+        assert gen_length % self._block_length == 0, \
+            f"gen_length ({gen_length}) must be divisible by block_length ({self._block_length})"
+        num_blocks = gen_length // self._block_length
+        
+        assert self._steps % num_blocks == 0, \
+            f"steps ({self._steps}) must be divisible by num_blocks ({num_blocks})"
         steps_per_block = self._steps // num_blocks
         
         current_step = 0
         
         for num_block in range(num_blocks):
-            block_start = prompt_len + num_block * block_length
-            block_end = prompt_len + (num_block + 1) * block_length
+            block_start = prompt_len + num_block * self._block_length
+            block_end = prompt_len + (num_block + 1) * self._block_length
             
-            # get mask indices for this block
+            # Get mask indices for this block
             block_mask_index = (x[:, block_start:block_end] == LLADA_MASK_ID)
             num_transfer_tokens = get_num_transfer_tokens(block_mask_index, steps_per_block)
             
@@ -234,32 +247,32 @@ class DiffusionEngine(GenerativeEngine):
                     else:
                         logits = self._model(x).logits
                 
-                # sample tokens with Gumbel noise
+                # Sample tokens with Gumbel noise
                 logits_with_noise = add_gumbel_noise(logits, temperature=temperature)
                 x0 = torch.argmax(logits_with_noise, dim=-1)
                 
-                # calculate confidence for remasking
+                # Calculate confidence for remasking
                 if self._remasking == 'low_confidence':
                     p = F.softmax(logits, dim=-1)
                     x0_p = torch.squeeze(
                         torch.gather(p, dim=-1, index=torch.unsqueeze(x0, -1)), -1
                     )
                 elif self._remasking == 'random':
-                    x0_p = torch.rand((batch_size, x0.shape[1]), device=device)
+                    x0_p = torch.rand((x0.shape[0], x0.shape[1]), device=device)
                 else:
                     raise ValueError(f"Unknown remasking strategy: {self._remasking}")
                 
-                # don't unmask tokens in future blocks yet
+                # Don't unmask tokens in future blocks yet
                 x0_p[:, block_end:] = -np.inf
                 
-                # keep prompt tokens unchanged
+                # Keep prompt tokens unchanged
                 x0 = torch.where(mask_index, x0, x)
                 confidence = torch.where(mask_index, x0_p, -np.inf)
                 
-                # transfer top-k confident tokens
+                # Transfer top-k confident tokens
                 transfer_index = torch.zeros_like(x0, dtype=torch.bool, device=device)
-                for j in range(batch_size):
-                    k = int(num_transfer_tokens[j, i].item())
+                for j in range(confidence.shape[0]):
+                    k = num_transfer_tokens[j, i].item()
                     if k > 0:
                         _, select_index = torch.topk(confidence[j], k=k)
                         transfer_index[j, select_index] = True
@@ -268,7 +281,7 @@ class DiffusionEngine(GenerativeEngine):
                 
                 current_step += 1
                 
-                # optional callback for early stopping (e.g., function call detection)
+                # Optional callback for early stopping (e.g., function call detection)
                 if step_callback is not None:
                     if step_callback(x, current_step):
                         return x
@@ -285,7 +298,7 @@ class DiffusionEngine(GenerativeEngine):
         """Generate text using diffusion-based decoding."""
         start_time = time.perf_counter()
         
-        # format and tokenize prompt
+        # Format and tokenize prompt
         formatted_prompt = self._format_prompt(prompt)
         encoded = self._tokenizer(
             formatted_prompt,
@@ -297,12 +310,18 @@ class DiffusionEngine(GenerativeEngine):
         attention_mask = encoded['attention_mask'].to(self._device)
         prompt_len = input_ids.shape[1]
         
-        # ensure gen_length is divisible by block_length
+        # Ensure gen_length is divisible by block_length
         gen_length = max_tokens
         if gen_length % self._block_length != 0:
             gen_length = ((gen_length // self._block_length) + 1) * self._block_length
         
-        # run diffusion generation
+        # Also ensure steps is divisible by num_blocks
+        num_blocks = gen_length // self._block_length
+        if self._steps % num_blocks != 0:
+            # Adjust steps to be divisible
+            self._steps = ((self._steps // num_blocks) + 1) * num_blocks
+        
+        # Run diffusion generation
         output_ids = self._llada_generate(
             prompt_ids=input_ids,
             attention_mask=attention_mask,
@@ -310,11 +329,11 @@ class DiffusionEngine(GenerativeEngine):
             temperature=temperature,
         )
         
-        # decode generated tokens (skip prompt)
+        # Decode generated tokens (skip prompt)
         generated_ids = output_ids[0, prompt_len:]
         generated_text = self._tokenizer.decode(generated_ids, skip_special_tokens=True)
         
-        # apply stop sequences
+        # Apply stop sequences
         if stop_sequences:
             for stop_seq in stop_sequences:
                 if stop_seq in generated_text:
