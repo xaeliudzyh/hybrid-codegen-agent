@@ -167,6 +167,7 @@ class DiffusionEngine(GenerativeEngine):
         attention_mask: Optional[torch.Tensor],
         gen_length: int,
         temperature: float,
+        steps: Optional[int] = None,
         step_callback: Optional[Callable[[torch.Tensor, int], bool]] = None,
     ) -> torch.Tensor:
         """
@@ -179,12 +180,15 @@ class DiffusionEngine(GenerativeEngine):
             attention_mask: Attention mask for padding
             gen_length: Number of tokens to generate
             temperature: Sampling temperature (0 = greedy)
+            steps: Number of diffusion steps (defaults to self._steps)
             step_callback: Optional callback(x, step) called each step.
                           Return True to stop early.
         
         Returns:
             Full sequence including prompt and generated tokens
         """
+        if steps is None:
+            steps = self._steps
         device = self._model.device
         batch_size = prompt_ids.shape[0]
         prompt_len = prompt_ids.shape[1]
@@ -212,9 +216,9 @@ class DiffusionEngine(GenerativeEngine):
             f"gen_length ({gen_length}) must be divisible by block_length ({self._block_length})"
         num_blocks = gen_length // self._block_length
         
-        assert self._steps % num_blocks == 0, \
-            f"steps ({self._steps}) must be divisible by num_blocks ({num_blocks})"
-        steps_per_block = self._steps // num_blocks
+        assert steps % num_blocks == 0, \
+            f"steps ({steps}) must be divisible by num_blocks ({num_blocks})"
+        steps_per_block = steps // num_blocks
         
         current_step = 0
         
@@ -315,11 +319,11 @@ class DiffusionEngine(GenerativeEngine):
         if gen_length % self._block_length != 0:
             gen_length = ((gen_length // self._block_length) + 1) * self._block_length
         
-        # Also ensure steps is divisible by num_blocks
+        # Compute effective steps for this call without mutating self._steps
         num_blocks = gen_length // self._block_length
-        if self._steps % num_blocks != 0:
-            # Adjust steps to be divisible
-            self._steps = ((self._steps // num_blocks) + 1) * num_blocks
+        effective_steps = self._steps
+        if effective_steps % num_blocks != 0:
+            effective_steps = ((effective_steps // num_blocks) + 1) * num_blocks
         
         # Run diffusion generation
         output_ids = self._llada_generate(
@@ -327,6 +331,7 @@ class DiffusionEngine(GenerativeEngine):
             attention_mask=attention_mask,
             gen_length=gen_length,
             temperature=temperature,
+            steps=effective_steps,
         )
         
         # Decode generated tokens (skip prompt)
@@ -349,7 +354,9 @@ class DiffusionEngine(GenerativeEngine):
             metadata={
                 "engine": "diffusion",
                 "model": self._model_name,
-                "steps": self._steps,
+                "steps_configured": self._steps,
+                "steps_effective": effective_steps,
+                "gen_length": gen_length,
                 "block_length": self._block_length,
                 "remasking": self._remasking,
             },
