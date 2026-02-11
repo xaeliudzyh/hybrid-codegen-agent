@@ -16,24 +16,76 @@ from function_calling.types import FunctionCall
 
 
 @dataclass
-class AgentMetrics:
-    """Timing metrics for agent execution."""
-    generation_start_time: Optional[float] = None
-    generation_end_time: Optional[float] = None
+class IterationMetrics:
+    """Timing metrics for a single generation-execution iteration."""
+    generation_start_time: float
+    generation_end_time: float
     function_detection_time: Optional[float] = None
     function_execution_times: list[tuple[str, float, float]] = field(default_factory=list)
-    
+
     @property
-    def generation_duration(self) -> Optional[float]:
-        if self.generation_start_time and self.generation_end_time:
-            return self.generation_end_time - self.generation_start_time
-        return None
-    
+    def generation_duration(self) -> float:
+        return self.generation_end_time - self.generation_start_time
+
     @property
     def time_to_function_detection(self) -> Optional[float]:
-        if self.generation_start_time and self.function_detection_time:
+        if self.function_detection_time is not None:
             return self.function_detection_time - self.generation_start_time
         return None
+
+
+@dataclass
+class AgentMetrics:
+    """Accumulated timing metrics across all agent iterations."""
+    iterations: list[IterationMetrics] = field(default_factory=list)
+
+    @property
+    def generation_start_time(self) -> Optional[float]:
+        """Start time of the first iteration (for backward compatibility)."""
+        if self.iterations:
+            return self.iterations[0].generation_start_time
+        return None
+
+    @property
+    def generation_end_time(self) -> Optional[float]:
+        """End time of the last iteration (for backward compatibility)."""
+        if self.iterations:
+            return self.iterations[-1].generation_end_time
+        return None
+
+    @property
+    def function_detection_time(self) -> Optional[float]:
+        """Detection time of the first iteration that found function calls."""
+        for it in self.iterations:
+            if it.function_detection_time is not None:
+                return it.function_detection_time
+        return None
+
+    @property
+    def function_execution_times(self) -> list[tuple[str, float, float]]:
+        """All function execution times across iterations."""
+        result = []
+        for it in self.iterations:
+            result.extend(it.function_execution_times)
+        return result
+
+    @property
+    def generation_duration(self) -> Optional[float]:
+        """Total generation time across all iterations."""
+        if not self.iterations:
+            return None
+        return sum(it.generation_duration for it in self.iterations)
+
+    @property
+    def time_to_function_detection(self) -> Optional[float]:
+        """Time from first generation start to first function call detection."""
+        if self.iterations and self.iterations[0].function_detection_time is not None:
+            return self.iterations[0].function_detection_time - self.iterations[0].generation_start_time
+        return None
+
+    @property
+    def num_iterations(self) -> int:
+        return len(self.iterations)
 
 
 @dataclass
@@ -135,18 +187,24 @@ Never assume functions are already defined - always include full code."""
         final_output = ""
         
         for iteration in range(max_iterations):
-            metrics.generation_start_time = time.perf_counter()
+            gen_start = time.perf_counter()
             result: GenerationResult = self.engine.generate(prompt)
-            metrics.generation_end_time = time.perf_counter()
+            gen_end = time.perf_counter()
             
             raw_output = result.text
             final_output = raw_output
             
-            detection_start = time.perf_counter()
             function_calls = parse_function_calls(raw_output)
-            metrics.function_detection_time = detection_start
+            detection_end = time.perf_counter()
+            
+            iter_metrics = IterationMetrics(
+                generation_start_time=gen_start,
+                generation_end_time=gen_end,
+                function_detection_time=detection_end if function_calls else None,
+            )
             
             if not function_calls:
+                metrics.iterations.append(iter_metrics)
                 break
             
             all_function_calls.extend(function_calls)
@@ -159,7 +217,9 @@ Never assume functions are already defined - always include full code."""
                 
                 all_function_results.append((fc, result))
                 iteration_results.append((fc, result))
-                metrics.function_execution_times.append((fc.name, exec_start, exec_end))
+                iter_metrics.function_execution_times.append((fc.name, exec_start, exec_end))
+            
+            metrics.iterations.append(iter_metrics)
             
             # if execute_code succeeded and returned output, task is likely done
             if self._should_stop_after_execution(iteration_results):

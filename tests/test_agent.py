@@ -60,6 +60,29 @@ class TestCodeGenAgent:
         assert metrics.generation_start_time is not None
         assert metrics.generation_end_time is not None
         assert metrics.generation_end_time >= metrics.generation_start_time
+        assert metrics.num_iterations >= 1
+        assert metrics.iterations[0].generation_duration >= 0
+
+    def test_agent_metrics_with_function_call(self):
+        engine = AutoregressiveEngine(use_stub=True)
+        registry = FunctionRegistry()
+        registry.register(
+            name="execute_code",
+            handler=lambda code: {"stdout": "ok", "stderr": "", "exception": None, "success": True},
+            description="Execute code",
+            parameters={"code": {"type": "string"}},
+        )
+
+        agent = CodeGenAgent(engine=engine, function_registry=registry)
+        result = agent.run("Write a fibonacci function")
+
+        metrics = result.metrics
+
+        # function_detection_time should be AFTER generation_end_time
+        assert metrics.function_detection_time is not None
+        assert metrics.function_detection_time >= metrics.generation_end_time
+        assert metrics.time_to_function_detection > 0
+        assert len(metrics.function_execution_times) > 0
     
     def test_extract_code(self):
         engine = AutoregressiveEngine(use_stub=True)
