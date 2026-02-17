@@ -1,0 +1,132 @@
+#!/usr/bin/env python3
+"""
+Script to run the code generation agent.
+
+This is a simple entry point for testing the end-to-end pipeline.
+"""
+
+import sys
+import argparse
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+
+from agent import CodeGenAgent
+from engines import AutoregressiveEngine
+from diffusion import DiffusionEngine
+from function_calling.builtin_functions import create_default_registry
+
+
+def load_task(task_arg: str) -> str:
+    """Load task from file if path exists, otherwise return as text."""
+    task_path = Path(task_arg)
+    if task_path.exists() and task_path.is_file():
+        return task_path.read_text(encoding="utf-8").strip()
+    return task_arg
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Run the code generation agent")
+    parser.add_argument(
+        "--task",
+        type=str,
+        default="Write a Python function to calculate the factorial of a number",
+        help="The code generation task (text or path to .txt file)",
+    )
+    parser.add_argument(
+        "--engine",
+        type=str,
+        choices=["autoregressive", "diffusion"],
+        default="autoregressive",
+        help="Which generative engine to use",
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="unsloth/llama-2-7b-chat",
+        help="Model name or path",
+    )
+    parser.add_argument(
+        "--use-stub",
+        dest="use_stub",
+        action="store_true",
+        help="Use stub implementation instead of real model",
+    )
+    parser.add_argument(
+        "--no-use-stub",
+        dest="use_stub",
+        action="store_false",
+        help="Do not use stub; use real model",
+    )
+    parser.set_defaults(use_stub=False)
+    parser.add_argument(
+        "--device",
+        type=str,
+        default="auto",
+        help="Device to run model on (e.g., 'cuda', 'cuda:0', 'cpu')",
+    )
+    
+    args = parser.parse_args()
+    
+    if args.engine == "autoregressive":
+        engine = AutoregressiveEngine(
+            model_name_or_path=args.model,
+            device=args.device,
+            use_stub=args.use_stub,
+        )
+    else:
+        if args.engine =="diffusion" or args.engine == "diff":
+            engine = DiffusionEngine(
+            model_name_or_path=args.model,
+            device=args.device,
+            #use_stub=args.use_stub,
+            )
+        else:
+            print("Error: unknown type of engine")
+            sys.exit(1)
+    
+    registry = create_default_registry()
+    
+    task = load_task(args.task)
+    
+    agent = CodeGenAgent(
+        engine=engine,
+        function_registry=registry,
+    )
+    
+    print(f"=" * 60)
+    print(f"Code Generation Agent")
+    print(f"Engine: {engine.engine_type} ({engine.model_name})")
+    print(f"Task: {task[:100]}{'...' if len(task) > 100 else ''}")
+    print(f"=" * 60)
+    print()
+    
+    result = agent.run(task)
+    
+    print("Generated Code:")
+    print("-" * 40)
+    print(result.generated_code)
+    print("-" * 40)
+    print()
+    
+    if result.function_calls:
+        print(f"Function Calls ({len(result.function_calls)}):")
+        for call in result.function_calls:
+            print(f"  - {call}")
+        print()
+        
+        print("Function Results:")
+        for call, res in result.function_results:
+            print(f"  - {call.name}: {res}")
+        print()
+    
+    print("Metrics:")
+    print(f"  - Generation time: {result.metrics.generation_duration:.4f}s")
+    if result.metrics.time_to_function_detection:
+        print(f"  - Time to function detection: {result.metrics.time_to_function_detection:.4f}s")
+    for name, start, end in result.metrics.function_execution_times:
+        print(f"  - Function '{name}' execution: {end - start:.4f}s")
+
+
+if __name__ == "__main__":
+    main()
