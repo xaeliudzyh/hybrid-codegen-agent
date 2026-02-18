@@ -1,25 +1,21 @@
 """
-EarlyFunctionDetector — early function call detection in diffusion intermediate states.
-
-This is the core research component: during LLaDA's iterative unmasking,
-we can inspect partially-generated sequences at each step. If a valid
-function call pattern appears before generation completes, we stop early
-and save the remaining diffusion steps.
+EarlyFunctionDetector - early function call detection in diffusion intermediate states.
+During LLaDA's denoising process, we want to inspect partially-generated sequences at each step. If a valid
+function call pattern appears before generation completes, we notice it.
 
 Usage as step_callback for DiffusionEngine._llada_generate:
-
     detector = EarlyFunctionDetector(tokenizer, total_steps=64)
     output = engine._llada_generate(
         ...,
         step_callback=detector,
     )
-    print(f"Saved {detector.savings_percent:.1f}% of steps")
 """
 
 import json
 import re
 from dataclasses import dataclass, field
 from typing import Optional
+from collections.abc import Callable
 
 import torch
 
@@ -103,7 +99,7 @@ class EarlyFunctionDetector:
 
     # step_callback protocol: __call__(x, step) -> bool
 
-    def __call__(self, x: torch.Tensor, step: int) -> bool:
+    def __call__(self, x: torch.Tensor, step: int, on_detected: Callable[[DetectionEvent], None]) -> bool:
         """
         Called by ``_llada_generate`` on each diffusion step.
 
@@ -115,15 +111,15 @@ class EarlyFunctionDetector:
             True  → stop generation early (function call detected).
             False → continue generation.
         """
-        # Already detected — shouldn't happen, but be safe
         if self._detection_event is not None:
-            return True
+            on_detected(self._detection_event)
+            return False
         min_step = int(self._total_steps * self._min_step_ratio)
         if step <= min_step:
             self._steps_skipped += 1
             return False
 
-        # Check interval — skip intermediate steps for performance
+        # Check interval - skip intermediate steps for performance
         if self._check_interval > 1 and step % self._check_interval != 0:
             self._steps_skipped += 1
             return False
@@ -145,7 +141,8 @@ class EarlyFunctionDetector:
             decoded_text=text,
             function_call_json=fc_json,
         )
-        return True
+        on_detected(self._detection_event)
+        return False
 
     @property
     def detected(self) -> bool:
