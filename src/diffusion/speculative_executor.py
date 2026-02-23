@@ -4,16 +4,32 @@ SpeculativeExecutor - stores metrics for early detected functions, and stores it
 """
 from dataclasses import dataclass, field
 from typing import Optional
+from function_calling import FunctionRegistry, FunctionCall, FunctionResult
+from diffusion import DetectionEvent
 
 
+@dataclass
+class SpeculativeResult:
+    def __init__(
+        self, function_call: FunctionCall, function_result: FunctionResult,
+         detection_event: DetectionEvent, execution_started_at: float,
+     execution_finished_at: float, generation_finished_at: 
+     float, was_ready_before_generation_end: bool
+     ):
+     ...
 
+    @property
+    def time_saved(self) -> float:
+        """Time that we saved by using early function detectioning"""
+        ...
+        
 class SpeculativeExecutor:
     def __init__(self, function_registry: FunctionRegistry):
         ...
 
     def on_function_detected(self, event: DetectionEvent) -> None:
-        """Callback азщ EarlyFunctionDetector. Starts a function's execution in background."""
-        ...      ...
+        """Callback for EarlyFunctionDetector. Starts a function's execution in background."""
+        ...  
 
     def get_result(self, timeout: float = None) -> Optional[SpeculativeResult]:
         """
@@ -32,20 +48,5 @@ class SpeculativeExecutor:
     
     def cancel(self) -> None:
         """Stops speculative execution."""
-        ...
-
-@dataclass
-class SpeculativeResult:
-    def __init__(
-        self, function_call: FunctionCall, function_result: FunctionResult,
-         detection_event: DetectionEvent, execution_started_at: float,
-     execution_finished_at: float, generation_finished_at: 
-     float, was_ready_before_generation_end: bool
-     ):
-     ...
-
-    @property
-    def time_saved(self) -> float:
-        """Time that we saved by using early function detectioning"""
         ...
 

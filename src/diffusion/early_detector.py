@@ -51,20 +51,20 @@ class EarlyFunctionDetector:
     """
     Detect function calls in intermediate diffusion states.
 
-    Implements the ``step_callback(x, step) -> bool`` protocol
-    expected by ``DiffusionEngine._llada_generate``.
+    Implements the step_callback(x, step) -> bool protocol
+    expected by DiffusionEngine._llada_generate.
 
     The detector decodes the current (partially-masked) sequence,
-    searches for ``<function_call>...</function_call>`` patterns
+    searches for <function_call>...</function_call> patterns
     and optionally validates the JSON inside.
 
     Args:
-        tokenizer: HuggingFace tokenizer (needs ``pad_token_id`` and ``decode``).
+        tokenizer: HuggingFace tokenizer (needs pad_token_id and decode).
         total_steps: Total number of diffusion steps (needed for ratio check).
         min_step_ratio: Skip the first N% of steps (too noisy to decode).
             Default 0.1 = ignore first 10%.
         require_valid_json: If True, the JSON inside the tags must parse
-            and contain a ``"name"`` key.  Reduces false positives.
+            and contain a "name key.  Reduces false positives.
         check_interval: Check every N-th step instead of every step.
             Default 1 = check every step.  Larger values trade detection
             latency for less decoding overhead.
@@ -78,6 +78,7 @@ class EarlyFunctionDetector:
         min_step_ratio: float = 0.1,
         require_valid_json: bool = True,
         check_interval: int = 1,
+        on_detected: Callable[[DetectionEvent], None] = None
     ):
         if total_steps <= 0:
             raise ValueError(f"total_steps must be positive, got {total_steps}")
@@ -96,23 +97,22 @@ class EarlyFunctionDetector:
         self._detection_event: Optional[DetectionEvent] = None
         self._steps_checked: int = 0
         self._steps_skipped: int = 0
+        self._on_detected = on_detected
 
-    # step_callback protocol: __call__(x, step) -> bool
-
-    def __call__(self, x: torch.Tensor, step: int, on_detected: Callable[[DetectionEvent], None]) -> bool:
+    def __call__(self, x: torch.Tensor, step: int) -> bool:
         """
-        Called by ``_llada_generate`` on each diffusion step.
+        Called by _llada_generate on each diffusion step.
 
         Args:
-            x: Current sequence tensor ``(batch, seq_len)``, may contain MASK tokens.
-            step: Current step number (1-based, incremented by ``_llada_generate``).
+            x: Current sequence tensor (batch, seq_len), may contain MASK tokens.
+            step: Current step number).
 
         Returns:
             True  → stop generation early (function call detected).
             False → continue generation.
         """
         if self._detection_event is not None:
-            on_detected(self._detection_event)
+            self._on_detected(self._detection_event)
             return False
         min_step = int(self._total_steps * self._min_step_ratio)
         if step <= min_step:
@@ -141,7 +141,7 @@ class EarlyFunctionDetector:
             decoded_text=text,
             function_call_json=fc_json,
         )
-        on_detected(self._detection_event)
+        self._on_detected(self._detection_event)
         return False
 
     @property
@@ -212,9 +212,9 @@ class EarlyFunctionDetector:
         """
         Decode the tensor, replacing MASK tokens with pad tokens.
 
-        MASK tokens would decode to ``<|mdm_mask|>`` which clutters the
+        MASK tokens would decode to <|mdm_mask|> which clutters the
         text and may interfere with pattern matching.  Replacing them
-        with pad_token_id makes ``skip_special_tokens=True`` strip them.
+        with pad_token_id makes skip_special_tokens=True strip them.
         """
         x_clean = x.clone()
         x_clean[x_clean == LLADA_MASK_ID] = self._tokenizer.pad_token_id
@@ -223,10 +223,10 @@ class EarlyFunctionDetector:
     @staticmethod
     def _try_parse_function_call(json_str: str) -> Optional[dict]:
         """
-        Try to parse JSON and validate it has a ``"name"`` key.
+        Try to parse JSON and validate it has a "name" key.
 
         Returns the parsed dict on success, None on failure.
-        Mirrors the validation logic of ``function_calling.parser``.
+        Mirrors the validation logic of function_calling.parser.
         """
         try:
             data = json.loads(json_str)
