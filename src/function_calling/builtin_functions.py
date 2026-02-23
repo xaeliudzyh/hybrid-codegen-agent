@@ -1,7 +1,7 @@
 """
 Built-in functions for the code generation agent.
 
-These are the default functions available to the agent.
+These are the functions available to the agent.
 """
 
 import sys
@@ -59,7 +59,6 @@ def execute_code(code: str) -> dict[str, Any]:
 def search_documentation(query: str) -> str:
     """
     Search documentation for a given query.
-    
     This is a stub that can be replaced with actual documentation search.
     
     Args:
@@ -74,7 +73,6 @@ def search_documentation(query: str) -> str:
 def get_function_signature(function_name: str) -> str:
     """
     Get the signature of a Python built-in or standard library function.
-    
     Args:
         function_name: Name of the function
         
