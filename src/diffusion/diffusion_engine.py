@@ -109,6 +109,10 @@ class DiffusionEngine(GenerativeEngine):
         self._remasking = remasking
         
         self._load_model()
+
+    @property
+    def tokenizer(self):
+        return self._tokenizer
     
     def _load_model(self):
         """Load the LLaDA model and tokenizer."""

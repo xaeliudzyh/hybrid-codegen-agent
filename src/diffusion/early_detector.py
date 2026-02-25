@@ -112,7 +112,6 @@ class EarlyFunctionDetector:
             False → continue generation.
         """
         if self._detection_event is not None:
-            self._on_detected(self._detection_event)
             return False
         min_step = int(self._total_steps * self._min_step_ratio)
         if step <= min_step:
@@ -141,7 +140,8 @@ class EarlyFunctionDetector:
             decoded_text=text,
             function_call_json=fc_json,
         )
-        self._on_detected(self._detection_event)
+        if self._on_detected is not None:
+            self._on_detected(self._detection_event)
         return False
 
     @property
