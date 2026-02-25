@@ -22,6 +22,16 @@ class IterationMetrics:
     generation_end_time: float
     function_detection_time: Optional[float] = None
     function_execution_times: list[tuple[str, float, float]] = field(default_factory=list)
+    # callback's functional
+    speculative_detection_step: Optional[int] = None #on which step funciton_call was detected
+    speculative_total_steps: Optional[int] = None #total diffusion steps
+    speculative_execution_started: Optional[float] = None
+    speculative_execution_finished: Optional[float] = None
+    speculative_hit: Optional[bool] = None #did the speculative results ,matched with the final results(None = speculative wasn't used)
+    speculative_time_saved: Optinal[float] = None
+
+
+
 
     @property
     def generation_duration(self) -> float:
@@ -41,14 +51,14 @@ class AgentMetrics:
 
     @property
     def generation_start_time(self) -> Optional[float]:
-        """Start time of the first iteration (for backward compatibility)."""
+        """Start time of the first iteration."""
         if self.iterations:
             return self.iterations[0].generation_start_time
         return None
 
     @property
     def generation_end_time(self) -> Optional[float]:
-        """End time of the last iteration (for backward compatibility)."""
+        """End time of the last iteration."""
         if self.iterations:
             return self.iterations[-1].generation_end_time
         return None
@@ -100,14 +110,12 @@ class AgentResult:
 
 class CodeGenAgent:
     """
-    Agent for code generation with function calling support.
-    
-    The agent:
-    - Accepts a GenerativeEngine (chosen BEFORE execution)
+    Agent for code generation with function calling support:
+    - Accepts a GenerativeEngine
     - Builds prompts
     - Calls engine.generate()
     - Detects function calls
-    - Executes them via FunctionRegistry
+    - Executes them
     """
     
     def __init__(
@@ -171,13 +179,11 @@ Never assume functions are already defined - always include full code."""
     def run(self, task: str, max_iterations: int = 5) -> AgentResult:
         """
         Execute the agent on a given task.
-        
         Args:
-            task: The code generation task description
-            max_iterations: Maximum number of generation-execution cycles
-            
+            task: Task description
+            max_iterations: Max number of generation-execution cycles
         Returns:
-            AgentResult with generated code, function calls, and metrics
+            AgentResult with generated code, function calls, and their's metrics
         """
         metrics = AgentMetrics()
         all_function_calls: list[FunctionCall] = []
@@ -188,10 +194,73 @@ Never assume functions are already defined - always include full code."""
         
         for iteration in range(max_iterations):
             gen_start = time.perf_counter()
-            result: GenerationResult = self.engine.generate(prompt)
+            gen_result: GenerationResult = self.engine.generate(prompt)
             gen_end = time.perf_counter()
             
-            raw_output = result.text
+            raw_output = gen_result.text
+            final_output = raw_output
+            
+            function_calls = parse_function_calls(raw_output)
+            detection_end = time.perf_counter()
+            
+            iter_metrics = IterationMetrics(
+                generation_start_time=gen_start,
+                generation_end_time=gen_end,
+                function_detection_time=detection_end if function_calls else None,
+            )
+            
+            if not function_calls:
+                metrics.iterations.append(iter_metrics)
+                break
+            
+            all_function_calls.extend(function_calls)
+            
+            iteration_results = []
+            for fc in function_calls:
+                exec_start = time.perf_counter()
+                result = self.function_registry.execute(fc)
+                exec_end = time.perf_counter()
+                
+                all_function_results.append((fc, result))
+                iteration_results.append((fc, result))
+                iter_metrics.function_execution_times.append((fc.name, exec_start, exec_end))
+            
+            metrics.iterations.append(iter_metrics)
+            
+            # if execute_code succeeded and returned output, task is likely done
+            if self._should_stop_after_execution(iteration_results):
+                break
+            
+            prompt = self._build_continuation_prompt(prompt, raw_output, all_function_results)
+        
+        return AgentResult(
+            generated_code=self._extract_code(final_output),
+            function_calls=all_function_calls,
+            function_results=all_function_results,
+            metrics=metrics,
+            raw_output=final_output,
+        )
+
+    def run_with_speculative_execution(self, task: str, max_iterations: int = 5, require_valid_json = True, check_interval=1) -> AgentResult:
+        """
+        Execute the agent on a given task, but with a speculative execution of early detected function call.
+        """
+        if self.engine.engine_type != "diffusion":
+            raise ValueError('run_with_speculative_execution is only available for the models with engine_type == "diffusion"')
+        metrics = AgentMetrics()
+        all_function_calls: list[FunctionCall] = []
+        all_function_results: list[tuple[FunctionCall, any]] = []
+        
+        prompt = self._build_prompt(task)
+        final_output = ""
+        
+        for iteration in range(max_iterations):
+            gen_start = time.perf_counter()
+            gen_result, executor = self.engine.generate_with_speculative_execution(prompt = prompt, function_registry = self.function_registry, 
+            min_step_ratio = min_step_ratio, require_valid_json = require_valid_json, check_interval = check_interval)
+            gen_end = time.perf_counter()
+            
+            raw_output = gen_result.text
             final_output = raw_output
             
             function_calls = parse_function_calls(raw_output)
@@ -240,11 +309,8 @@ Never assume functions are already defined - always include full code."""
         iteration_results: list[tuple[FunctionCall, any]],
     ) -> bool:
         """
-        Determine if we should stop after this iteration.
-        
-        Returns True if:
-        - execute_code was called and succeeded with output
-        - All function calls in this iteration succeeded
+        Deciding if we should stop after this iteration.
+        Returns True if: execute_code was called and succeeded with output, all function calls in this iteration succeeded
         """
         if not iteration_results:
             return False
