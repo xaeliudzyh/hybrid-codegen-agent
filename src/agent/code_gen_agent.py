@@ -28,7 +28,7 @@ class IterationMetrics:
     speculative_execution_started: Optional[float] = None
     speculative_execution_finished: Optional[float] = None
     speculative_hit: Optional[bool] = None #did the speculative results ,matched with the final results(None = speculative wasn't used)
-    speculative_time_saved: Optinal[float] = None
+    speculative_time_saved: Optional[float] = None
 
 
 

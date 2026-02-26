@@ -17,9 +17,10 @@ import torch
 import torch.nn.functional as F
 import numpy as np
 
+from diffusion.speculative_executor import SpeculativeExecutor
 from engines.base import GenerativeEngine, GenerationResult
 from function_calling import FunctionRegistry
-from diffusion import EarlyFunctionDetector
+from diffusion.early_detector import EarlyFunctionDetector
 
 LLADA_MASK_ID = 126336  # <|mdm_mask|> token
 
@@ -417,7 +418,7 @@ class DiffusionEngine(GenerativeEngine):
             gen_length=gen_length,
             temperature=temperature,
             steps=effective_steps,
-            step_call_back=detector
+            step_callback=detector
         )
 
         # Decode generated tokens (skip prompt)
@@ -445,7 +446,7 @@ class DiffusionEngine(GenerativeEngine):
                 "gen_length": gen_length,
                 "block_length": self._block_length,
                 "remasking": self._remasking,
-                "detector": detector.geat_metadata()
+                "detector": detector.get_metadata()
             },
         ), executor)
     
