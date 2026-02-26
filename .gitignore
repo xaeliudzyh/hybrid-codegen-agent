@@ -1,5 +1,6 @@
 stuff/
 .venv/
+venv/
 src/*/__pycache__
 tasks/
 tests/
