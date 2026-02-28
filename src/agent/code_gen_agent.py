@@ -251,6 +251,18 @@ Never assume functions are already defined - always include full code."""
     def run_with_speculative_execution(self, task: str, max_iterations: int = 5, require_valid_json = True, min_step_ratio = 0.1, check_interval=1) -> AgentResult:
         """
         Execute the agent on a given task, but with a speculative execution of early detected function call.
+        Args:
+            task: Task description
+            max_iterations: Max number of generation-execution cycles
+            require_valid_json: Whether the early detector should validate that the JSON
+                inside <function_call> tags is syntactically correct and contains a "name" key.
+                When True, partial or malformed JSON is ignored, reducing false positives
+                at the cost of slightly later detection. When False, any text matching
+                the <function_call>...</function_call> pattern triggers detection immediately.
+            min_step_ratio: Fraction of total diffusion steps to skip before starting
+                detection checks (0.0–1.0).
+            check_interval: Run the detection check every N-th step of diffusion instead of
+                every step.
         """
         if self.engine.engine_type != "diffusion":
             raise ValueError('run_with_speculative_execution is only available for the models with engine_type == "diffusion"')

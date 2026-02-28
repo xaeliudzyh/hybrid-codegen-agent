@@ -47,6 +47,38 @@ def main():
         help="Model name or path",
     )
     parser.add_argument(
+        "--with-early-detection",
+        dest="with_early_detection",
+        action="store_true",
+        default=False,
+        help="Enable speculative execution with early function detection for diffusion engine",
+    )
+    parser.add_argument(
+        "--max_iterations",
+        type=int,
+        default=5,
+        help="Max number of generation-execution cycles. Default is 5",
+    )
+    parser.add_argument(
+        "--no-require-valid-json",
+        dest="require_valid_json",
+        action="store_false",
+        default=True,
+        help="Disable JSON validation in early detector (accept any text matching <function_call> tags)",
+    )
+    parser.add_argument(
+        "--min_step_ratio",
+        type=float,
+        default=0.1,
+        help="Fraction of total diffusion steps to skip before starting detection checks (0.0–1.0). Default is 0.1",
+    )
+    parser.add_argument(
+        "--check_interval",
+        type=int,
+        default=1,
+        help="Run the detection check every N-th diffusion step instead of every step. Default is 1",
+    )
+    parser.add_argument(
         "--use-stub",
         dest="use_stub",
         action="store_true",
@@ -75,15 +107,10 @@ def main():
             use_stub=args.use_stub,
         )
     else:
-        if args.engine =="diffusion" or args.engine == "diff":
-            engine = DiffusionEngine(
+        engine = DiffusionEngine(
             model_name_or_path=args.model,
             device=args.device,
-            #use_stub=args.use_stub,
-            )
-        else:
-            print("Error: unknown type of engine")
-            sys.exit(1)
+        )
     
     registry = create_default_registry()
     
@@ -101,7 +128,16 @@ def main():
     print(f"=" * 60)
     print()
     
-    result = agent.run(task)
+    if args.engine == "diffusion" and args.with_early_detection == True:
+        result = agent.run_with_speculative_execution(
+            task, 
+            max_iterations=args.max_iterations, 
+            require_valid_json=args.require_valid_json,
+            min_step_ratio=args.min_step_ratio,
+            check_interval=args.check_interval
+            )
+    else:
+        result = agent.run(task, max_iterations=args.max_iterations)
     
     print("Generated Code:")
     print("-" * 40)

@@ -17,18 +17,18 @@ class SpeculativeResult:
     detection_event: DetectionEvent
     execution_started_at: float
     execution_finished_at: float
-    was_ready_before_generation_end: bool 
-    generation_finished_at: Optional[float] = None,
-     
+    was_ready_before_generation_end: bool
+    generation_finished_at: Optional[float] = None
+
     @property
     def time_saved(self) -> float:
         """Time that we saved by using early function detectioning"""
-        if self._generation_finished_at == None:
+        if self.generation_finished_at is None:
             return 0.0
-        ex_time = self._execution_finished_at - self._execution_started_at
-        if self._was_ready_before_generation_end == True:
+        ex_time = self.execution_finished_at - self.execution_started_at
+        if self.was_ready_before_generation_end:
             return ex_time
-        return max(0.0, self._generation_finished_at - self._execution_started_at)
+        return max(0.0, self.generation_finished_at - self.execution_started_at)
         
 class SpeculativeExecutor:
     def __init__(self, function_registry: FunctionRegistry):
