@@ -162,6 +162,20 @@ def main():
         print(f"  - Time to function detection: {result.metrics.time_to_function_detection:.4f}s")
     for name, start, end in result.metrics.function_execution_times:
         print(f"  - Function '{name}' execution: {end - start:.4f}s")
+    
+    for i, it in enumerate(result.metrics.iterations):
+        if it.speculative_hit is not None:
+            print()
+            print(f"Speculative Execution (iteration {i + 1}):")
+            print(f"  - Detection step: {it.speculative_detection_step} / {it.speculative_total_steps}")
+            if it.speculative_total_steps and it.speculative_detection_step:
+                pct = (1 - it.speculative_detection_step / it.speculative_total_steps) * 100
+                print(f"  - Steps saved: {it.speculative_total_steps - it.speculative_detection_step} ({pct:.1f}%)")
+            print(f"  - Result: {'HIT' if it.speculative_hit else 'MISS'}")
+            print(f"  - Time saved: {it.speculative_time_saved:.4f}s" if it.speculative_time_saved else "  - Time saved: 0.0000s")
+        elif args.with_early_detection:
+            print()
+            print(f"Speculative Execution (iteration {i + 1}): detector did not fire")
 
 
 if __name__ == "__main__":
