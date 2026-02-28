@@ -75,6 +75,7 @@ class EarlyFunctionDetector:
         tokenizer,
         total_steps: int,
         *,
+        prompt_len: int = 0,
         min_step_ratio: float = 0.1,
         require_valid_json: bool = True,
         check_interval: int = 1,
@@ -89,6 +90,7 @@ class EarlyFunctionDetector:
 
         self._tokenizer = tokenizer
         self._total_steps = total_steps
+        self._prompt_len = prompt_len
         self._min_step_ratio = min_step_ratio
         self._require_valid_json = require_valid_json
         self._check_interval = check_interval
@@ -210,15 +212,13 @@ class EarlyFunctionDetector:
     # Internals
     def _decode_partial(self, x: torch.Tensor) -> str:
         """
-        Decode the tensor, replacing MASK tokens with pad tokens.
-
-        MASK tokens would decode to <|mdm_mask|> which clutters the
-        text and may interfere with pattern matching.  Replacing them
-        with pad_token_id makes skip_special_tokens=True strip them.
+        Decode only the generated portion of the tensor (skip prompt tokens).
+        MASK tokens are replaced with pad_token_id so that
+        skip_special_tokens=True strips them cleanly.
         """
-        x_clean = x.clone()
-        x_clean[x_clean == LLADA_MASK_ID] = self._tokenizer.pad_token_id
-        return self._tokenizer.decode(x_clean[0], skip_special_tokens=True)
+        gen_tokens = x[0, self._prompt_len:].clone()
+        gen_tokens[gen_tokens == LLADA_MASK_ID] = self._tokenizer.pad_token_id
+        return self._tokenizer.decode(gen_tokens, skip_special_tokens=True)
 
     @staticmethod
     def _try_parse_function_call(json_str: str) -> Optional[dict]:

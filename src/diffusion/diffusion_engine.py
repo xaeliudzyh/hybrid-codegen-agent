@@ -407,10 +407,13 @@ class DiffusionEngine(GenerativeEngine):
         executor = SpeculativeExecutor(function_registry)
         detector = EarlyFunctionDetector(
             tokenizer=self._tokenizer,
-            total_steps=effective_steps, min_step_ratio=min_step_ratio,
-            require_valid_json=require_valid_json, check_interval=check_interval,
-            on_detected=executor.on_function_detected
-         )
+            total_steps=effective_steps,
+            prompt_len=prompt_len,
+            min_step_ratio=min_step_ratio,
+            require_valid_json=require_valid_json,
+            check_interval=check_interval,
+            on_detected=executor.on_function_detected,
+        )
         # Run diffusion generation
         output_ids = self._llada_generate(
             prompt_ids=input_ids,
