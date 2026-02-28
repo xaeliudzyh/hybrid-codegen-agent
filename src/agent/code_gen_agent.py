@@ -13,6 +13,7 @@ from engines.base import GenerativeEngine, GenerationResult
 from function_calling.registry import FunctionRegistry
 from function_calling.parser import parse_function_calls
 from function_calling.types import FunctionCall
+from diffusion import DiffusionEngine, EarlyFunctionDetector, SpeculativeExecutor, SpeculativeResult
 
 
 @dataclass
@@ -240,8 +241,14 @@ Never assume functions are already defined - always include full code."""
             metrics=metrics,
             raw_output=final_output,
         )
+    
+    def if_fc_equal(self, spec_result: SpeculativeResult, function_call: FunctionCall) -> bool:
+        if spec_result.function_call.name == function_call.name and spec_result.function_call.arguments == function_call.arguments:
+            return True
+        return False
+        
 
-    def run_with_speculative_execution(self, task: str, max_iterations: int = 5, require_valid_json = True, check_interval=1) -> AgentResult:
+    def run_with_speculative_execution(self, task: str, max_iterations: int = 5, require_valid_json = True, min_step_ratio = 0.1, check_interval=1) -> AgentResult:
         """
         Execute the agent on a given task, but with a speculative execution of early detected function call.
         """
@@ -266,6 +273,7 @@ Never assume functions are already defined - always include full code."""
             function_calls = parse_function_calls(raw_output)
             detection_end = time.perf_counter()
             
+            good_detection = False
             iter_metrics = IterationMetrics(
                 generation_start_time=gen_start,
                 generation_end_time=gen_end,
@@ -275,10 +283,30 @@ Never assume functions are already defined - always include full code."""
             if not function_calls:
                 metrics.iterations.append(iter_metrics)
                 break
+            first_fc = function_calls[0]
+            spec_result = executor.get_result(timeout = 30)
+            if spec_result is not None and function_calls:
+                if self.if_fc_equal(spec_result, function_calls[0]):
+                    first_fc = spec_result.function_call
+                    good_detection = True
+                else:
+                    executor.cancel()
+                iter_metrics.speculative_detection_step = spec_result.detection_event.step
+                iter_metrics.speculative_total_steps = spec_result.detection_event.total_steps
+                iter_metrics.speculative_execution_started = spec_result.execution_started_at
+                iter_metrics.speculative_execution_finished = spec_result.execution_finished_at
+                iter_metrics.speculative_hit = good_detection
+                iter_metrics.speculative_time_saved = spec_result.time_saved if good_detection else 0.0
+                    
+            function_calls[0] = first_fc
             
             all_function_calls.extend(function_calls)
-            
             iteration_results = []
+            if good_detection:
+                function_calls.pop(0)
+                all_function_results.append((first_fc, spec_result.function_result))
+                iteration_results.append((first_fc, spec_result.function_result))
+                iter_metrics.function_execution_times.append((first_fc.name, spec_result.execution_started_at, spec_result.execution_finished_at))
             for fc in function_calls:
                 exec_start = time.perf_counter()
                 result = self.function_registry.execute(fc)
