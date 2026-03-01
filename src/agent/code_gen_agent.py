@@ -131,9 +131,8 @@ class CodeGenAgent:
     
     def _default_system_prompt(self) -> str:
         return """You are a code generation assistant.
-You MUST use the execute_code function to run any code you write.
-IMPORTANT: When calling execute_code, include ALL code in the "code" argument - function definitions, calls, and print statements.
-Never assume functions are already defined - always include full code."""
+When given a coding task, first briefly explain your approach, then call the execute_code function to run the code, and finally summarize the result.
+Always include ALL code (function definitions, calls, and print statements) in a single execute_code call."""
     
     def _build_prompt(self, task: str) -> str:
         """Build the full prompt including system prompt, available functions, and task."""
@@ -145,44 +144,45 @@ Never assume functions are already defined - always include full code."""
             "Available functions:",
             functions_description,
             "",
-            # few-shot example with clear instruction
-            "",
             "Format for function calls:",
             "<function_call>",
             '{"name": "function_name", "arguments": {"arg": "value"}}',
             "</function_call>",
             "",
-            "Example 1: Writing and executing a function",
+            "Example 1:",
             "User: Write a function to calculate factorial of 5",
-            "Assistant: I'll write the factorial function and execute it with execute_code.",
-            "Here is the code:",
-            "def factorial(n):\\n    if n <= 1:\\n        return 1\\n    return n * factorial(n-1)\\n",
+            "Assistant: I will use a recursive approach where factorial(n) = n * factorial(n-1) with base case n <= 1.",
             "",
             "<function_call>",
             '{"name": "execute_code", "arguments": {"code": "def factorial(n):\\n    if n <= 1:\\n        return 1\\n    return n * factorial(n-1)\\n\\nresult = factorial(5)\\nprint(f\'Factorial of 5 is {result}\')"}}',
-            "</function_call>"
-            "",
-            "Example 2: Writing and executing a function",
-            "User: Write a function to multiply two numbers",
-            "Assistant: I'll write the multiply function and execute it with execute_code.",
-            "Here is the code:",
-            "def mul(x,y):\\n   return x*y\\n",
-            "<function_call>",
-            '{"name": "execute_code", "arguments": {"code": "def mul(x,y):\\n   return x*y\\n\\nresult = mul(3,4)\\nprint(f\'The resul of multiplying is {result}\')"}}',
             "</function_call>",
             "",
-            "End of examples",
+            "The recursive function multiplies n by factorial(n-1) down to the base case. For n=5: 5*4*3*2*1 = 120.",
+            "",
+            "Example 2:",
+            "User: Write a function to check if a number is prime",
+            "Assistant: I will check divisibility from 2 to sqrt(n). If no divisor is found, the number is prime.",
+            "",
+            "<function_call>",
+            '{"name": "execute_code", "arguments": {"code": "def is_prime(n):\\n    if n < 2:\\n        return False\\n    for i in range(2, int(n**0.5) + 1):\\n        if n % i == 0:\\n            return False\\n    return True\\n\\nfor x in [2, 7, 10, 13]:\\n    print(f\'{x}: {is_prime(x)}\')"}}',
+            "</function_call>",
+            "",
+            "The function returns True for primes (2, 7, 13) and False for non-primes (10).",
+            "",
+            "End of examples.",
+            "",
             "Task:",
             task,
         ]
         return "\n".join(prompt_parts)
     
-    def run(self, task: str, max_iterations: int = 5) -> AgentResult:
+    def run(self, task: str, max_iterations: int = 5, max_tokens: int = 512) -> AgentResult:
         """
         Execute the agent on a given task.
         Args:
             task: Task description
             max_iterations: Max number of generation-execution cycles
+            max_tokens: Maximum number of tokens to generate per call
         Returns:
             AgentResult with generated code, function calls, and their's metrics
         """
@@ -195,7 +195,7 @@ Never assume functions are already defined - always include full code."""
         
         for iteration in range(max_iterations):
             gen_start = time.perf_counter()
-            gen_result: GenerationResult = self.engine.generate(prompt)
+            gen_result: GenerationResult = self.engine.generate(prompt, max_tokens=max_tokens)
             gen_end = time.perf_counter()
             
             raw_output = gen_result.text
@@ -248,12 +248,13 @@ Never assume functions are already defined - always include full code."""
         return False
         
 
-    def run_with_speculative_execution(self, task: str, max_iterations: int = 5, require_valid_json = True, min_step_ratio = 0.1, check_interval=1) -> AgentResult:
+    def run_with_speculative_execution(self, task: str, max_iterations: int = 5, max_tokens: int = 512, require_valid_json = True, min_step_ratio = 0.1, check_interval=1) -> AgentResult:
         """
         Execute the agent on a given task, but with a speculative execution of early detected function call.
         Args:
             task: Task description
             max_iterations: Max number of generation-execution cycles
+            max_tokens: Maximum number of tokens to generate per call
             require_valid_json: Whether the early detector should validate that the JSON
                 inside <function_call> tags is syntactically correct and contains a "name" key.
                 When True, partial or malformed JSON is ignored, reducing false positives
@@ -276,7 +277,7 @@ Never assume functions are already defined - always include full code."""
         for iteration in range(max_iterations):
             gen_start = time.perf_counter()
             gen_result, executor = self.engine.generate_with_speculative_execution(prompt = prompt, function_registry = self.function_registry, 
-            min_step_ratio = min_step_ratio, require_valid_json = require_valid_json, check_interval = check_interval)
+            max_tokens = max_tokens, min_step_ratio = min_step_ratio, require_valid_json = require_valid_json, check_interval = check_interval)
             gen_end = time.perf_counter()
             
             raw_output = gen_result.text

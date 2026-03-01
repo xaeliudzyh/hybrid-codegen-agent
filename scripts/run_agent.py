@@ -97,6 +97,14 @@ def main():
         default="auto",
         help="Device to run model on (e.g., 'cuda', 'cuda:0', 'cpu')",
     )
+    parser.add_argument(
+        "--max_tokens",
+        type=int,
+        default=512,
+        help="Maximum number of tokens to generate per call. "
+             "Both LLaDA and Llama-2 have 4096 context window; prompt + max_tokens must fit. "
+             "Default is 512",
+    )
     
     args = parser.parse_args()
     
@@ -131,13 +139,14 @@ def main():
     if args.engine == "diffusion" and args.with_early_detection == True:
         result = agent.run_with_speculative_execution(
             task, 
-            max_iterations=args.max_iterations, 
+            max_iterations=args.max_iterations,
+            max_tokens=args.max_tokens,
             require_valid_json=args.require_valid_json,
             min_step_ratio=args.min_step_ratio,
             check_interval=args.check_interval
             )
     else:
-        result = agent.run(task, max_iterations=args.max_iterations)
+        result = agent.run(task, max_iterations=args.max_iterations, max_tokens=args.max_tokens)
     
     print("Generated Code:")
     print("-" * 40)

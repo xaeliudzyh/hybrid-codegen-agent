@@ -79,6 +79,7 @@ python scripts/run_agent.py \
 | `--engine` | `autoregressive` | `autoregressive` or `diffusion` |
 | `--model` | `unsloth/llama-2-7b-chat` | HuggingFace model name or local path |
 | `--device` | `auto` | `cuda`, `cuda:0`, `cpu`, or `auto` |
+| `--max_tokens` | `512` | Max tokens to generate per call (prompt + max_tokens ≤ 4096) |
 | `--use-stub` | off | Use stub engine (no GPU needed, for testing) |
 | `--max_iterations` | `5` | Max generate → execute cycles |
 | **Speculative execution** |||

@@ -301,7 +301,7 @@ class DiffusionEngine(GenerativeEngine):
     def generate(
         self,
         prompt: str,
-        max_tokens: int = 128,
+        max_tokens: int = 512,
         temperature: float = 0.0,
         stop_sequences: Optional[list[str]] = None,
     ) -> GenerationResult:
@@ -371,7 +371,7 @@ class DiffusionEngine(GenerativeEngine):
     def generate_with_speculative_execution(self,
         function_registry: FunctionRegistry,
         prompt: str,
-        max_tokens: int = 128,
+        max_tokens: int = 512,
         temperature: float = 0.0,
         stop_sequences: Optional[list[str]] = None,
         min_step_ratio: float = 0.1,
