@@ -1,108 +1,114 @@
 # hybrid-codegen-agent
 
-A research agent-based code generation system supporting both autoregressive and diffusion-based language models. The main focus is studying function calling mechanisms in diffusion language models and their impact on system latency.
+Agent-based code generation system with **autoregressive** and **diffusion** language models.
+The key research feature is **speculative execution** - detecting function calls in intermediate diffusion states and executing them in the background before generation completes.
+
+## How it works
+
+```
+Standard:     [===== generate =====] → [parse] → [== execute ==]  → done
+Speculative:  [===== generate =====] → [parse] → [result ready!]  → done
+                        ↑ detected early          ↑ executed in background
+```
+
+The diffusion model (LLaDA) generates all tokens in parallel and refines them over N steps.
+At each step, `EarlyFunctionDetector` decodes the partial sequence and looks for `<function_call>` tags.
+Once found, `SpeculativeExecutor` runs the function in a background thread.
+When generation finishes, the agent compares the final function call with the speculative one:
+**HIT** → use the cached result; **MISS** → discard and re-execute.
 
 ## Project Structure
 
 ```
-hybrid-codegen-agent/
-├── src/
-│   ├── agent/                 # Agent orchestration layer
-│   ├── engines/               # Generative engines (autoregressive, diffusion)
-│   ├── function_calling/      # Function call parsing, registry, execution
-│   ├── diffusion/             # Diffusion-specific logic (placeholder)
-│   └── experiments/           # Experiment runners
-├── scripts/
-│   └── run_agent.py           # CLI entry point
-└── tests/                     # Unit tests
+src/
+├── agent/              CodeGenAgent - orchestration, HIT/MISS logic, metrics
+├── engines/            GenerativeEngine (ABC), AutoregressiveEngine (LLaMA)
+├── diffusion/          DiffusionEngine (LLaDA), EarlyFunctionDetector, SpeculativeExecutor
+└── function_calling/   FunctionCall parsing, FunctionRegistry, execute_code()
+scripts/
+└── run_agent.py        CLI entry point
+tests/                  45 unit tests
 ```
 
 ## Installation
 
 ```bash
-# Clone the repository
 git clone https://github.com/your-repo/hybrid-codegen-agent.git
 cd hybrid-codegen-agent
-
-# Create virtual environment
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-# Install dependencies
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
 ## Usage
 
-### Running with Stub (for testing)
-
-```bash
-python scripts/run_agent.py --task "Write a fibonacci function" # or --task tasks/fibonacci_task.txt
-```
-
-### Running with Real Model (requires GPU)
+### Autoregressive (baseline)
 
 ```bash
 python scripts/run_agent.py \
-    --task "Write a fibonacci function in Python" \ 
+    --engine autoregressive \
     --model unsloth/llama-2-7b-chat \
-    --no-use-stub \
-    --device cuda
+    --task "Write a fibonacci function"
+```
+
+### Diffusion (standard)
+
+```bash
+python scripts/run_agent.py \
+    --engine diffusion \
+    --model GSAI-ML/LLaDA-8B-Instruct \
+    --device cuda \
+    --task "Write a fibonacci function"
+```
+
+### Diffusion with speculative execution
+
+```bash
+python scripts/run_agent.py \
+    --engine diffusion \
+    --model GSAI-ML/LLaDA-8B-Instruct \
+    --device cuda \
+    --with-early-detection \
+    --task "Write a fibonacci function"
 ```
 
 ### CLI Arguments
 
 | Argument | Default | Description |
 |----------|---------|-------------|
-| `--task` | "Write a Python function..." | The code generation task |
-| `--engine` | `autoregressive` | Engine type: `autoregressive` or `diffusion` |
-| `--model` | `meta-llama/Llama-2-7b-hf` | HuggingFace model name or local path |
-| `--use-stub` | (flag) | Use stub implementation for testing |
-| `--no-use-stub` | (flag) | Use real model instead of stub |
-| `--device` | `auto` | Device: `cuda`, `cuda:0`, `cpu`, or `auto` |
-
-### Recommended Open Models
-
-| Model | Size | Notes |
-|-------|------|-------|
-| `unsloth/llama-2-7b-chat` | ~14 GB | Open, no license required |
-| `Qwen/Qwen2.5-7B-Instruct` | ~14 GB | High quality, open |
-| `TinyLlama/TinyLlama-1.1B-Chat-v1.0` | ~2 GB | Fast, for quick tests |
-
-### Using Specific GPU
-
-```bash
-CUDA_VISIBLE_DEVICES=0 python scripts/run_agent.py \
-    --task "Write a sort function" \ # or --task tasks/fibonacci_task.txt
-    --model unsloth/llama-2-7b-chat \
-    --no-use-stub
-```
-
-## Running Tests
-
-```bash
-python -m pytest tests/ -v
-```
-
-## HuggingFace Authentication
-
-For gated models (e.g., `meta-llama/*`), you need to:
-
-1. Accept the license at https://huggingface.co/meta-llama/Llama-2-7b-chat-hf
-2. Login via CLI:
-   ```bash
-   pip install huggingface_hub
-   huggingface-cli login #or hf auth login
-   ```
+| `--task` | *factorial example* | Task description (text or path to `.txt` file) |
+| `--engine` | `autoregressive` | `autoregressive` or `diffusion` |
+| `--model` | `unsloth/llama-2-7b-chat` | HuggingFace model name or local path |
+| `--device` | `auto` | `cuda`, `cuda:0`, `cpu`, or `auto` |
+| `--max_tokens` | `512` | Max tokens to generate per call (prompt + max_tokens ≤ 4096) |
+| `--use-stub` | off | Use stub engine (no GPU needed, for testing) |
+| `--max_iterations` | `5` | Max generate → execute cycles |
+| **Speculative execution** |||
+| `--with-early-detection` | off | Enable speculative execution (diffusion only) |
+| `--min_step_ratio` | `0.1` | Skip first N% of steps (too noisy to decode) |
+| `--check_interval` | `1` | Check every N-th step (higher = less overhead) |
+| `--no-require-valid-json` | off | Accept any `<function_call>` match without JSON validation |
+ 
 
 ## Architecture
 
-- **CodeGenAgent**: Orchestration layer, model-independent
-- **GenerativeEngine**: Abstract interface for text generation
-- **AutoregressiveEngine**: LLaMA-based baseline implementation
-- **DiffusionEngine**: LLaDA-based research implementation (in progress)
-- **FunctionRegistry**: Explicit function registration and execution
-- **FunctionCall**: Structured representation of function calls
+| Component | Role |
+|-----------|------|
+| **CodeGenAgent** | Orchestration: `run()` and `run_with_speculative_execution()` |
+| **GenerativeEngine** | Abstract interface for text generation |
+| **AutoregressiveEngine** | LLaMA-based baseline (HuggingFace Transformers) |
+| **DiffusionEngine** | LLaDA-based engine with `generate_with_speculative_execution()` |
+| **EarlyFunctionDetector** | `step_callback` - detects FC in intermediate diffusion states |
+| **SpeculativeExecutor** | Runs detected function in `ThreadPoolExecutor` during generation |
+| **FunctionRegistry** | Registration and safe execution of functions (`execute_code`) |
+
+## HuggingFace Authentication
+
+For gated models (e.g., `meta-llama/*`):
+
+```bash
+pip install huggingface_hub
+huggingface-cli login
+```
 
 ## License
 

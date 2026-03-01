@@ -47,6 +47,38 @@ def main():
         help="Model name or path",
     )
     parser.add_argument(
+        "--with-early-detection",
+        dest="with_early_detection",
+        action="store_true",
+        default=False,
+        help="Enable speculative execution with early function detection for diffusion engine",
+    )
+    parser.add_argument(
+        "--max_iterations",
+        type=int,
+        default=5,
+        help="Max number of generation-execution cycles. Default is 5",
+    )
+    parser.add_argument(
+        "--no-require-valid-json",
+        dest="require_valid_json",
+        action="store_false",
+        default=True,
+        help="Disable JSON validation in early detector (accept any text matching <function_call> tags)",
+    )
+    parser.add_argument(
+        "--min_step_ratio",
+        type=float,
+        default=0.1,
+        help="Fraction of total diffusion steps to skip before starting detection checks (0.0–1.0). Default is 0.1",
+    )
+    parser.add_argument(
+        "--check_interval",
+        type=int,
+        default=1,
+        help="Run the detection check every N-th diffusion step instead of every step. Default is 1",
+    )
+    parser.add_argument(
         "--use-stub",
         dest="use_stub",
         action="store_true",
@@ -65,6 +97,14 @@ def main():
         default="auto",
         help="Device to run model on (e.g., 'cuda', 'cuda:0', 'cpu')",
     )
+    parser.add_argument(
+        "--max_tokens",
+        type=int,
+        default=512,
+        help="Maximum number of tokens to generate per call. "
+             "Both LLaDA and Llama-2 have 4096 context window; prompt + max_tokens must fit. "
+             "Default is 512",
+    )
     
     args = parser.parse_args()
     
@@ -75,15 +115,10 @@ def main():
             use_stub=args.use_stub,
         )
     else:
-        if args.engine =="diffusion" or args.engine == "diff":
-            engine = DiffusionEngine(
+        engine = DiffusionEngine(
             model_name_or_path=args.model,
             device=args.device,
-            #use_stub=args.use_stub,
-            )
-        else:
-            print("Error: unknown type of engine")
-            sys.exit(1)
+        )
     
     registry = create_default_registry()
     
@@ -101,7 +136,17 @@ def main():
     print(f"=" * 60)
     print()
     
-    result = agent.run(task)
+    if args.engine == "diffusion" and args.with_early_detection == True:
+        result = agent.run_with_speculative_execution(
+            task, 
+            max_iterations=args.max_iterations,
+            max_tokens=args.max_tokens,
+            require_valid_json=args.require_valid_json,
+            min_step_ratio=args.min_step_ratio,
+            check_interval=args.check_interval
+            )
+    else:
+        result = agent.run(task, max_iterations=args.max_iterations, max_tokens=args.max_tokens)
     
     print("Generated Code:")
     print("-" * 40)
@@ -126,6 +171,20 @@ def main():
         print(f"  - Time to function detection: {result.metrics.time_to_function_detection:.4f}s")
     for name, start, end in result.metrics.function_execution_times:
         print(f"  - Function '{name}' execution: {end - start:.4f}s")
+    
+    for i, it in enumerate(result.metrics.iterations):
+        if it.speculative_hit is not None:
+            print()
+            print(f"Speculative Execution (iteration {i + 1}):")
+            print(f"  - Detection step: {it.speculative_detection_step} / {it.speculative_total_steps}")
+            if it.speculative_total_steps and it.speculative_detection_step:
+                pct = (1 - it.speculative_detection_step / it.speculative_total_steps) * 100
+                print(f"  - Steps saved: {it.speculative_total_steps - it.speculative_detection_step} ({pct:.1f}%)")
+            print(f"  - Result: {'HIT' if it.speculative_hit else 'MISS'}")
+            print(f"  - Time saved: {it.speculative_time_saved:.4f}s" if it.speculative_time_saved else "  - Time saved: 0.0000s")
+        elif args.with_early_detection:
+            print()
+            print(f"Speculative Execution (iteration {i + 1}): detector did not fire")
 
 
 if __name__ == "__main__":

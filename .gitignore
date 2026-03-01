@@ -1,5 +1,7 @@
 stuff/
 .venv/
+venv/
 src/*/__pycache__
 tasks/
 tests/
+.DS_Store

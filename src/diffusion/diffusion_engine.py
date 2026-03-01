@@ -17,8 +17,10 @@ import torch
 import torch.nn.functional as F
 import numpy as np
 
+from diffusion.speculative_executor import SpeculativeExecutor
 from engines.base import GenerativeEngine, GenerationResult
-
+from function_calling import FunctionRegistry
+from diffusion.early_detector import EarlyFunctionDetector
 
 LLADA_MASK_ID = 126336  # <|mdm_mask|> token
 
@@ -109,6 +111,10 @@ class DiffusionEngine(GenerativeEngine):
         self._remasking = remasking
         
         self._load_model()
+
+    @property
+    def tokenizer(self):
+        return self._tokenizer
     
     def _load_model(self):
         """Load the LLaDA model and tokenizer."""
@@ -295,7 +301,7 @@ class DiffusionEngine(GenerativeEngine):
     def generate(
         self,
         prompt: str,
-        max_tokens: int = 128,
+        max_tokens: int = 512,
         temperature: float = 0.0,
         stop_sequences: Optional[list[str]] = None,
     ) -> GenerationResult:
@@ -361,6 +367,91 @@ class DiffusionEngine(GenerativeEngine):
                 "remasking": self._remasking,
             },
         )
+
+    def generate_with_speculative_execution(self,
+        function_registry: FunctionRegistry,
+        prompt: str,
+        max_tokens: int = 512,
+        temperature: float = 0.0,
+        stop_sequences: Optional[list[str]] = None,
+        min_step_ratio: float = 0.1,
+        require_valid_json: bool = True,
+        check_interval: int = 1,
+    ) -> tuple[GenerationResult, SpeculativeExecutor]:
+        """Generate text using diffusion-based decoding + execute detected function in the background"""
+        start_time = time.perf_counter()
+        
+        # Format and tokenize prompt
+        formatted_prompt = self._format_prompt(prompt)
+        encoded = self._tokenizer(
+            formatted_prompt,
+            add_special_tokens=False,
+            padding=True,
+            return_tensors="pt"
+        )
+        input_ids = encoded['input_ids'].to(self._device)
+        attention_mask = encoded['attention_mask'].to(self._device)
+        prompt_len = input_ids.shape[1]
+        
+        # Ensure gen_length is divisible by block_length
+        gen_length = max_tokens
+        if gen_length % self._block_length != 0:
+            gen_length = ((gen_length // self._block_length) + 1) * self._block_length
+        
+        # Compute effective steps for this call without mutating self._steps
+        num_blocks = gen_length // self._block_length
+        effective_steps = self._steps
+        if effective_steps % num_blocks != 0:
+            effective_steps = ((effective_steps // num_blocks) + 1) * num_blocks
+        
+        executor = SpeculativeExecutor(function_registry)
+        detector = EarlyFunctionDetector(
+            tokenizer=self._tokenizer,
+            total_steps=effective_steps,
+            prompt_len=prompt_len,
+            min_step_ratio=min_step_ratio,
+            require_valid_json=require_valid_json,
+            check_interval=check_interval,
+            on_detected=executor.on_function_detected,
+        )
+        # Run diffusion generation
+        output_ids = self._llada_generate(
+            prompt_ids=input_ids,
+            attention_mask=attention_mask,
+            gen_length=gen_length,
+            temperature=temperature,
+            steps=effective_steps,
+            step_callback=detector
+        )
+
+        # Decode generated tokens (skip prompt)
+        generated_ids = output_ids[0, prompt_len:]
+        generated_text = self._tokenizer.decode(generated_ids, skip_special_tokens=True)
+        
+        # Apply stop sequences
+        if stop_sequences:
+            for stop_seq in stop_sequences:
+                if stop_seq in generated_text:
+                    generated_text = generated_text[:generated_text.index(stop_seq)]
+                    break
+        
+        end_time = time.perf_counter()
+        
+        return (GenerationResult(
+            text=generated_text,
+            tokens_generated=len(generated_ids),
+            generation_time_seconds=end_time - start_time,
+            metadata={
+                "engine": "diffusion",
+                "model": self._model_name,
+                "steps_configured": self._steps,
+                "steps_effective": effective_steps,
+                "gen_length": gen_length,
+                "block_length": self._block_length,
+                "remasking": self._remasking,
+                "detector": detector.get_metadata()
+            },
+        ), executor)
     
     @property
     def engine_type(self) -> str:
