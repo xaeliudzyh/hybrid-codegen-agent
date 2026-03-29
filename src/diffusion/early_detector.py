@@ -101,6 +101,9 @@ class EarlyFunctionDetector:
         self._steps_skipped: int = 0
         self._on_detected = on_detected
 
+        # Precompute visible text of MASK token for FC completeness checks
+        self._mask_token_text = tokenizer.decode([LLADA_MASK_ID], skip_special_tokens=False)
+
     def __call__(self, x: torch.Tensor, step: int) -> bool:
         """
         Called by _llada_generate on each diffusion step.
@@ -129,6 +132,9 @@ class EarlyFunctionDetector:
         text = self._decode_partial(x)
         match = _FC_PATTERN.search(text)
         if match is None:
+            return False
+        # Skip if MASK tokens remain inside the FC span (incomplete FC)
+        if self._mask_token_text in match.group(0):
             return False
         fc_json = None
         if self._require_valid_json:
@@ -213,12 +219,11 @@ class EarlyFunctionDetector:
     def _decode_partial(self, x: torch.Tensor) -> str:
         """
         Decode only the generated portion of the tensor (skip prompt tokens).
-        MASK tokens are replaced with pad_token_id so that
-        skip_special_tokens=True strips them cleanly.
+        MASK tokens are decoded visibly (not stripped) so that the caller
+        can verify FC completeness by checking for mask text in the output.
         """
         gen_tokens = x[0, self._prompt_len:].clone()
-        gen_tokens[gen_tokens == LLADA_MASK_ID] = self._tokenizer.pad_token_id
-        return self._tokenizer.decode(gen_tokens, skip_special_tokens=True)
+        return self._tokenizer.decode(gen_tokens, skip_special_tokens=False)
 
     @staticmethod
     def _try_parse_function_call(json_str: str) -> Optional[dict]:
