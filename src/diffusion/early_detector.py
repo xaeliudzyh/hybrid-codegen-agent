@@ -2,13 +2,6 @@
 EarlyFunctionDetector - early function call detection in diffusion intermediate states.
 During LLaDA's denoising process, we want to inspect partially-generated sequences at each step. If a valid
 function call pattern appears before generation completes, we notice it.
-
-Usage as step_callback for DiffusionEngine._llada_generate:
-    detector = EarlyFunctionDetector(tokenizer, total_steps=64)
-    output = engine._llada_generate(
-        ...,
-        step_callback=detector,
-    )
 """
 
 import json
@@ -30,7 +23,7 @@ _FC_PATTERN = re.compile(
 
 @dataclass
 class DetectionEvent:
-    """Record of a single detection event."""
+    """Record of a single detection event"""
     step: int
     total_steps: int
     decoded_text: str
@@ -49,25 +42,14 @@ class DetectionEvent:
 
 class EarlyFunctionDetector:
     """
-    Detect function calls in intermediate diffusion states.
-
-    Implements the step_callback(x, step) -> bool protocol
-    expected by DiffusionEngine._llada_generate.
-
-    The detector decodes the current (partially-masked) sequence,
-    searches for <function_call>...</function_call> patterns
-    and optionally validates the JSON inside.
-
     Args:
         tokenizer: HuggingFace tokenizer (needs pad_token_id and decode).
         total_steps: Total number of diffusion steps (needed for ratio check).
         min_step_ratio: Skip the first N% of steps (too noisy to decode).
-            Default 0.1 = ignore first 10%.
-        require_valid_json: If True, the JSON inside the tags must parse
-            and contain a "name key.  Reduces false positives.
+            Default 0.1 = ignore first 10%
+        require_valid_json: If True, the JSON inside the tags must parse and contain a "name key.  Reduces false positives.
         check_interval: Check every N-th step instead of every step.
-            Default 1 = check every step.  Larger values trade detection
-            latency for less decoding overhead.
+            Default 1 = check every step.  Larger values trade detection latency for less decoding overhead.
     """
 
     def __init__(
@@ -95,26 +77,17 @@ class EarlyFunctionDetector:
         self._require_valid_json = require_valid_json
         self._check_interval = check_interval
 
-        # State
         self._detection_event: Optional[DetectionEvent] = None
         self._steps_checked: int = 0
         self._steps_skipped: int = 0
         self._on_detected = on_detected
-
-        # Precompute visible text of MASK token for FC completeness checks
         self._mask_token_text = tokenizer.decode([LLADA_MASK_ID], skip_special_tokens=False)
 
     def __call__(self, x: torch.Tensor, step: int) -> bool:
         """
-        Called by _llada_generate on each diffusion step.
-
         Args:
             x: Current sequence tensor (batch, seq_len), may contain MASK tokens.
-            step: Current step number).
-
-        Returns:
-            True  → stop generation early (function call detected).
-            False → continue generation.
+            step: Current step number.
         """
         if self._detection_event is not None:
             return False
@@ -228,10 +201,7 @@ class EarlyFunctionDetector:
     @staticmethod
     def _try_parse_function_call(json_str: str) -> Optional[dict]:
         """
-        Try to parse JSON and validate it has a "name" key.
-
-        Returns the parsed dict on success, None on failure.
-        Mirrors the validation logic of function_calling.parser.
+        Try to parse JSON and validate it has a name key.
         """
         try:
             data = json.loads(json_str)
