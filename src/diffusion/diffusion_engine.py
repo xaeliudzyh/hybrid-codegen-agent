@@ -59,15 +59,23 @@ class DiffusionEngine(GenerativeEngine):
     iteratively reveals tokens based on model confidence.
     """
     
+    _FC_ANCHOR_STRINGS: list[str] = [
+        "<function_call>", "</function_call>",
+        "{", "}", '"name"', '"arguments"',
+    ]
+
     def __init__(
         self,
         model_name_or_path: str = "GSAI-ML/LLaDA-8B-Instruct",
         device: str = "auto",
-        # diffusion-specific parameters
         steps: int = 64,
         block_length: int = 32,
         cfg_scale: float = 0.0,
         remasking: str = "low_confidence",
+        # new remask. strategies params
+        fc_boost: float = 0.2,
+        structural_boost: float = 0.3,
+        structural_window: int = 5,
     ):
         """
         Args:
@@ -76,20 +84,33 @@ class DiffusionEngine(GenerativeEngine):
             steps: Number of diffusion denoising steps
             block_length: Block size for semi-autoregressive generation
             cfg_scale: Classifier-free guidance scale (0 = disabled)
-            remasking: Strategy for remasking ('low_confidence' or 'random')
+            remasking: Strategy for remasking
+                ('low_confidence', 'random', 'fc_priority', 'structural_boost')
+            fc_boost: Additive confidence bonus for FC-anchor tokens (fc_priority)
+            structural_boost: Additive proximity bonus near fixed FC clusters (structural_boost)
+            structural_window: Half-window size for proximity detection (structural_boost)
         """
         self._model_name = model_name_or_path
         self._device = device
         self._model = None
         self._tokenizer = None
-        
-        # diffusion parameters
         self._steps = steps
         self._block_length = block_length
         self._cfg_scale = cfg_scale
         self._remasking = remasking
+        self._fc_boost = fc_boost
+        self._structural_boost_value = structural_boost
+        self._structural_window = structural_window
         
         self._load_model()
+        self._build_fc_anchor_ids()
+
+    def _build_fc_anchor_ids(self):
+        """Precompute unique token IDs that form FC-structural patterns."""
+        ids: set[int] = set()
+        for s in self._FC_ANCHOR_STRINGS:
+            ids.update(self._tokenizer.encode(s, add_special_tokens=False))
+        self._fc_anchor_ids = torch.tensor(sorted(ids), dtype=torch.long)
 
     @property
     def tokenizer(self):
@@ -165,8 +186,7 @@ class DiffusionEngine(GenerativeEngine):
         device = self._model.device
         batch_size = prompt_ids.shape[0]
         prompt_len = prompt_ids.shape[1]
-        
-        # Initialize: prompt + [MASK] * gen_length
+
         x = torch.full(
             (batch_size, prompt_len + gen_length), 
             LLADA_MASK_ID, 
@@ -222,10 +242,33 @@ class DiffusionEngine(GenerativeEngine):
                     )
                 elif self._remasking == 'random':
                     x0_p = torch.rand((x0.shape[0], x0.shape[1]), device=device)
+                elif self._remasking == 'fc_priority':
+                    p = F.softmax(logits, dim=-1)
+                    x0_p = torch.squeeze(
+                        torch.gather(p, dim=-1, index=torch.unsqueeze(x0, -1)), -1
+                    )
+                    anchor_ids = self._fc_anchor_ids.to(device)
+                    is_fc = (x0.unsqueeze(-1) == anchor_ids).any(dim=-1)
+                    x0_p = x0_p + self._fc_boost * is_fc.float()
+                elif self._remasking == 'structural_boost':
+                    p = F.softmax(logits, dim=-1)
+                    x0_p = torch.squeeze(
+                        torch.gather(p, dim=-1, index=torch.unsqueeze(x0, -1)), -1
+                    )
+                    anchor_ids = self._fc_anchor_ids.to(device)
+                    is_fixed_fc = (
+                        (x.unsqueeze(-1) == anchor_ids).any(dim=-1)
+                        & ~mask_index
+                    ).float()
+                    w = self._structural_window
+                    kernel = torch.ones(1, 1, 2 * w + 1, device=device) / (2 * w + 1)
+                    proximity = F.conv1d(
+                        is_fixed_fc.unsqueeze(1), kernel, padding=w
+                    ).squeeze(1)  # (B, L)
+                    x0_p = x0_p + self._structural_boost_value * proximity
                 else:
                     raise ValueError(f"Unknown remasking strategy: {self._remasking}")
                 
-                # Don't unmask tokens in future blocks yet
                 x0_p[:, block_end:] = -np.inf
                 x0 = torch.where(mask_index, x0, x)
                 confidence = torch.where(mask_index, x0_p, -np.inf)
