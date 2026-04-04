@@ -27,7 +27,7 @@ src/
 └── function_calling/   FunctionCall parsing, FunctionRegistry, execute_code()
 scripts/
 └── run_agent.py        CLI entry point
-tests/                  45 unit tests
+tests/                  68 unit tests
 ```
 
 ## Installation
@@ -71,6 +71,33 @@ python scripts/run_agent.py \
     --task "Write a fibonacci function"
 ```
 
+### Diffusion with fc_priority remasking
+
+```bash
+python scripts/run_agent.py \
+    --engine diffusion \
+    --model GSAI-ML/LLaDA-8B-Instruct \
+    --device cuda \
+    --remasking fc_priority \
+    --fc_boost 0.3 \
+    --with-early-detection \
+    --task "Write a fibonacci function"
+```
+
+### Diffusion with structural_boost remasking
+
+```bash
+python scripts/run_agent.py \
+    --engine diffusion \
+    --model GSAI-ML/LLaDA-8B-Instruct \
+    --device cuda \
+    --remasking structural_boost \
+    --structural_boost 0.5 \
+    --structural_window 3 \
+    --with-early-detection \
+    --task "Write a fibonacci function"
+```
+
 ### CLI Arguments
 
 | Argument | Default | Description |
@@ -82,11 +109,27 @@ python scripts/run_agent.py \
 | `--max_tokens` | `512` | Max tokens to generate per call (prompt + max_tokens ≤ 4096) |
 | `--use-stub` | off | Use stub engine (no GPU needed, for testing) |
 | `--max_iterations` | `5` | Max generate → execute cycles |
+| **Diffusion parameters** |||
+| `--steps` | `64` | Number of diffusion denoising steps |
+| `--block_length` | `32` | Block size for semi-autoregressive generation |
+| `--remasking` | `low_confidence` | Remasking strategy: `low_confidence`, `random`, `fc_priority`, `structural_boost` |
+| `--fc_boost` | `0.2` | Additive confidence bonus for FC-anchor tokens (`fc_priority` strategy) |
+| `--structural_boost` | `0.3` | Additive proximity bonus near fixed FC clusters (`structural_boost` strategy) |
+| `--structural_window` | `5` | Half-window size for proximity detection (`structural_boost` strategy) |
 | **Speculative execution** |||
 | `--with-early-detection` | off | Enable speculative execution (diffusion only) |
 | `--min_step_ratio` | `0.1` | Skip first N% of steps (too noisy to decode) |
 | `--check_interval` | `1` | Check every N-th step (higher = less overhead) |
 | `--no-require-valid-json` | off | Accept any `<function_call>` match without JSON validation |
+
+### Remasking Strategies
+
+| Strategy | Description |
+|----------|-------------|
+| `low_confidence` | Fix tokens with highest model confidence $p(\hat{x}_j)$ first. Default, best general quality. |
+| `random` | Random selection — baseline for ablation studies. |
+| `fc_priority` | `low_confidence` + additive boost for FC-structural tokens (`<function_call>`, `{`, `"name"`, etc.). Accelerates FC pattern formation for earlier speculative detection. |
+| `structural_boost` | `low_confidence` + proximity bonus near already-fixed FC-anchor clusters (sliding window). Creates cascading crystallization — fixed FC tokens help unmask their neighbors faster. |
  
 
 ## Architecture
