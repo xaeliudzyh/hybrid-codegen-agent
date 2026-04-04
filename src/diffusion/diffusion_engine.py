@@ -68,7 +68,7 @@ class DiffusionEngine(GenerativeEngine):
         self,
         model_name_or_path: str = "GSAI-ML/LLaDA-8B-Instruct",
         device: str = "auto",
-        steps: int = 64,
+        steps: int = 128,
         block_length: int = 32,
         cfg_scale: float = 0.0,
         remasking: str = "low_confidence",
@@ -151,8 +151,17 @@ class DiffusionEngine(GenerativeEngine):
         self._device = device
     
     def _format_prompt(self, prompt: str) -> str:
-        """Format prompt for LLaDA-8B-Instruct (LLaMA-3 style)."""
-        messages = [{"role": "user", "content": prompt}]
+        task_marker = "\nTask:\n"
+        idx = prompt.find(task_marker)
+        if idx != -1:
+            system = prompt[:idx].strip()
+            user = prompt[idx + len(task_marker):].strip()
+            messages = [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ]
+        else:
+            messages = [{"role": "user", "content": prompt}]
         return self._tokenizer.apply_chat_template(
             messages, 
             add_generation_prompt=True, 
@@ -290,8 +299,8 @@ class DiffusionEngine(GenerativeEngine):
     def generate(
         self,
         prompt: str,
-        max_tokens: int = 512,
-        temperature: float = 0.0,
+        max_tokens: int = 1024,
+        temperature: float = 0.3,
         stop_sequences: Optional[list[str]] = None,
     ) -> GenerationResult:
         """Generate text using diffusion-based decoding."""
@@ -349,8 +358,8 @@ class DiffusionEngine(GenerativeEngine):
     def generate_with_speculative_execution(self,
         function_registry: FunctionRegistry,
         prompt: str,
-        max_tokens: int = 512,
-        temperature: float = 0.0,
+        max_tokens: int = 1024,
+        temperature: float = 0.3,
         stop_sequences: Optional[list[str]] = None,
         min_step_ratio: float = 0.1,
         require_valid_json: bool = True,

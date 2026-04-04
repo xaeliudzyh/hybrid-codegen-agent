@@ -100,10 +100,10 @@ def main():
     parser.add_argument(
         "--max_tokens",
         type=int,
-        default=512,
+        default=1024,
         help="Maximum number of tokens to generate per call. "
              "Both LLaDA and Llama-2 have 4096 context window; prompt + max_tokens must fit. "
-             "Default is 512",
+             "Default is 1024",
     )
     # Diffusion engine parameters
     parser.add_argument(
@@ -116,8 +116,8 @@ def main():
     parser.add_argument(
         "--steps",
         type=int,
-        default=64,
-        help="Number of diffusion denoising steps. Default is 64",
+        default=128,
+        help="Number of diffusion denoising steps. Default is 128",
     )
     parser.add_argument(
         "--block_length",
@@ -142,6 +142,13 @@ def main():
         type=int,
         default=5,
         help="Half-window size for proximity detection in structural_boost strategy. Default is 5",
+    )
+    parser.add_argument(
+        "--temperature",
+        type=float,
+        default=None,
+        help="Sampling temperature. Default: 0.7 for autoregressive, 0.3 for diffusion. "
+             "Higher = more random, 0 = greedy (causes degeneration in LLaDA)",
     )
     
     args = parser.parse_args()
@@ -182,6 +189,9 @@ def main():
             print(f"  fc_boost: {args.fc_boost}")
         elif args.remasking == "structural_boost":
             print(f"  structural_boost: {args.structural_boost} | window: {args.structural_window}")
+    if args.temperature is not None:
+        print(f"Temperature: {args.temperature}")
+    print(f"Max tokens: {args.max_tokens}")
     print(f"Task: {task[:100]}{'...' if len(task) > 100 else ''}")
     print(f"=" * 60)
     print()
@@ -193,10 +203,11 @@ def main():
             max_tokens=args.max_tokens,
             require_valid_json=args.require_valid_json,
             min_step_ratio=args.min_step_ratio,
-            check_interval=args.check_interval
+            check_interval=args.check_interval,
+            temperature=args.temperature,
             )
     else:
-        result = agent.run(task, max_iterations=args.max_iterations, max_tokens=args.max_tokens)
+        result = agent.run(task, max_iterations=args.max_iterations, max_tokens=args.max_tokens, temperature=args.temperature)
     
     print("Generated Code:")
     print("-" * 40)
