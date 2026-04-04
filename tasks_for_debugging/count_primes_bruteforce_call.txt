@@ -1,0 +1,17 @@
+# Stub mode (no GPU, test pipeline)
+python scripts/run_agent.py --use-stub --task tasks_for_debugging/count_primes_bruteforce.txt
+
+# Autoregressive (real model, GPU)
+python scripts/run_agent.py --engine autoregressive --model unsloth/llama-2-7b-chat --device cuda --task tasks_for_debugging/count_primes_bruteforce.txt
+
+# Diffusion, standard
+python scripts/run_agent.py --engine diffusion --model GSAI-ML/LLaDA-8B-Instruct --device cuda --task tasks_for_debugging/count_primes_bruteforce.txt
+
+# Diffusion + speculative execution (low_confidence)
+python scripts/run_agent.py --engine diffusion --model GSAI-ML/LLaDA-8B-Instruct --device cuda --with-early-detection --task tasks_for_debugging/count_primes_bruteforce.txt
+
+# Diffusion + speculative execution (fc_priority)
+python scripts/run_agent.py --engine diffusion --model GSAI-ML/LLaDA-8B-Instruct --device cuda --with-early-detection --remasking fc_priority --fc_boost 0.3 --task tasks_for_debugging/count_primes_bruteforce.txt
+
+# Diffusion + speculative execution (structural_boost)
+python scripts/run_agent.py --engine diffusion --model GSAI-ML/LLaDA-8B-Instruct --device cuda --with-early-detection --remasking structural_boost --structural_boost 0.4 --structural_window 3 --task tasks_for_debugging/count_primes_bruteforce.txt

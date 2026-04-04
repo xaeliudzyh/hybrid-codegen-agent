@@ -1,0 +1,1 @@
+Write a Python program that estimates the value of Pi using the Monte Carlo method. Generate 5,000,000 random points in a 1x1 square, count how many fall inside the quarter-circle of radius 1, and compute pi = 4 * (inside / total). Use only the random module (no numpy). Print the estimated pi, the actual math.pi, and the absolute error. Measure and print the execution time.

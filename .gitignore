@@ -1,9 +1,9 @@
 stuff/
 .venv/
 venv/
+tests/
 src/*/__pycache__
 tasks/
-tests/
+
 .DS_Store
 *.md
-!

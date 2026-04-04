@@ -1,0 +1,14 @@
+Write a Python program that benchmarks three sorting algorithms on a large random list.
+
+Requirements:
+- Implement these three sorting algorithms manually (do NOT use built-in sorted() or .sort()):
+  1. Bubble Sort
+  2. Insertion Sort
+  3. Merge Sort
+- Generate a random list of 5,000 integers between 0 and 100,000 using random.randint
+- Use random.seed(42) for reproducibility
+- Sort copy of the same list with each algorithm
+- For each algorithm, measure and print execution time using time.time()
+- After sorting, verify correctness: print first 10 and last 10 elements of each sorted list
+- Print which algorithm was fastest
+- Use only the standard library (random, time, copy modules)

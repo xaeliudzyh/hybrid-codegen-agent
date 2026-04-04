@@ -1,0 +1,13 @@
+Write a Python function to multiply two matrices without using any external libraries (no numpy).
+
+Requirements:
+- Implement matrix_multiply(A, B) that returns the product matrix
+- Generate two random 150x150 matrices with values between 0 and 100 using random.randint
+- Use random.seed(42) for reproducibility
+- Multiply them using your function (triple nested loop)
+- Print the shape of the result matrix
+- Print the element at position [0][0], [74][74], and [149][149]
+- Measure and print total execution time using time.time()
+
+The function must use pure Python — no numpy, no list comprehensions for the inner loop.
+This will be computationally expensive and that is intentional.
