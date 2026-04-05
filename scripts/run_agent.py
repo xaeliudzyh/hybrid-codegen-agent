@@ -100,10 +100,10 @@ def main():
     parser.add_argument(
         "--max_tokens",
         type=int,
-        default=1024,
+        default=512,
         help="Maximum number of tokens to generate per call. "
              "Both LLaDA and Llama-2 have 4096 context window; prompt + max_tokens must fit. "
-             "Default is 1024",
+             "Default is 512",
     )
     # Diffusion engine parameters
     parser.add_argument(
@@ -128,20 +128,20 @@ def main():
     parser.add_argument(
         "--fc_boost",
         type=float,
-        default=0.2,
-        help="Additive confidence bonus for FC-anchor tokens (fc_priority strategy). Default is 0.2",
+        default=0.15,
+        help="Additive confidence bonus for FC-anchor tokens (fc_priority strategy). Default is 0.15",
     )
     parser.add_argument(
         "--structural_boost",
         type=float,
-        default=0.3,
-        help="Additive proximity bonus near fixed FC clusters (structural_boost strategy). Default is 0.3",
+        default=0.15,
+        help="Additive proximity bonus near fixed FC clusters (structural_boost strategy). Default is 0.15",
     )
     parser.add_argument(
         "--structural_window",
         type=int,
-        default=5,
-        help="Half-window size for proximity detection in structural_boost strategy. Default is 5",
+        default=2,
+        help="Half-window size for proximity detection in structural_boost strategy. Default is 2",
     )
     parser.add_argument(
         "--temperature",
