@@ -150,6 +150,16 @@ class DiffusionEngine(GenerativeEngine):
         self._model = self._model.to(device).eval()
         self._device = device
     
+    def _truncate_at_eos(self, generated_ids: torch.Tensor) -> torch.Tensor:
+        """Truncate generated token ids at the first EOS token"""
+        eos_id = self._tokenizer.eos_token_id
+        if eos_id is None:
+            return generated_ids
+        eos_positions = (generated_ids == eos_id).nonzero(as_tuple=True)[0]
+        if len(eos_positions) > 0:
+            return generated_ids[:eos_positions[0]]
+        return generated_ids
+
     def _format_prompt(self, prompt: str) -> str:
         task_marker = "\nTask:\n"
         idx = prompt.find(task_marker)
@@ -293,6 +303,13 @@ class DiffusionEngine(GenerativeEngine):
                 if step_callback is not None:
                     if step_callback(x, current_step):
                         return x
+            
+            # Early block termination: if the just-completed block is entirely EOS tokens, remaining blocks would be pure padding.
+            eos_id = self._tokenizer.eos_token_id
+            if eos_id is not None:
+                block_tokens = x[0, block_start:block_end]
+                if (block_tokens == eos_id).all():
+                    break
         
         return x
     
@@ -330,7 +347,7 @@ class DiffusionEngine(GenerativeEngine):
             steps=effective_steps,
         )
         
-        generated_ids = output_ids[0, prompt_len:]
+        generated_ids = self._truncate_at_eos(output_ids[0, prompt_len:])
         generated_text = self._tokenizer.decode(generated_ids, skip_special_tokens=True)
         if stop_sequences:
             for stop_seq in stop_sequences:
@@ -404,7 +421,7 @@ class DiffusionEngine(GenerativeEngine):
             steps=effective_steps,
             step_callback=detector
         )
-        generated_ids = output_ids[0, prompt_len:]
+        generated_ids = self._truncate_at_eos(output_ids[0, prompt_len:])
         generated_text = self._tokenizer.decode(generated_ids, skip_special_tokens=True)
         if stop_sequences:
             for stop_seq in stop_sequences:
