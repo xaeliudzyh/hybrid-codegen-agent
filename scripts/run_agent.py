@@ -56,8 +56,8 @@ def main():
     parser.add_argument(
         "--max_iterations",
         type=int,
-        default=5,
-        help="Max number of generation-execution cycles. Default is 5",
+        default=3,
+        help="Max number of generation-execution cycles. Default is 3",
     )
     parser.add_argument(
         "--no-require-valid-json",

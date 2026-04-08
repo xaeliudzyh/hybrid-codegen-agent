@@ -87,6 +87,11 @@ class AutoregressiveEngine(GenerativeEngine):
     
     def _load_model(self):
         """Load the actual model and tokenizer."""
+        import warnings
+        import logging
+        warnings.filterwarnings("ignore", message=".*resume_download.*is deprecated.*")
+        warnings.filterwarnings("ignore", message=".*Special tokens have been added.*")
+        logging.getLogger("transformers.tokenization_utils_base").setLevel(logging.ERROR)
         from transformers import AutoModelForCausalLM, AutoTokenizer
         import torch
         

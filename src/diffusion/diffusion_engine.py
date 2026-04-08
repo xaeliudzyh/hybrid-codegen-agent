@@ -73,9 +73,9 @@ class DiffusionEngine(GenerativeEngine):
         cfg_scale: float = 0.0,
         remasking: str = "low_confidence",
         # new remask. strategies params
-        fc_boost: float = 0.2,
-        structural_boost: float = 0.3,
-        structural_window: int = 5,
+        fc_boost: float = 0.15,
+        structural_boost: float = 0.15,
+        structural_window: int = 2,
     ):
         """
         Args:
@@ -117,6 +117,11 @@ class DiffusionEngine(GenerativeEngine):
         return self._tokenizer
     
     def _load_model(self):
+        import warnings
+        import logging
+        warnings.filterwarnings("ignore", message=".*resume_download.*is deprecated.*")
+        warnings.filterwarnings("ignore", message=".*Special tokens have been added.*")
+        logging.getLogger("transformers.tokenization_utils_base").setLevel(logging.ERROR)
         from transformers import AutoModel, AutoTokenizer, AutoConfig
         
         self._tokenizer = AutoTokenizer.from_pretrained(
@@ -228,6 +233,13 @@ class DiffusionEngine(GenerativeEngine):
         steps_per_block = steps // num_blocks
         current_step = 0
         
+        # Pre-compute FC anchor ids on device and conv kernel (avoid per-step allocation)
+        if self._remasking in ('fc_priority', 'structural_boost'):
+            anchor_ids = self._fc_anchor_ids.to(device)
+        if self._remasking == 'structural_boost':
+            w = self._structural_window
+            kernel = torch.ones(1, 1, 2 * w + 1, device=device) / (2 * w + 1)
+        
         for num_block in range(num_blocks):
             block_start = prompt_len + num_block * self._block_length
             block_end = prompt_len + (num_block + 1) * self._block_length
@@ -266,7 +278,6 @@ class DiffusionEngine(GenerativeEngine):
                     x0_p = torch.squeeze(
                         torch.gather(p, dim=-1, index=torch.unsqueeze(x0, -1)), -1
                     )
-                    anchor_ids = self._fc_anchor_ids.to(device)
                     is_fc = (x0.unsqueeze(-1) == anchor_ids).any(dim=-1)
                     x0_p = x0_p + self._fc_boost * is_fc.float()
                 elif self._remasking == 'structural_boost':
@@ -274,15 +285,12 @@ class DiffusionEngine(GenerativeEngine):
                     x0_p = torch.squeeze(
                         torch.gather(p, dim=-1, index=torch.unsqueeze(x0, -1)), -1
                     )
-                    anchor_ids = self._fc_anchor_ids.to(device)
                     is_fixed_fc = (
                         (x.unsqueeze(-1) == anchor_ids).any(dim=-1)
                         & ~mask_index
                     ).float()
-                    w = self._structural_window
-                    kernel = torch.ones(1, 1, 2 * w + 1, device=device) / (2 * w + 1)
                     proximity = F.conv1d(
-                        is_fixed_fc.unsqueeze(1), kernel, padding=w
+                        is_fixed_fc.unsqueeze(1), kernel, padding=self._structural_window
                     ).squeeze(1)  # (B, L)
                     x0_p = x0_p + self._structural_boost_value * proximity
                 else:
