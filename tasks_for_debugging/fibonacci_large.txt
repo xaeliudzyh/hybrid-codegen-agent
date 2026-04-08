@@ -1,9 +1,2 @@
-Write a Python function that computes the N-th Fibonacci number using memoization (dictionary cache).
-Then compute and print Fibonacci numbers for N = 10, 20, 30, 40, 50, 100, 200, 500, 1000.
-
-Requirements:
-- Use a dictionary for memoization (not functools.lru_cache)
-- The function should be recursive with memoization
-- Print each result as: "fib(N) = <value>"
-- At the end, print the number of digits in fib(1000)
-- Measure and print total execution time using time.time()
+Write a Python function that computes the N-th Fibonacci number using memoization.
+Then compute and print Fibonacci numbers for N = 10, 20, 30.
