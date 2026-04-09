@@ -12,3 +12,6 @@ python scripts/run_agent.py --engine diffusion --model GSAI-ML/LLaDA-8B-Instruct
 
 # Diffusion + speculative (structural_boost)
 python scripts/run_agent.py --engine diffusion --model GSAI-ML/LLaDA-8B-Instruct --device cuda --with-early-detection --remasking structural_boost --structural_boost 0.5 --structural_window 5 --task tasks_for_debugging/perfect_numbers.txt
+
+# Diffusion + speculative (entropy)
+python scripts/run_agent.py --engine diffusion --model GSAI-ML/LLaDA-8B-Instruct --device cuda --with-early-detection --remasking entropy --task tasks_for_debugging/perfect_numbers.txt

@@ -1,7 +1,7 @@
 # hybrid-codegen-agent
 
 Agent-based code generation system with **autoregressive** and **diffusion** language models.
-The key research feature is **speculative execution** — detecting function calls in intermediate diffusion states and executing them in the background before generation completes.
+The key research feature is **speculative execution** - detecting function calls in intermediate diffusion states and executing them in the background before generation completes.
 
 ## How it works
 
@@ -21,7 +21,7 @@ When generation finishes, the agent compares the final function call with the sp
 
 ```
 src/
-├── agent/              CodeGenAgent — orchestration, HIT/MISS logic, metrics
+├── agent/              CodeGenAgent - orchestration, HIT/MISS logic, metrics
 ├── engines/            GenerativeEngine (ABC), AutoregressiveEngine (LLaMA)
 ├── diffusion/          DiffusionEngine (LLaDA), EarlyFunctionDetector, SpeculativeExecutor
 ├── function_calling/   FunctionCall parsing, FunctionRegistry, execute_code()
@@ -100,6 +100,18 @@ python scripts/run_agent.py \
     --task "Write a fibonacci function"
 ```
 
+### Diffusion with entropy remasking
+
+```bash
+python scripts/run_agent.py \
+    --engine diffusion \
+    --model GSAI-ML/LLaDA-8B-Instruct \
+    --device cuda \
+    --remasking entropy \
+    --with-early-detection \
+    --task "Write a fibonacci function"
+```
+
 ### CLI Arguments
 
 | Argument | Default | Description |
@@ -108,7 +120,7 @@ python scripts/run_agent.py \
 | `--engine` | `autoregressive` | `autoregressive` or `diffusion` |
 | `--model` | `unsloth/llama-2-7b-chat` | HuggingFace model name or local path |
 | `--device` | `auto` | `cuda`, `cuda:0`, `cpu`, or `auto` |
-| `--max_tokens` | `512` | Max tokens to generate per call (prompt + max_tokens ≤ 4096) |
+| `--max_tokens` | `512` | Max tokens to generate per call (prompt + max_tokens <= 4096) |
 | `--temperature` | *auto* | Sampling temperature. Default: 0.7 (AR), 0.3 (diffusion). 0 = greedy |
 | `--use-stub` | off | Use stub engine (no GPU needed, for testing) |
 | `--max_iterations` | `3` | Max generate → execute cycles |
@@ -130,10 +142,10 @@ python scripts/run_agent.py \
 | Strategy | Description |
 |----------|-------------|
 | `low_confidence` | Fix tokens with highest model confidence $p(\hat{x}_j)$ first. Default, best general quality. |
-| `random` | Random selection — baseline for ablation studies. |
+| `random` | Random selection - baseline for ablation studies. |
 | `fc_priority` | `low_confidence` + additive boost for FC-structural tokens (`<function_call>`, `{`, `"name"`, etc.). Accelerates FC pattern formation for earlier speculative detection. |
 | `entropy` | Negative Shannon entropy $-H(p_j)$ of the full predicted distribution. Positions where the model is most certain (peaked distribution) are fixed first. No hyperparameters. |
-| `structural_boost` | `low_confidence` + proximity bonus near already-fixed FC-anchor clusters (sliding window). Creates cascading crystallization — fixed FC tokens help unmask their neighbors faster. |
+| `structural_boost` | `low_confidence` + proximity bonus near already-fixed FC-anchor clusters (sliding window). Creates cascading crystallization - fixed FC tokens help unmask their neighbors faster. |
 
 ## Architecture
 
@@ -143,7 +155,7 @@ python scripts/run_agent.py \
 | **GenerativeEngine** | Abstract interface for text generation |
 | **AutoregressiveEngine** | LLaMA-based baseline (HuggingFace Transformers) |
 | **DiffusionEngine** | LLaDA-based engine with `generate_with_speculative_execution()` |
-| **EarlyFunctionDetector** | `step_callback` — detects FC in intermediate diffusion states (mask-aware, HIT=100%) |
+| **EarlyFunctionDetector** | `step_callback` - detects FC in intermediate diffusion states (mask-aware, HIT=100%) |
 | **SpeculativeExecutor** | Runs detected function in `ThreadPoolExecutor` during generation |
 | **FunctionRegistry** | Registration and safe execution of functions (`execute_code`) |
 
