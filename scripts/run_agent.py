@@ -56,8 +56,8 @@ def main():
     parser.add_argument(
         "--max_iterations",
         type=int,
-        default=5,
-        help="Max number of generation-execution cycles. Default is 5",
+        default=3,
+        help="Max number of generation-execution cycles. Default is 3",
     )
     parser.add_argument(
         "--no-require-valid-json",
@@ -105,6 +105,51 @@ def main():
              "Both LLaDA and Llama-2 have 4096 context window; prompt + max_tokens must fit. "
              "Default is 512",
     )
+    # Diffusion engine parameters
+    parser.add_argument(
+        "--remasking",
+        type=str,
+        choices=["low_confidence", "random", "entropy", "fc_priority", "structural_boost"],
+        default="low_confidence",
+        help="Remasking strategy for diffusion engine. Default is 'low_confidence'",
+    )
+    parser.add_argument(
+        "--steps",
+        type=int,
+        default=128,
+        help="Number of diffusion denoising steps. Default is 128",
+    )
+    parser.add_argument(
+        "--block_length",
+        type=int,
+        default=32,
+        help="Block size for semi-autoregressive generation. Default is 32",
+    )
+    parser.add_argument(
+        "--fc_boost",
+        type=float,
+        default=0.15,
+        help="Additive confidence bonus for FC-anchor tokens (fc_priority strategy). Default is 0.15",
+    )
+    parser.add_argument(
+        "--structural_boost",
+        type=float,
+        default=0.15,
+        help="Additive proximity bonus near fixed FC clusters (structural_boost strategy). Default is 0.15",
+    )
+    parser.add_argument(
+        "--structural_window",
+        type=int,
+        default=2,
+        help="Half-window size for proximity detection in structural_boost strategy. Default is 2",
+    )
+    parser.add_argument(
+        "--temperature",
+        type=float,
+        default=None,
+        help="Sampling temperature. Default: 0.7 for autoregressive, 0.3 for diffusion. "
+             "Higher = more random, 0 = greedy (causes degeneration in LLaDA)",
+    )
     
     args = parser.parse_args()
     
@@ -118,6 +163,12 @@ def main():
         engine = DiffusionEngine(
             model_name_or_path=args.model,
             device=args.device,
+            steps=args.steps,
+            block_length=args.block_length,
+            remasking=args.remasking,
+            fc_boost=args.fc_boost,
+            structural_boost=args.structural_boost,
+            structural_window=args.structural_window,
         )
     
     registry = create_default_registry()
@@ -132,6 +183,15 @@ def main():
     print(f"=" * 60)
     print(f"Code Generation Agent")
     print(f"Engine: {engine.engine_type} ({engine.model_name})")
+    if args.engine == "diffusion":
+        print(f"Remasking: {args.remasking} | Steps: {args.steps} | Block: {args.block_length}")
+        if args.remasking == "fc_priority":
+            print(f"  fc_boost: {args.fc_boost}")
+        elif args.remasking == "structural_boost":
+            print(f"  structural_boost: {args.structural_boost} | window: {args.structural_window}")
+    if args.temperature is not None:
+        print(f"Temperature: {args.temperature}")
+    print(f"Max tokens: {args.max_tokens}")
     print(f"Task: {task[:100]}{'...' if len(task) > 100 else ''}")
     print(f"=" * 60)
     print()
@@ -143,10 +203,11 @@ def main():
             max_tokens=args.max_tokens,
             require_valid_json=args.require_valid_json,
             min_step_ratio=args.min_step_ratio,
-            check_interval=args.check_interval
+            check_interval=args.check_interval,
+            temperature=args.temperature,
             )
     else:
-        result = agent.run(task, max_iterations=args.max_iterations, max_tokens=args.max_tokens)
+        result = agent.run(task, max_iterations=args.max_iterations, max_tokens=args.max_tokens, temperature=args.temperature)
     
     print("Generated Code:")
     print("-" * 40)

@@ -52,6 +52,35 @@ def parse_function_calls(text: str) -> list[FunctionCall]:
     return calls
 
 
+def _sanitize_json_string(json_str: str) -> str:
+    result = []
+    in_string = False
+    i = 0
+    while i < len(json_str):
+        ch = json_str[i]
+        if ch == '"' and (i == 0 or json_str[i-1] != '\\'):
+            in_string = not in_string
+            result.append(ch)
+        elif in_string and ch == '\n':
+            result.append('\\n')
+        elif in_string and ch == '\r':
+            result.append('\\r')
+        elif in_string and ch == '\t':
+            result.append('\\t')
+        elif in_string and ch == '\\' and i + 1 < len(json_str):
+            next_ch = json_str[i + 1]
+            if next_ch in ('"', '\\', '/', 'b', 'f', 'n', 'r', 't', 'u'):
+                # Valid JSON escape — keep as-is
+                result.append(ch)
+            else:
+                # Invalid escape like \<space> or \: — escape the backslash
+                result.append('\\\\')
+        else:
+            result.append(ch)
+        i += 1
+    return ''.join(result)
+
+
 def _parse_json_call(
     json_str: str,
     start_pos: int,
@@ -60,26 +89,31 @@ def _parse_json_call(
     """Parse a JSON function call string."""
     try:
         data = json.loads(json_str)
-        
-        if not isinstance(data, dict):
-            return None
-        
-        name = data.get("name")
-        if not name or not isinstance(name, str):
-            return None
-        
-        arguments = data.get("arguments", {})
-        if not isinstance(arguments, dict):
-            arguments = {}
-        
-        return FunctionCall(
-            name=name,
-            arguments=arguments,
-            start_position=start_pos,
-            end_position=end_pos,
-        )
     except json.JSONDecodeError:
+        # Try to fix common model-generated JSON issues
+        try:
+            sanitized = _sanitize_json_string(json_str)
+            data = json.loads(sanitized)
+        except json.JSONDecodeError:
+            return None
+    
+    if not isinstance(data, dict):
         return None
+    
+    name = data.get("name")
+    if not name or not isinstance(name, str):
+        return None
+    
+    arguments = data.get("arguments", {})
+    if not isinstance(arguments, dict):
+        arguments = {}
+    
+    return FunctionCall(
+        name=name,
+        arguments=arguments,
+        start_position=start_pos,
+        end_position=end_pos,
+    )
 
 
 def extract_text_without_function_calls(text: str) -> str:

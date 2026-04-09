@@ -1,0 +1,14 @@
+Write a Python program that verifies the Collatz conjecture for all integers from 1 to 1,000,000.
+
+The Collatz conjecture: starting from any positive integer n, repeatedly apply:
+- If n is even: n = n / 2
+- If n is odd: n = 3n + 1
+The sequence always reaches 1.
+
+Requirements:
+- Write a function collatz_steps(n) that returns the number of steps to reach 1
+- Check all integers from 1 to 1,000,000
+- Track and print the number that requires the most steps, and how many steps it took
+- Print the total number of integers checked
+- Measure and print total execution time using time.time()
+- Use only the standard library (time module)

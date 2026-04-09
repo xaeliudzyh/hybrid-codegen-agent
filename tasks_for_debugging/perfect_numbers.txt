@@ -1,0 +1,13 @@
+Write a Python program to find all perfect numbers up to 100,000.
+
+A perfect number is a positive integer that equals the sum of its proper divisors
+(all divisors except itself). For example, 6 = 1 + 2 + 3.
+
+Requirements:
+- Write a function sum_of_divisors(n) that returns the sum of proper divisors of n
+- Use trial division up to sqrt(n) for efficiency
+- Check every integer from 2 to 100,000
+- Print each perfect number found and its divisors
+- Print the total count of perfect numbers found
+- Measure and print total execution time using time.time()
+- Use only the standard library (time, math modules)

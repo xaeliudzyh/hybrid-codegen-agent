@@ -1,0 +1,14 @@
+# Stub mode
+python scripts/run_agent.py --use-stub --task tasks_for_debugging/perfect_numbers.txt
+
+# Autoregressive
+python scripts/run_agent.py --engine autoregressive --model unsloth/llama-2-7b-chat --device cuda --task tasks_for_debugging/perfect_numbers.txt
+
+# Diffusion + speculative (low_confidence)
+python scripts/run_agent.py --engine diffusion --model GSAI-ML/LLaDA-8B-Instruct --device cuda --with-early-detection --task tasks_for_debugging/perfect_numbers.txt
+
+# Diffusion + speculative (fc_priority)
+python scripts/run_agent.py --engine diffusion --model GSAI-ML/LLaDA-8B-Instruct --device cuda --with-early-detection --remasking fc_priority --fc_boost 0.3 --task tasks_for_debugging/perfect_numbers.txt
+
+# Diffusion + speculative (structural_boost)
+python scripts/run_agent.py --engine diffusion --model GSAI-ML/LLaDA-8B-Instruct --device cuda --with-early-detection --remasking structural_boost --structural_boost 0.5 --structural_window 5 --task tasks_for_debugging/perfect_numbers.txt

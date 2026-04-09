@@ -1,0 +1,1 @@
+Write a Python function count_primes(n) that counts how many prime numbers are less than n using a brute-force trial division method (do NOT use the Sieve of Eratosthenes). Check each number from 2 to n-1 by testing divisibility from 2 to sqrt of that number. Then call count_primes(500000) and print the result with timing using time.time().

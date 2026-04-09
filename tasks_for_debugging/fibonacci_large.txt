@@ -1,0 +1,2 @@
+Write a Python function that computes the N-th Fibonacci number.
+Then compute and print Fibonacci numbers for N = 10, 20, 30.

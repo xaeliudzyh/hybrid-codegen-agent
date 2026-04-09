@@ -1,9 +1,6 @@
 """
-Diffusion engine implementation using LLaDA (Large Language Diffusion with mAsking).
-
-This implements the DiffusionEngine using GSAI-ML/LLaDA-8B-Instruct.
+Diffusion engine implementation using LLaDA.
 Key feature: access to intermediate generation steps for early function call detection.
-
 LLaDA generates all tokens in parallel and iteratively refines them through
 multiple denoising steps, unlike autoregressive models that generate one token at a time.
 
@@ -26,12 +23,6 @@ LLADA_MASK_ID = 126336  # <|mdm_mask|> token
 
 
 def add_gumbel_noise(logits: torch.Tensor, temperature: float) -> torch.Tensor:
-    """
-    Apply Gumbel noise for sampling from categorical distribution.
-    
-    According to arXiv:2409.02908, for MDM, low-precision Gumbel Max improves
-    perplexity score but reduces generation quality. Thus, we use float64.
-    """
     if temperature == 0:
         return logits
     logits = logits.to(torch.float64)
@@ -43,12 +34,6 @@ def add_gumbel_noise(logits: torch.Tensor, temperature: float) -> torch.Tensor:
 def get_num_transfer_tokens(mask_index: torch.Tensor, steps: int) -> torch.Tensor:
     """
     Calculate how many tokens to unmask at each step.
-    
-    In the reverse process, the interval [0, 1] is uniformly discretized into steps intervals.
-    Because LLaDA employs a linear noise schedule, the expected number of tokens 
-    transitioned at each step should be consistent.
-    
-    This function precomputes the number of tokens that need to be transitioned at each step.
     """
     mask_num = mask_index.sum(dim=1, keepdim=True)
     
@@ -70,62 +55,79 @@ def get_num_transfer_tokens(mask_index: torch.Tensor, steps: int) -> torch.Tenso
 class DiffusionEngine(GenerativeEngine):
     """
     Diffusion generative engine using LLaDA.
-    
-    This is the research implementation that provides access to
-    intermediate generation steps for early function call detection.
-    
     LLaDA uses masked diffusion: starts with all [MASK] tokens and
     iteratively reveals tokens based on model confidence.
     """
     
+    _FC_ANCHOR_STRINGS: list[str] = [
+        "<function_call>", "</function_call>",
+        "{", "}", '"name"', '"arguments"',
+    ]
+
     def __init__(
         self,
         model_name_or_path: str = "GSAI-ML/LLaDA-8B-Instruct",
         device: str = "auto",
-        # diffusion-specific parameters
-        steps: int = 64,
+        steps: int = 128,
         block_length: int = 32,
         cfg_scale: float = 0.0,
         remasking: str = "low_confidence",
+        # new remask. strategies params
+        fc_boost: float = 0.15,
+        structural_boost: float = 0.15,
+        structural_window: int = 2,
     ):
         """
-        Initialize the diffusion engine.
-        
         Args:
             model_name_or_path: HuggingFace model identifier
             device: Device to run on ('auto', 'cuda', 'cpu')
             steps: Number of diffusion denoising steps
             block_length: Block size for semi-autoregressive generation
             cfg_scale: Classifier-free guidance scale (0 = disabled)
-            remasking: Strategy for remasking ('low_confidence' or 'random')
+            remasking: Strategy for remasking
+                ('low_confidence', 'random', 'fc_priority', 'structural_boost')
+            fc_boost: Additive confidence bonus for FC-anchor tokens (fc_priority)
+            structural_boost: Additive proximity bonus near fixed FC clusters (structural_boost)
+            structural_window: Half-window size for proximity detection (structural_boost)
         """
         self._model_name = model_name_or_path
         self._device = device
         self._model = None
         self._tokenizer = None
-        
-        # diffusion parameters
         self._steps = steps
         self._block_length = block_length
         self._cfg_scale = cfg_scale
         self._remasking = remasking
+        self._fc_boost = fc_boost
+        self._structural_boost_value = structural_boost
+        self._structural_window = structural_window
         
         self._load_model()
+        self._build_fc_anchor_ids()
+
+    def _build_fc_anchor_ids(self):
+        """Precompute unique token IDs that form FC-structural patterns."""
+        ids: set[int] = set()
+        for s in self._FC_ANCHOR_STRINGS:
+            ids.update(self._tokenizer.encode(s, add_special_tokens=False))
+        self._fc_anchor_ids = torch.tensor(sorted(ids), dtype=torch.long)
 
     @property
     def tokenizer(self):
         return self._tokenizer
     
     def _load_model(self):
-        """Load the LLaDA model and tokenizer."""
+        import warnings
+        import logging
+        warnings.filterwarnings("ignore", message=".*resume_download.*is deprecated.*")
+        warnings.filterwarnings("ignore", message=".*Special tokens have been added.*")
+        logging.getLogger("transformers.tokenization_utils_base").setLevel(logging.ERROR)
         from transformers import AutoModel, AutoTokenizer, AutoConfig
         
         self._tokenizer = AutoTokenizer.from_pretrained(
             self._model_name,
             trust_remote_code=True,
         )
-        
-        # LLaDA requires left padding for correct generation
         if self._tokenizer.padding_side != 'left':
             self._tokenizer.padding_side = 'left'
         if self._device == "auto":
@@ -147,19 +149,34 @@ class DiffusionEngine(GenerativeEngine):
             low_cpu_mem_usage=True,
             #_fast_init=False,
         )
-        
-        # add missing attribute if not present (compatibility fix)
         if not hasattr(self._model, 'all_tied_weights_keys'):
             self._model.all_tied_weights_keys = {}
         
         self._model = self._model.to(device).eval()
         self._device = device
-        assert self._tokenizer.pad_token_id != LLADA_MASK_ID, \
-            "Padding ID equals mask ID - this will cause incorrect generation"
     
+    def _truncate_at_eos(self, generated_ids: torch.Tensor) -> torch.Tensor:
+        """Truncate generated token ids at the first EOS token"""
+        eos_id = self._tokenizer.eos_token_id
+        if eos_id is None:
+            return generated_ids
+        eos_positions = (generated_ids == eos_id).nonzero(as_tuple=True)[0]
+        if len(eos_positions) > 0:
+            return generated_ids[:eos_positions[0]]
+        return generated_ids
+
     def _format_prompt(self, prompt: str) -> str:
-        """Format prompt for LLaDA-8B-Instruct (LLaMA-3 style)."""
-        messages = [{"role": "user", "content": prompt}]
+        task_marker = "\nTask:\n"
+        idx = prompt.find(task_marker)
+        if idx != -1:
+            system = prompt[:idx].strip()
+            user = prompt[idx + len(task_marker):].strip()
+            messages = [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ]
+        else:
+            messages = [{"role": "user", "content": prompt}]
         return self._tokenizer.apply_chat_template(
             messages, 
             add_generation_prompt=True, 
@@ -177,29 +194,23 @@ class DiffusionEngine(GenerativeEngine):
         step_callback: Optional[Callable[[torch.Tensor, int], bool]] = None,
     ) -> torch.Tensor:
         """
-        LLaDA diffusion generation.
-        
-        This is the core diffusion sampling loop adapted from LLaDA's official generate.py.
-        
         Args:
-            prompt_ids: Tokenized prompt (batch, seq_len)
-            attention_mask: Attention mask for padding
-            gen_length: Number of tokens to generate
-            temperature: Sampling temperature (0 = greedy)
-            steps: Number of diffusion steps (defaults to self._steps)
-            step_callback: Optional callback(x, step) called each step.
-                          Return True to stop early.
+            prompt_ids: tokenized prompt (batch, seq_len)
+            attention_mask: attention mask for padding
+            gen_length: number of tokens to generate
+            temperature: sampling temperature (0 = greedy)
+            steps: num of diffusion steps (defaults to self._steps)
+            step_callback: ptional callback(x, step) called each step. Return True to stop early.
         
         Returns:
-            Full sequence including prompt and generated tokens
+            x: full sequence including prompt and generated tokens
         """
         if steps is None:
             steps = self._steps
         device = self._model.device
         batch_size = prompt_ids.shape[0]
         prompt_len = prompt_ids.shape[1]
-        
-        # Initialize: prompt + [MASK] * gen_length
+
         x = torch.full(
             (batch_size, prompt_len + gen_length), 
             LLADA_MASK_ID, 
@@ -207,8 +218,6 @@ class DiffusionEngine(GenerativeEngine):
             device=device
         )
         x[:, :prompt_len] = prompt_ids.clone()
-        
-        # Extend attention mask if provided
         if attention_mask is not None:
             attention_mask = torch.cat([
                 attention_mask,
@@ -216,30 +225,29 @@ class DiffusionEngine(GenerativeEngine):
             ], dim=-1)
         
         prompt_index = (x != LLADA_MASK_ID)
-        
-        # Validate block configuration
         assert gen_length % self._block_length == 0, \
             f"gen_length ({gen_length}) must be divisible by block_length ({self._block_length})"
         num_blocks = gen_length // self._block_length
-        
         assert steps % num_blocks == 0, \
             f"steps ({steps}) must be divisible by num_blocks ({num_blocks})"
         steps_per_block = steps // num_blocks
-        
         current_step = 0
+        
+        # Pre-compute FC anchor ids on device and conv kernel (avoid per-step allocation)
+        if self._remasking in ('fc_priority', 'structural_boost'):
+            anchor_ids = self._fc_anchor_ids.to(device)
+        if self._remasking == 'structural_boost':
+            w = self._structural_window
+            kernel = torch.ones(1, 1, 2 * w + 1, device=device) / (2 * w + 1)
         
         for num_block in range(num_blocks):
             block_start = prompt_len + num_block * self._block_length
             block_end = prompt_len + (num_block + 1) * self._block_length
-            
-            # Get mask indices for this block
             block_mask_index = (x[:, block_start:block_end] == LLADA_MASK_ID)
             num_transfer_tokens = get_num_transfer_tokens(block_mask_index, steps_per_block)
             
             for i in range(steps_per_block):
                 mask_index = (x == LLADA_MASK_ID)
-                
-                # Forward pass with optional CFG
                 if self._cfg_scale > 0.:
                     un_x = x.clone()
                     un_x[prompt_index] = LLADA_MASK_ID
@@ -256,12 +264,8 @@ class DiffusionEngine(GenerativeEngine):
                         logits = self._model(x, attention_mask=attention_mask).logits
                     else:
                         logits = self._model(x).logits
-                
-                # Sample tokens with Gumbel noise
                 logits_with_noise = add_gumbel_noise(logits, temperature=temperature)
                 x0 = torch.argmax(logits_with_noise, dim=-1)
-                
-                # Calculate confidence for remasking
                 if self._remasking == 'low_confidence':
                     p = F.softmax(logits, dim=-1)
                     x0_p = torch.squeeze(
@@ -269,17 +273,36 @@ class DiffusionEngine(GenerativeEngine):
                     )
                 elif self._remasking == 'random':
                     x0_p = torch.rand((x0.shape[0], x0.shape[1]), device=device)
+                elif self._remasking == 'entropy':
+                    p = F.softmax(logits, dim=-1)
+                    log_p = torch.log(p.clamp(min=1e-10))
+                    x0_p = (p * log_p).sum(dim=-1)
+                elif self._remasking == 'fc_priority':
+                    p = F.softmax(logits, dim=-1)
+                    x0_p = torch.squeeze(
+                        torch.gather(p, dim=-1, index=torch.unsqueeze(x0, -1)), -1
+                    )
+                    is_fc = (x0.unsqueeze(-1) == anchor_ids).any(dim=-1)
+                    x0_p = x0_p + self._fc_boost * is_fc.float()
+                elif self._remasking == 'structural_boost':
+                    p = F.softmax(logits, dim=-1)
+                    x0_p = torch.squeeze(
+                        torch.gather(p, dim=-1, index=torch.unsqueeze(x0, -1)), -1
+                    )
+                    is_fixed_fc = (
+                        (x.unsqueeze(-1) == anchor_ids).any(dim=-1)
+                        & ~mask_index
+                    ).float()
+                    proximity = F.conv1d(
+                        is_fixed_fc.unsqueeze(1), kernel, padding=self._structural_window
+                    ).squeeze(1)  # (B, L)
+                    x0_p = x0_p + self._structural_boost_value * proximity
                 else:
                     raise ValueError(f"Unknown remasking strategy: {self._remasking}")
                 
-                # Don't unmask tokens in future blocks yet
                 x0_p[:, block_end:] = -np.inf
-                
-                # Keep prompt tokens unchanged
                 x0 = torch.where(mask_index, x0, x)
                 confidence = torch.where(mask_index, x0_p, -np.inf)
-                
-                # Transfer top-k confident tokens
                 transfer_index = torch.zeros_like(x0, dtype=torch.bool, device=device)
                 for j in range(confidence.shape[0]):
                     k = num_transfer_tokens[j, i].item()
@@ -288,27 +311,29 @@ class DiffusionEngine(GenerativeEngine):
                         transfer_index[j, select_index] = True
                 
                 x[transfer_index] = x0[transfer_index]
-                
                 current_step += 1
-                
-                # Optional callback for early stopping (e.g., function call detection)
                 if step_callback is not None:
                     if step_callback(x, current_step):
                         return x
+            
+            # Early block termination: if the just-completed block is entirely EOS tokens, remaining blocks would be pure padding.
+            eos_id = self._tokenizer.eos_token_id
+            if eos_id is not None:
+                block_tokens = x[0, block_start:block_end]
+                if (block_tokens == eos_id).all():
+                    break
         
         return x
     
     def generate(
         self,
         prompt: str,
-        max_tokens: int = 512,
-        temperature: float = 0.0,
+        max_tokens: int = 1024,
+        temperature: float = 0.3,
         stop_sequences: Optional[list[str]] = None,
     ) -> GenerationResult:
         """Generate text using diffusion-based decoding."""
         start_time = time.perf_counter()
-        
-        # Format and tokenize prompt
         formatted_prompt = self._format_prompt(prompt)
         encoded = self._tokenizer(
             formatted_prompt,
@@ -319,19 +344,13 @@ class DiffusionEngine(GenerativeEngine):
         input_ids = encoded['input_ids'].to(self._device)
         attention_mask = encoded['attention_mask'].to(self._device)
         prompt_len = input_ids.shape[1]
-        
-        # Ensure gen_length is divisible by block_length
         gen_length = max_tokens
         if gen_length % self._block_length != 0:
             gen_length = ((gen_length // self._block_length) + 1) * self._block_length
-        
-        # Compute effective steps for this call without mutating self._steps
         num_blocks = gen_length // self._block_length
         effective_steps = self._steps
         if effective_steps % num_blocks != 0:
             effective_steps = ((effective_steps // num_blocks) + 1) * num_blocks
-        
-        # Run diffusion generation
         output_ids = self._llada_generate(
             prompt_ids=input_ids,
             attention_mask=attention_mask,
@@ -340,11 +359,8 @@ class DiffusionEngine(GenerativeEngine):
             steps=effective_steps,
         )
         
-        # Decode generated tokens (skip prompt)
-        generated_ids = output_ids[0, prompt_len:]
+        generated_ids = self._truncate_at_eos(output_ids[0, prompt_len:])
         generated_text = self._tokenizer.decode(generated_ids, skip_special_tokens=True)
-        
-        # Apply stop sequences
         if stop_sequences:
             for stop_seq in stop_sequences:
                 if stop_seq in generated_text:
@@ -371,8 +387,8 @@ class DiffusionEngine(GenerativeEngine):
     def generate_with_speculative_execution(self,
         function_registry: FunctionRegistry,
         prompt: str,
-        max_tokens: int = 512,
-        temperature: float = 0.0,
+        max_tokens: int = 1024,
+        temperature: float = 0.3,
         stop_sequences: Optional[list[str]] = None,
         min_step_ratio: float = 0.1,
         require_valid_json: bool = True,
@@ -380,8 +396,6 @@ class DiffusionEngine(GenerativeEngine):
     ) -> tuple[GenerationResult, SpeculativeExecutor]:
         """Generate text using diffusion-based decoding + execute detected function in the background"""
         start_time = time.perf_counter()
-        
-        # Format and tokenize prompt
         formatted_prompt = self._format_prompt(prompt)
         encoded = self._tokenizer(
             formatted_prompt,
@@ -392,13 +406,9 @@ class DiffusionEngine(GenerativeEngine):
         input_ids = encoded['input_ids'].to(self._device)
         attention_mask = encoded['attention_mask'].to(self._device)
         prompt_len = input_ids.shape[1]
-        
-        # Ensure gen_length is divisible by block_length
         gen_length = max_tokens
         if gen_length % self._block_length != 0:
             gen_length = ((gen_length // self._block_length) + 1) * self._block_length
-        
-        # Compute effective steps for this call without mutating self._steps
         num_blocks = gen_length // self._block_length
         effective_steps = self._steps
         if effective_steps % num_blocks != 0:
@@ -414,7 +424,7 @@ class DiffusionEngine(GenerativeEngine):
             check_interval=check_interval,
             on_detected=executor.on_function_detected,
         )
-        # Run diffusion generation
+        
         output_ids = self._llada_generate(
             prompt_ids=input_ids,
             attention_mask=attention_mask,
@@ -423,12 +433,8 @@ class DiffusionEngine(GenerativeEngine):
             steps=effective_steps,
             step_callback=detector
         )
-
-        # Decode generated tokens (skip prompt)
-        generated_ids = output_ids[0, prompt_len:]
+        generated_ids = self._truncate_at_eos(output_ids[0, prompt_len:])
         generated_text = self._tokenizer.decode(generated_ids, skip_special_tokens=True)
-        
-        # Apply stop sequences
         if stop_sequences:
             for stop_seq in stop_sequences:
                 if stop_seq in generated_text:

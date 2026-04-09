@@ -12,7 +12,12 @@ from .base import GenerativeEngine, GenerationResult
 
 
 def format_prompt_llama2_chat(prompt: str) -> str:
-    """Format prompt for LLaMA-2-Chat models."""
+    task_marker = "\nTask:\n"
+    idx = prompt.find(task_marker)
+    if idx != -1:
+        system = prompt[:idx].strip()
+        user = prompt[idx + len(task_marker):].strip()
+        return f"<s>[INST] <<SYS>>\n{system}\n<</SYS>>\n\n{user} [/INST]"
     return f"<s>[INST] {prompt} [/INST]"
 
 
@@ -82,6 +87,11 @@ class AutoregressiveEngine(GenerativeEngine):
     
     def _load_model(self):
         """Load the actual model and tokenizer."""
+        import warnings
+        import logging
+        warnings.filterwarnings("ignore", message=".*resume_download.*is deprecated.*")
+        warnings.filterwarnings("ignore", message=".*Special tokens have been added.*")
+        logging.getLogger("transformers.tokenization_utils_base").setLevel(logging.ERROR)
         from transformers import AutoModelForCausalLM, AutoTokenizer
         import torch
         
@@ -123,36 +133,27 @@ class AutoregressiveEngine(GenerativeEngine):
     def _stub_generate(self, prompt: str, max_tokens: int) -> str:
         """Stub generation for testing the pipeline."""
         if "fibonacci" in prompt.lower():
-            return '''Here's a Python function to calculate Fibonacci numbers:
-
-```python
-def fibonacci(n: int) -> int:
-    if n <= 1:
-        return n
-    return fibonacci(n - 1) + fibonacci(n - 2)
-```
+            return '''I'll compute Fibonacci numbers using recursion with memoization.
 
 <function_call>
-{"name": "execute_code", "arguments": {"code": "print(fibonacci(10))"}}
+{"name": "execute_code", "arguments": {"code": "def fibonacci(n, memo={}):\\n    if n <= 1:\\n        return n\\n    if n not in memo:\\n        memo[n] = fibonacci(n-1, memo) + fibonacci(n-2, memo)\\n    return memo[n]\\n\\nfor x in [10, 20, 30]:\\n    print(f'fibonacci({x}) = {fibonacci(x)}')"}}
 </function_call>
 '''
         
         if "sort" in prompt.lower():
-            return '''```python
-def quicksort(arr):
-    if len(arr) <= 1:
-        return arr
-    pivot = arr[len(arr) // 2]
-    left = [x for x in arr if x < pivot]
-    middle = [x for x in arr if x == pivot]
-    right = [x for x in arr if x > pivot]
-    return quicksort(left) + middle + quicksort(right)
-```'''
+            return '''I'll implement quicksort and test it.
+
+<function_call>
+{"name": "execute_code", "arguments": {"code": "def quicksort(arr):\\n    if len(arr) <= 1:\\n        return arr\\n    pivot = arr[len(arr) // 2]\\n    left = [x for x in arr if x < pivot]\\n    middle = [x for x in arr if x == pivot]\\n    right = [x for x in arr if x > pivot]\\n    return quicksort(left) + middle + quicksort(right)\\n\\nprint(quicksort([3,1,4,1,5,9,2,6]))"}}
+</function_call>
+'''
         
-        return '''```python
-def solution():
-    pass
-```'''
+        return '''I'll write a solution for this task.
+
+<function_call>
+{"name": "execute_code", "arguments": {"code": "def solution():\\n    return 'done'\\n\\nprint(solution())"}}
+</function_call>
+'''
     
     def _real_generate(
         self,
