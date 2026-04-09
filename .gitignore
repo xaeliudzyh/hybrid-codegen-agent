@@ -2,6 +2,7 @@ stuff/
 .venv/
 venv/
 tests/
+tasks_for_debugging/
 src/*/__pycache__
 tasks/
 

@@ -12,3 +12,6 @@ CUDA_VISIBLE_DEVICES=0  python scripts/run_agent.py --engine diffusion --model G
 
 # Diffusion + speculative (structural_boost)
 CUDA_VISIBLE_DEVICES=0  python scripts/run_agent.py --engine diffusion --model GSAI-ML/LLaDA-8B-Instruct --device cuda --with-early-detection --remasking structural_boost --structural_boost 0.2 --structural_window 2 --task tasks_for_debugging/fibonacci_large.txt
+
+# Diffusion + speculative (entropy)
+CUDA_VISIBLE_DEVICES=0  python scripts/run_agent.py --engine diffusion --model GSAI-ML/LLaDA-8B-Instruct --device cuda --with-early-detection --remasking entropy --task tasks_for_debugging/fibonacci_large.txt
