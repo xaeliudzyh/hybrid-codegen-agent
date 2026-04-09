@@ -273,6 +273,10 @@ class DiffusionEngine(GenerativeEngine):
                     )
                 elif self._remasking == 'random':
                     x0_p = torch.rand((x0.shape[0], x0.shape[1]), device=device)
+                elif self._remasking == 'entropy':
+                    p = F.softmax(logits, dim=-1)
+                    log_p = torch.log(p.clamp(min=1e-10))
+                    x0_p = (p * log_p).sum(dim=-1)
                 elif self._remasking == 'fc_priority':
                     p = F.softmax(logits, dim=-1)
                     x0_p = torch.squeeze(

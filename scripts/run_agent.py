@@ -109,7 +109,7 @@ def main():
     parser.add_argument(
         "--remasking",
         type=str,
-        choices=["low_confidence", "random", "fc_priority", "structural_boost"],
+        choices=["low_confidence", "random", "entropy", "fc_priority", "structural_boost"],
         default="low_confidence",
         help="Remasking strategy for diffusion engine. Default is 'low_confidence'",
     )
