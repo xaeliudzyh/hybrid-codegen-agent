@@ -4,6 +4,8 @@ venv/
 tests/
 tasks_for_debugging/
 src/*/__pycache__
+src/experiments/results/
+src/experiments/humaneval_data.*
 tasks/
 
 .DS_Store
