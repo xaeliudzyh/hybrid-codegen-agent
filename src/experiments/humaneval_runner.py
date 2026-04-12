@@ -6,9 +6,11 @@ Mode 2 (agent): prompt -> agent pipeline (with optional speculative execution) -
 """
 
 import json
+import re
 import time
 import math
 import signal
+import textwrap
 import traceback
 from pathlib import Path
 from dataclasses import dataclass, field, asdict
@@ -135,6 +137,93 @@ def pass_at_k(n: int, c: int, k: int) -> float:
 COMPLETION_SYSTEM_PROMPT = "Complete the following Python function. Output ONLY the function body, no explanation."
 
 
+def _clean_completion(raw: str, entry_point: str) -> str:
+    """Post-process model output: strip markdown, preamble, function re-declarations; fix indent."""
+    text = raw
+    m = re.search(r'```(?:\w*)\s*\n(.*?)```', text, re.DOTALL)
+    if m:
+        text = m.group(1)
+    lines = text.split('\n')
+    code_start = 0
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if not stripped:
+            code_start = i + 1
+            continue
+        if re.match(
+            r'(?i)^(sure[!,. ]|here\s+(is|are)|the\s+function|i\s+(can|will|would)|'
+            r'this\s+(is|function|will)|below|note\s*:|output\s*:|answer\s*:)',
+            stripped,
+        ):
+            code_start = i + 1
+            continue
+        break
+    text = '\n'.join(lines[code_start:])
+    # If completion re-declares the target function, extract body only
+    func_re = re.compile(rf'^[ \t]*def\s+{re.escape(entry_point)}\s*\(', re.MULTILINE)
+    match = func_re.search(text)
+    if match:
+        after = text[match.start():]
+        depth = 0
+        colon_pos = None
+        for j, ch in enumerate(after):
+            if ch == '(':
+                depth += 1
+            elif ch == ')':
+                depth -= 1
+            elif ch == ':' and depth == 0 and j > 4:
+                colon_pos = j
+                break
+        if colon_pos is not None:
+            nl = after.find('\n', colon_pos)
+            if nl >= 0:
+                body = after[nl + 1:]
+                # skip embedded docstring
+                temp = body.lstrip('\n')
+                for q in ('"""', "'''"):
+                    if temp.lstrip().startswith(q):
+                        qi = temp.find(q)
+                        qj = temp.find(q, qi + 3)
+                        if qj >= 0:
+                            body = temp[qj + 3:].lstrip('\n')
+                        break
+                text = body
+
+    out_lines: list[str] = []
+    for i, line in enumerate(text.split('\n')):
+        stripped = line.strip()
+        if i > 0 and stripped and not line.startswith((' ', '\t')):
+            if re.match(r'^(def |class |import |from |if __name__|@)', stripped):
+                break
+        out_lines.append(line)
+    text = '\n'.join(out_lines)
+    lines = text.rstrip('\n').split('\n')
+    first_indent = None
+    for line in lines:
+        if line.strip():
+            first_indent = len(line) - len(line.lstrip())
+            break
+    if first_indent is None:
+        return '    pass\n'
+    delta = 4 - first_indent
+    if delta != 0:
+        new_lines: list[str] = []
+        for line in lines:
+            if not line.strip():
+                new_lines.append('')
+            elif delta > 0:
+                new_lines.append(' ' * delta + line)
+            else:
+                remove = min(-delta, len(line) - len(line.lstrip()))
+                new_lines.append(line[remove:])
+        lines = new_lines
+    text = '\n'.join(lines)
+
+    if not text.endswith('\n'):
+        text += '\n'
+    return text
+
+
 def run_engine_mode(
     engine: GenerativeEngine,
     tasks: list[HumanEvalTask],
@@ -165,7 +254,7 @@ def run_engine_mode(
                 prompt, max_tokens=max_tokens, temperature=temperature,
             )
             gen_time = time.perf_counter() - t0
-            completion = result.text
+            completion = _clean_completion(result.text, task.entry_point)
             passed, err = check_correctness(completion, task)
             samples.append(TaskResult(
                 task_id=task.task_id,
