@@ -38,7 +38,6 @@ def load_humaneval(path: Optional[str] = None) -> list[HumanEvalTask]:
             if p.exists():
                 path = str(p)
                 break
-
     if path is None:
         path = str(_download_humaneval())
 
@@ -47,7 +46,6 @@ def load_humaneval(path: Optional[str] = None) -> list[HumanEvalTask]:
     if path.endswith(".gz"):
         import gzip
         open_fn = gzip.open
-
     with open_fn(path, "rt", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
@@ -133,7 +131,6 @@ def pass_at_k(n: int, c: int, k: int) -> float:
     if n - c < k:
         return 1.0
     return 1.0 - math.prod((n - c - i) / (n - i) for i in range(k))
-
 
 COMPLETION_SYSTEM_PROMPT = "Complete the following Python function. Output ONLY the function body, no explanation."
 

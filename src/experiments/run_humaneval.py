@@ -25,18 +25,15 @@ def build_parser() -> argparse.ArgumentParser:
 
     p.add_argument("--data", type=str, default=None)
     p.add_argument("--limit", type=int, default=None)
-
     p.add_argument("--mode", choices=["engine", "agent"], default="engine")
     p.add_argument("--k", type=int, default=1)
-
     p.add_argument("--engine", choices=["autoregressive", "diffusion"], default="autoregressive")
     p.add_argument("--model", type=str, default="unsloth/llama-2-7b-chat")
     p.add_argument("--device", type=str, default="auto")
     p.add_argument("--use-stub", dest="use_stub", action="store_true")
-
     p.add_argument("--max_tokens", type=int, default=512)
     p.add_argument("--temperature", type=float, default=None)
-
+    
     p.add_argument("--steps", type=int, default=128)
     p.add_argument("--block_length", type=int, default=32)
     p.add_argument("--remasking", type=str, default="low_confidence",
@@ -44,8 +41,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--fc_boost", type=float, default=0.15)
     p.add_argument("--structural_boost", type=float, default=0.15)
     p.add_argument("--structural_window", type=int, default=2)
-
-    p.add_argument("--max_iterations", type=int, default=3)
+    p.add_argument("--max_iterations", type=int, default=1)
     p.add_argument("--speculative", action="store_true")
     p.add_argument("--min_step_ratio", type=float, default=0.1)
     p.add_argument("--check_interval", type=int, default=1)
@@ -81,7 +77,6 @@ def main():
             structural_boost=args.structural_boost,
             structural_window=args.structural_window,
         )
-
     print(f"\nEngine: {engine.engine_type} ({engine.model_name})")
     if args.engine == "diffusion":
         print(f"Remasking: {args.remasking} | Steps: {args.steps}")
@@ -117,7 +112,6 @@ def main():
     if args.output:
         save_results(bench, args.output)
     else:
-        # Default output path
         suffix = f"{args.engine}_{args.remasking}_{args.mode}_k{args.k}"
         default_path = str(Path(__file__).parent / "results" / f"humaneval_{suffix}.json")
         save_results(bench, default_path)
