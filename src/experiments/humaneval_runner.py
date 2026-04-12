@@ -140,6 +140,8 @@ COMPLETION_SYSTEM_PROMPT = "Complete the following Python function. Output ONLY 
 def _clean_completion(raw: str, entry_point: str) -> str:
     """Post-process model output: strip markdown, preamble, function re-declarations; fix indent."""
     text = raw
+    text = text.replace('`', '')
+
     m = re.search(r'```(?:\w*)\s*\n(.*?)```', text, re.DOTALL)
     if m:
         text = m.group(1)
@@ -159,9 +161,11 @@ def _clean_completion(raw: str, entry_point: str) -> str:
             continue
         break
     text = '\n'.join(lines[code_start:])
-    # If completion re-declares the target function, extract body only
     func_re = re.compile(rf'^[ \t]*def\s+{re.escape(entry_point)}\s*\(', re.MULTILINE)
     match = func_re.search(text)
+    if not match:
+        func_re = re.compile(rf'^[ \t]*{re.escape(entry_point)}\s*\(', re.MULTILINE)
+        match = func_re.search(text)
     if match:
         after = text[match.start():]
         depth = 0
@@ -246,7 +250,7 @@ def run_engine_mode(
     )
 
     for ti, task in enumerate(tasks):
-        prompt = f"{sys_prompt}\n\n{task.prompt}"
+        prompt = f"{sys_prompt}\nTask:\n{task.prompt}"
         samples: list[TaskResult] = []
         for si in range(k):
             t0 = time.perf_counter()
