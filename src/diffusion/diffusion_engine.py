@@ -69,7 +69,7 @@ class DiffusionEngine(GenerativeEngine):
         model_name_or_path: str = "GSAI-ML/LLaDA-8B-Instruct",
         device: str = "auto",
         steps: int = 128,
-        block_length: int = 32,
+        block_length: int = 128,
         cfg_scale: float = 0.0,
         remasking: str = "low_confidence",
         # new remask. strategies params
@@ -328,7 +328,7 @@ class DiffusionEngine(GenerativeEngine):
     def generate(
         self,
         prompt: str,
-        max_tokens: int = 1024,
+        max_tokens: int = 128,
         temperature: float = 0.3,
         stop_sequences: Optional[list[str]] = None,
     ) -> GenerationResult:

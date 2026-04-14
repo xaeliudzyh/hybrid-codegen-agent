@@ -94,6 +94,13 @@ class BenchmarkResult:
     mode: str                              # "engine" or "agent"
     k: int
     n_tasks: int
+    temperature: Optional[float] = None
+    max_tokens: Optional[int] = None
+    diffusion_steps: Optional[int] = None
+    block_length: Optional[int] = None
+    fc_boost: Optional[float] = None
+    structural_boost: Optional[float] = None
+    structural_window: Optional[int] = None
     results: list[list[TaskResult]] = field(default_factory=list)
     pass_at_k: Optional[float] = None
     mean_generation_time_s: Optional[float] = None
@@ -247,6 +254,13 @@ def run_engine_mode(
         mode="engine",
         k=k,
         n_tasks=len(tasks),
+        temperature=temperature,
+        max_tokens=max_tokens,
+        diffusion_steps=getattr(engine, '_steps', None),
+        block_length=getattr(engine, '_block_length', None),
+        fc_boost=getattr(engine, '_fc_boost', None),
+        structural_boost=getattr(engine, '_structural_boost_value', None),
+        structural_window=getattr(engine, '_structural_window', None),
     )
 
     for ti, task in enumerate(tasks):
@@ -301,6 +315,13 @@ def run_agent_mode(
         mode="agent" + ("+speculative" if speculative else ""),
         k=k,
         n_tasks=len(tasks),
+        temperature=temperature,
+        max_tokens=max_tokens,
+        diffusion_steps=getattr(engine, '_steps', None),
+        block_length=getattr(engine, '_block_length', None),
+        fc_boost=getattr(engine, '_fc_boost', None),
+        structural_boost=getattr(engine, '_structural_boost_value', None),
+        structural_window=getattr(engine, '_structural_window', None),
     )
 
     for ti, task in enumerate(tasks):
@@ -393,6 +414,13 @@ def save_results(bench: BenchmarkResult, path: str) -> None:
         "mode": bench.mode,
         "k": bench.k,
         "n_tasks": bench.n_tasks,
+        "temperature": bench.temperature,
+        "max_tokens": bench.max_tokens,
+        "diffusion_steps": bench.diffusion_steps,
+        "block_length": bench.block_length,
+        "fc_boost": bench.fc_boost,
+        "structural_boost": bench.structural_boost,
+        "structural_window": bench.structural_window,
         "pass_at_k": bench.pass_at_k,
         "mean_generation_time_s": bench.mean_generation_time_s,
         "tasks": [],
@@ -419,6 +447,14 @@ def print_summary(bench: BenchmarkResult) -> None:
     print(f"  Mode:      {bench.mode}")
     print(f"  k:         {bench.k}")
     print(f"  Tasks:     {bench.n_tasks}")
+    print(f"  Temp:      {bench.temperature}")
+    print(f"  MaxTokens: {bench.max_tokens}")
+    if bench.diffusion_steps is not None:
+        print(f"  Steps:     {bench.diffusion_steps}  BlockLen: {bench.block_length}")
+    if bench.fc_boost is not None:
+        print(f"  FC boost:  {bench.fc_boost}")
+    if bench.structural_boost is not None:
+        print(f"  Struct:    boost={bench.structural_boost} window={bench.structural_window}")
     print(f"  pass@{bench.k}:   {bench.pass_at_k:.4f}  ({bench.pass_at_k * 100:.1f}%)")
     print(f"  Mean gen:  {bench.mean_generation_time_s:.2f}s")
 

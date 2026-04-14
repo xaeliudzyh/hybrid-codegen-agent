@@ -31,11 +31,11 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--model", type=str, default="unsloth/llama-2-7b-chat")
     p.add_argument("--device", type=str, default="auto")
     p.add_argument("--use-stub", dest="use_stub", action="store_true")
-    p.add_argument("--max_tokens", type=int, default=512)
+    p.add_argument("--max_tokens", type=int, default=128)
     p.add_argument("--temperature", type=float, default=None)
     
     p.add_argument("--steps", type=int, default=128)
-    p.add_argument("--block_length", type=int, default=32)
+    p.add_argument("--block_length", type=int, default=128)
     p.add_argument("--remasking", type=str, default="low_confidence",
                    choices=["low_confidence", "random", "entropy", "fc_priority", "structural_boost"])
     p.add_argument("--fc_boost", type=float, default=0.15)
