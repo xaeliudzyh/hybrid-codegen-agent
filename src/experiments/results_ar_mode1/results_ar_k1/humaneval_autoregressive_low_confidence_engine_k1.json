@@ -1,0 +1,92 @@
+{
+  "engine_type": "autoregressive",
+  "model_name": "unsloth/llama-2-7b-chat",
+  "remasking": null,
+  "mode": "engine",
+  "k": 1,
+  "n_tasks": 5,
+  "pass_at_k": 0.0,
+  "mean_generation_time_s": 1.3174116611480713e-05,
+  "tasks": [
+    {
+      "task_id": "HumanEval/0",
+      "samples": [
+        {
+          "task_id": "HumanEval/0",
+          "passed": false,
+          "completion": "I'll write a solution for this task.\n\n<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"def solution():\\n    return 'done'\\n\\nprint(solution())\"}}\n</function_call>\n",
+          "error": "SyntaxError: unterminated string literal (detected at line 12) (<string>, line 12)",
+          "generation_time_s": 1.8268823623657227e-05,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/1",
+      "samples": [
+        {
+          "task_id": "HumanEval/1",
+          "passed": false,
+          "completion": "I'll write a solution for this task.\n\n<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"def solution():\\n    return 'done'\\n\\nprint(solution())\"}}\n</function_call>\n",
+          "error": "SyntaxError: unterminated string literal (detected at line 12) (<string>, line 12)",
+          "generation_time_s": 1.512095332145691e-05,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/2",
+      "samples": [
+        {
+          "task_id": "HumanEval/2",
+          "passed": false,
+          "completion": "I'll write a solution for this task.\n\n<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"def solution():\\n    return 'done'\\n\\nprint(solution())\"}}\n</function_call>\n",
+          "error": "SyntaxError: unterminated string literal (detected at line 12) (<string>, line 12)",
+          "generation_time_s": 1.055002212524414e-05,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/3",
+      "samples": [
+        {
+          "task_id": "HumanEval/3",
+          "passed": false,
+          "completion": "I'll write a solution for this task.\n\n<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"def solution():\\n    return 'done'\\n\\nprint(solution())\"}}\n</function_call>\n",
+          "error": "SyntaxError: unterminated string literal (detected at line 13) (<string>, line 13)",
+          "generation_time_s": 1.0551884770393372e-05,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/4",
+      "samples": [
+        {
+          "task_id": "HumanEval/4",
+          "passed": false,
+          "completion": "I'll write a solution for this task.\n\n<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"def solution():\\n    return 'done'\\n\\nprint(solution())\"}}\n</function_call>\n",
+          "error": "SyntaxError: unterminated string literal (detected at line 13) (<string>, line 13)",
+          "generation_time_s": 1.1378899216651917e-05,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    }
+  ]
+}

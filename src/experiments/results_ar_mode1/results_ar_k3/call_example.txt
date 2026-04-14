@@ -1,0 +1,6 @@
+source .venv/bin/activate
+export CUDA_VISIBLE_DEVICES=4
+MODEL_AR=unsloth/llama-2-7b-chat
+DEVICE=cuda
+export OUTDIR=src/experiments/results_ar_mode1/results_ar_k3
+python src/experiments/run_humaneval.py   --engine autoregressive --model $MODEL_AR --temperature 0.00   --device $DEVICE     --k 3 -o $OUTDIR/engine_ar_t0_0.json
