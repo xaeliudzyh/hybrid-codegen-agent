@@ -2,25 +2,25 @@ source .venv/bin/activate
 export CUDA_VISIBLE_DEVICES=4
 MODEL_DIFF=GSAI-ML/LLaDA-8B-Instruct
 DEVICE=cuda
-export OUTDIR=src/experiments/results_df_mode1/results_df_lc_k1
+export OUTDIR=src/experiments/results_df_mode1/results_df_en_k1
 
 for TEMP in 0.0 0.2 0.4 0.6 0.8 1.0; do
     python src/experiments/run_humaneval.py \
         --engine diffusion --model $MODEL_DIFF --device $DEVICE \
-        --remasking low_confidence --temperature $TEMP \
+        --remasking entropy --temperature $TEMP \
         --k 1 -o $OUTDIR/sweep_t${TEMP}.json
 done
 
 for TEMP in 0.1 0.3 0.5 0.7 0.9; do
     python src/experiments/run_humaneval.py \
         --engine diffusion --model $MODEL_DIFF --device $DEVICE \
-        --remasking low_confidence --temperature $TEMP \
+        --remasking entropy --temperature $TEMP \
         --k 1 -o $OUTDIR/sweep_t${TEMP}.json
 done
 
 for TEMP in 0.00 0.10 0.20 0.30 0.40 0.50 0.60 0.70 0.80 0.90 1.00; do
     python src/experiments/run_humaneval.py \
         --engine diffusion --model $MODEL_DIFF --device $DEVICE \
-        --remasking low_confidence --temperature $TEMP \
+        --remasking entropy --temperature $TEMP \
         --k 1 -o $OUTDIR/sweep_t${TEMP}.json
 done
