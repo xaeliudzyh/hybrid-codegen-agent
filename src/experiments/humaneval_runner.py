@@ -24,11 +24,6 @@ _FC_CODE_RE = re.compile(
     re.DOTALL,
 )
 
-_FC_CODE_TRUNC_RE = re.compile(
-    r'<function_call>.*?"code"\s*:\s*"(.*)',
-    re.DOTALL,
-)
-
 
 def _unescape_json_str(code: str) -> str:
     code = code.replace('\\\\', '\x00')
@@ -45,15 +40,6 @@ def _extract_fc_code(raw_output: str) -> str:
     m = _FC_CODE_RE.search(raw_output)
     if m:
         return _unescape_json_str(m.group(1))
-
-    # Truncated FC (no closing tag) — take everything after "code": "
-    m = _FC_CODE_TRUNC_RE.search(raw_output)
-    if m:
-        code = m.group(1)
-        # Strip trailing incomplete JSON artifacts
-        code = re.sub(r'"\s*\}*\s*$', '', code)
-        return _unescape_json_str(code)
-
     return ""
 
 
@@ -116,6 +102,7 @@ class TaskResult:
     passed: bool
     completion: str
     error: Optional[str] = None
+    raw_output: Optional[str] = None
     generation_time_s: float = 0.0
     detection_step: Optional[int] = None
     total_steps: Optional[int] = None
@@ -327,7 +314,20 @@ def run_engine_mode(
     return bench
 
 
-AGENT_TASK_TEMPLATE = "Complete the following Python function and execute it to verify:\n\n{prompt}"
+AGENT_SYSTEM_PROMPT = (
+    "You are a Python code assistant with access to an execute_code tool.\n"
+    "You will be given a Python function signature with a docstring.\n"
+    "Your job is to write ONLY the function body — the indented code that goes after the docstring.\n"
+    "Do NOT repeat the function signature or docstring.\n"
+    "Do NOT add print statements, asserts, or test calls.\n"
+    "Wrap the body code inside a single execute_code function call."
+)
+
+AGENT_TASK_TEMPLATE = (
+    "Complete the body of the following Python function.\n"
+    "Output ONLY the indented body code (what goes after the docstring), nothing else.\n\n"
+    "{prompt}"
+)
 
 
 def run_agent_mode(
@@ -403,7 +403,7 @@ def run_agent_mode(
                     break
             if not fc_code:
                 fc_code = _extract_fc_code(agent_result.raw_output)
-            raw_code = fc_code if fc_code else agent_result.generated_code
+            raw_code = fc_code
             completion = _clean_completion(raw_code, task.entry_point)
             passed, err = check_correctness(completion, task)
 
@@ -420,6 +420,7 @@ def run_agent_mode(
                 passed=passed,
                 completion=completion,
                 error=err,
+                raw_output=agent_result.raw_output,
                 generation_time_s=gen_time,
                 detection_step=det_step,
                 total_steps=tot_steps,

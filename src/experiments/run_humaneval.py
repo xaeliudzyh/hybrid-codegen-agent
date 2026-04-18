@@ -17,6 +17,7 @@ from experiments.humaneval_runner import (
     run_agent_mode,
     save_results,
     print_summary,
+    AGENT_SYSTEM_PROMPT,
 )
 
 
@@ -94,7 +95,8 @@ def main():
         )
     else:
         registry = create_default_registry()
-        agent = CodeGenAgent(engine=engine, function_registry=registry)
+        agent = CodeGenAgent(engine=engine, function_registry=registry,
+                             system_prompt=AGENT_SYSTEM_PROMPT)
         bench = run_agent_mode(
             agent=agent,
             tasks=tasks,
