@@ -357,7 +357,13 @@ def run_agent_mode(
                 continue
 
             gen_time = time.perf_counter() - t0
-            completion = agent_result.generated_code
+            fc_code = ""
+            for fc in agent_result.function_calls:
+                if fc.name == "execute_code" and fc.arguments.get("code"):
+                    fc_code = fc.arguments["code"]
+                    break
+            raw_code = fc_code if fc_code else agent_result.generated_code
+            completion = _clean_completion(raw_code, task.entry_point)
             passed, err = check_correctness(completion, task)
 
             det_step = tot_steps = spec_hit = t_saved = None
