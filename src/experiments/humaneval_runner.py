@@ -19,6 +19,43 @@ from typing import Optional
 from engines.base import GenerativeEngine, GenerationResult
 from agent.code_gen_agent import CodeGenAgent, AgentResult
 
+_FC_CODE_RE = re.compile(
+    r'<function_call>.*?"code"\s*:\s*"(.*?)"?\s*\}+\s*</function_call>',
+    re.DOTALL,
+)
+
+_FC_CODE_TRUNC_RE = re.compile(
+    r'<function_call>.*?"code"\s*:\s*"(.*)',
+    re.DOTALL,
+)
+
+
+def _unescape_json_str(code: str) -> str:
+    code = code.replace('\\\\', '\x00')
+    code = code.replace('\\n', '\n')
+    code = code.replace('\\t', '\t')
+    code = code.replace('\\r', '\r')
+    code = code.replace('\\"', '"')
+    code = code.replace('\\/', '/')
+    code = code.replace('\x00', '\\')
+    return code
+
+
+def _extract_fc_code(raw_output: str) -> str:
+    m = _FC_CODE_RE.search(raw_output)
+    if m:
+        return _unescape_json_str(m.group(1))
+
+    # Truncated FC (no closing tag) — take everything after "code": "
+    m = _FC_CODE_TRUNC_RE.search(raw_output)
+    if m:
+        code = m.group(1)
+        # Strip trailing incomplete JSON artifacts
+        code = re.sub(r'"\s*\}*\s*$', '', code)
+        return _unescape_json_str(code)
+
+    return ""
+
 
 HUMANEVAL_URL = "https://raw.githubusercontent.com/openai/human-eval/master/data/HumanEval.jsonl.gz"
 
@@ -204,7 +241,7 @@ def _clean_completion(raw: str, entry_point: str) -> str:
     for i, line in enumerate(text.split('\n')):
         stripped = line.strip()
         if i > 0 and stripped and not line.startswith((' ', '\t')):
-            if re.match(r'^(def |class |import |from |if __name__|@)', stripped):
+            if re.match(r'^(def |class |import |from |if __name__|@|print\b|assert )', stripped):
                 break
         out_lines.append(line)
     text = '\n'.join(out_lines)
@@ -357,11 +394,15 @@ def run_agent_mode(
                 continue
 
             gen_time = time.perf_counter() - t0
+
+            # Try parsed FC args first, then fallback regex for malformed JSON
             fc_code = ""
             for fc in agent_result.function_calls:
                 if fc.name == "execute_code" and fc.arguments.get("code"):
                     fc_code = fc.arguments["code"]
                     break
+            if not fc_code:
+                fc_code = _extract_fc_code(agent_result.raw_output)
             raw_code = fc_code if fc_code else agent_result.generated_code
             completion = _clean_completion(raw_code, task.entry_point)
             passed, err = check_correctness(completion, task)

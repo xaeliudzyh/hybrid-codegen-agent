@@ -132,8 +132,7 @@ class CodeGenAgent:
     def _default_system_prompt(self) -> str:
         return """You are a Python code assistant with access to an execute_code tool.
 You MUST use the execute_code function to run any code you write. NEVER output bare code without wrapping it in a function call.
-Always put ALL code (imports, function definitions, calls, print statements) in a SINGLE execute_code call.
-Respond with a brief plan (1-2 sentences), then immediately call execute_code."""
+Always put ALL code (imports, function definitions, calls, print statements) in a SINGLE execute_code call."""
     
     def _build_prompt(self, task: str) -> str:
         """Build the full prompt including system prompt, available functions, and task."""
