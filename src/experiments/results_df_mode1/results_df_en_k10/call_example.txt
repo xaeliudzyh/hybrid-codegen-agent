@@ -24,3 +24,8 @@ for TEMP in 0.00 0.10 0.20 0.30 0.40 0.50 0.60 0.70 0.80 0.90 1.00; do
         --remasking entropy --temperature $TEMP \
         --k 10 -o $OUTDIR/sweep_t${TEMP}.json
 done
+
+python src/experiments/run_humaneval.py \
+        --engine diffusion --model $MODEL_DIFF --device $DEVICE \
+        --remasking entropy --temperature 1.0 \
+        --k 10 -o $OUTDIR/sweep_t1.0.json
