@@ -1,0 +1,2807 @@
+{
+  "engine_type": "diffusion",
+  "model_name": "GSAI-ML/LLaDA-8B-Instruct",
+  "remasking": "fc_priority",
+  "mode": "agent",
+  "k": 1,
+  "n_tasks": 164,
+  "temperature": 0.2,
+  "max_tokens": 512,
+  "diffusion_steps": 128,
+  "block_length": 128,
+  "fc_boost": 0.15,
+  "structural_boost": 0.15,
+  "structural_window": 2,
+  "pass_at_k": 0.1524390243902439,
+  "mean_generation_time_s": 9.220848056841511,
+  "tasks": [
+    {
+      "task_id": "HumanEval/0",
+      "samples": [
+        {
+          "task_id": "HumanEval/0",
+          "passed": false,
+          "completion": "    for i in range(len(numbers) - 1):\n if abs(numbers[i] - numbers[i + 1]) < threshold:\n return True\n    return False\n",
+          "error": "IndentationError: unindent does not match any outer indentation level (<string>, line 13)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    for i in range(len(numbers) - 1):\\n if abs(numbers[i] - numbers[i + 1]) < threshold:\\n return True\\n    return False\"}}\n</function_call>",
+          "generation_time_s": 8.60579411299841,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/1",
+      "samples": [
+        {
+          "task_id": "HumanEval/1",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    groups = []\n    stack = []\n       for char in paren_string:\n        # if char == '(':\n        #     stack.append(char)\n        # elif char == ')':\n        #     stack.append()\n        # elif char == '(':\n        #     stack.append('('\n        # elif char == ')':\n        #     stack.append())')\n        if if char == '(':\n            stack.append(char)\n        elif elif char == ')':\n            if stack stack\n                groups.append(''.join(stack))\"}}\n</function",
+          "generation_time_s": 12.27934186499624,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/2",
+      "samples": [
+        {
+          "task_id": "HumanEval/2",
+          "passed": true,
+          "completion": "    return number - int(number)\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return number - int(number)}}\n</function_call>",
+          "generation_time_s": 8.06989474799775,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/3",
+      "samples": [
+        {
+          "task_id": "HumanEval/3",
+          "passed": false,
+          "completion": "    balance = 0\n    for operation in operations:\n        balance += operation\n        if balance < 0:\n            return True\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    balance = 0\\n    for operation in operations:\\n        balance += operation\\n        if balance < 0:\\n            return True\"}}\n</function_call>",
+          "generation_time_s": 8.188794294997933,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/4",
+      "samples": [
+        {
+          "task_id": "HumanEval/4",
+          "passed": true,
+          "completion": "    mean = sum(numbers) / len(numbers)\n    mad = sum(abs(x - mean) for x in numbers) / len(numbers)\n    return mad\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    mean = sum(numbers) / len(numbers)\\n    mad = sum(abs(x - mean) for x in numbers) / len(numbers)\\n    return mad\"}}\n</function_call>",
+          "generation_time_s": 8.203950932002044,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/5",
+      "samples": [
+        {
+          "task_id": "HumanEval/5",
+          "passed": false,
+          "completion": "    return [number + delimeter for x in numbers]\n",
+          "error": "NameError: name 'number' is not defined",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return [number + delimeter for x in numbers]\"}}\n</function_call>",
+          "generation_time_s": 8.129155435992288,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/6",
+      "samples": [
+        {
+          "task_id": "HumanEval/6",
+          "passed": false,
+          "completion": "    def = import()\\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    def = import()\n    \n",
+          "error": "SyntaxError: invalid syntax (<string>, line 12)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def = import()\\\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    def = import()\\n    \"}}\n</function_call>",
+          "generation_time_s": 16.416938259004382,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/7",
+      "samples": [
+        {
+          "task_id": "HumanEval/7",
+          "passed": true,
+          "completion": "    return [s for s in strings if substring in s]\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return [s for s in strings if substring in s]\"}}\n</function_call>",
+          "generation_time_s": 8.132250026988913,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/8",
+      "samples": [
+        {
+          "task_id": "HumanEval/8",
+          "passed": false,
+          "completion": "    if not numbers:\n        return 0, 1\n    return sum(numbers), product(numbers)\n",
+          "error": "NameError: name 'product' is not defined",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not numbers:\\n        return 0, 1\\n    return sum(numbers), product(numbers)\"}}\n</function_call>",
+          "generation_time_s": 8.201650601011352,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/9",
+      "samples": [
+        {
+          "task_id": "HumanEval/9",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    max_num = max(numbers)",
+          "generation_time_s": 8.142278172002989,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/10",
+      "samples": [
+        {
+          "task_id": "HumanEval/10",
+          "passed": false,
+          "completion": "    if is(stringal)\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 20)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if is(stringal)\"}\n</function_call>",
+          "generation_time_s": 8.672525895002764,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/11",
+      "samples": [
+        {
+          "task_id": "HumanEval/11",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    result = ''.join(str(int(char) ^ char in zip(a, b))\\n    return result\"}}\n</function",
+          "generation_time_s": 8.0855361460126,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/12",
+      "samples": [
+        {
+          "task_id": "HumanEval/12",
+          "passed": true,
+          "completion": "    if not strings:\n        return None\n    return max(strings, key=len)\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not strings:\\n        return None\\n    return max(strings, key=len)}}\n</function_call>",
+          "generation_time_s": 8.16682266400312,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/13",
+      "samples": [
+        {
+          "task_id": "HumanEval/13",
+          "passed": true,
+          "completion": "    while b != 0:\n        a, b = b, a % b\n    return a\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    while b != 0:\\n        a, b = b, a % b\\n    return a\\n}}\n</function_call>",
+          "generation_time_s": 8.025274265994085,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/14",
+      "samples": [
+        {
+          "task_id": "HumanEval/14",
+          "passed": false,
+          "completion": "    prefixes = []\n    for i in range(len(string) + 1)\n        prefixes.append(string[:i])\n    return prefixes\n",
+          "error": "SyntaxError: expected ':' (<string>, line 10)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    prefixes = []\\n    for i in range(len(string) + 1)\\n        prefixes.append(string[:i])\\n    return prefixes\"}}\n</function_call>",
+          "generation_time_s": 7.980833095993148,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/15",
+      "samples": [
+        {
+          "task_id": "HumanEval/15",
+          "passed": true,
+          "completion": "    return ' '.join(map(str, range(n + 1)))\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return ' '.join(map(str, range(n + 1)))}}\n</function_call>",
+          "generation_time_s": 8.027377848004107,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/16",
+      "samples": [
+        {
+          "task_id": "HumanEval/16",
+          "passed": true,
+          "completion": "    distinct_characters = set(string.lower())\n    return len(distinct_characters)\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    distinct_characters = set(string.lower())\\n    return len(distinct_characters)}}\n</function_call>",
+          "generation_time_s": 8.02975711900217,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/17",
+      "samples": [
+        {
+          "task_id": "HumanEval/17",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    notes = import re\\n    for note in music_string.split(' ')\\n        match = note \"\"}}\n</function_call",
+          "generation_time_s": 8.70135796899558,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/18",
+      "samples": [
+        {
+          "task_id": "HumanEval/18",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    count = 0\\n    while True:\n        if string.endswith(substring)\\n        count += 1\\n    return count\"}}",
+          "generation_time_s": 8.104988965002121,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/19",
+      "samples": [
+        {
+          "task_id": "HumanEval/19",
+          "passed": false,
+          "completion": "    numbers = numbers.split()\n    numbers.sort()\n    return ' '.join(numbers)}}\n",
+          "error": "SyntaxError: unmatched '}' (<string>, line 13)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    numbers = numbers.split()\\n    numbers.sort()\\n    return ' '.join(numbers)}}\"}\n</function_call>",
+          "generation_time_s": 8.176122377990396,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/20",
+      "samples": [
+        {
+          "task_id": "HumanEval/20",
+          "passed": false,
+          "completion": "    if len(numbers) < 2:\n        raise ValueError('The list must contain at least two elements.')\n\n\n    closest = = None\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 16)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if len(numbers) < 2:\\n        raise ValueError('The list must contain at least two elements.')\\n\\n\\n    closest = = None}}\n</function_call>",
+          "generation_time_s": 8.676608706999104,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/21",
+      "samples": [
+        {
+          "task_id": "HumanEval/21",
+          "passed": false,
+          "completion": "    return [(x - min(numbers)) / ((max(numbers)) for x in numbers\n",
+          "error": "SyntaxError: '(' was never closed (<string>, line 10)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return [(x - min(numbers)) / ((max(numbers)) for x in numbers\"}}\n</function_call>",
+          "generation_time_s": 8.236800478000077,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/22",
+      "samples": [
+        {
+          "task_id": "HumanEval/22",
+          "passed": true,
+          "completion": "    return [value for value in values if isinstance(value, int)]\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return [value for value in values if isinstance(value, int)]\"}}\n</function_call>",
+          "generation_time_s": 8.121760912996251,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/23",
+      "samples": [
+        {
+          "task_id": "HumanEval/23",
+          "passed": true,
+          "completion": "    return len(string)\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return len(string)\"}}\n</function_call>",
+          "generation_time_s": 7.924114188994281,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/24",
+      "samples": [
+        {
+          "task_id": "HumanEval/24",
+          "passed": false,
+          "completion": "    return n - 1\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return n - 1\"}}\n</function_call>",
+          "generation_time_s": 7.959750674999668,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/25",
+      "samples": [
+        {
+          "task_id": "HumanEval/25",
+          "passed": false,
+          "completion": "    factors = import List[int]\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 15)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    factors = import List[int]}}\n</function_call>",
+          "generation_time_s": 8.252652476003277,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/26",
+      "samples": [
+        {
+          "task_id": "HumanEval/26",
+          "passed": false,
+          "completion": "    seen = set()\\    result = []\\    for num in numbers:\n        if num not in seen:\n            seen.add(num)\n            result.append(num)\n    return result\n",
+          "error": "SyntaxError: unexpected character after line continuation character (<string>, line 10)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    seen = set()\\    result = []\\    for num in numbers:\\n        if num not in seen:\\n            seen.add(num)\\n            result.append(num)\\n    return result\"}}\n</function_call>",
+          "generation_time_s": 8.108508096003789,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/27",
+      "samples": [
+        {
+          "task_id": "HumanEval/27",
+          "passed": true,
+          "completion": "    return string.swapcase()\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return string.swapcase()}}\n</function_call>",
+          "generation_time_s": 7.941592566989129,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/28",
+      "samples": [
+        {
+          "task_id": "HumanEval/28",
+          "passed": true,
+          "completion": "    return ''.join(strings)\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return ''.join(strings)}}\n</function_call>",
+          "generation_time_s": 7.989280060006422,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/29",
+      "samples": [
+        {
+          "task_id": "HumanEval/29",
+          "passed": true,
+          "completion": "    return [s for s in strings if s.startswith(prefix)]\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return [s for s in strings if s.startswith(prefix)]\"}}\n</function_call>",
+          "generation_time_s": 8.11747209999885,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/30",
+      "samples": [
+        {
+          "task_id": "HumanEval/30",
+          "passed": true,
+          "completion": "    return [x for x in l if x > 0]\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return [x for x in l if x > 0]\"}}\n</function_call>",
+          "generation_time_s": 8.223030440989533,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/31",
+      "samples": [
+        {
+          "task_id": "HumanEval/31",
+          "passed": true,
+          "completion": "    if n <= 1:\n        return False\n    if n % 2 == 0:\n        return False\n    i = 3\n    while i * i <= n:\n        if n % i == 0:\n            return False\n        i += 2\n    return True\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if n <= 1:\\n        return False\\n    if n % 2 == 0:\\n        return False\\n    i = 3\\n    while i * i <= n:\\n        if n % i == 0:\\n            return False\\n        i += 2\\n    return True\"}}\n</function_call>",
+          "generation_time_s": 8.189297584001906,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/32",
+      "samples": [
+        {
+          "task_id": "HumanEval/32",
+          "passed": false,
+          "completion": "    import math(xs)())\n",
+          "error": "SyntaxError: unmatched ')' (<string>, line 24)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    import math(xs)())\"}}\n</function_call>",
+          "generation_time_s": 9.646732170003816,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/33",
+      "samples": [
+        {
+          "task_id": "HumanEval/33",
+          "passed": false,
+          "completion": "    n = len(l)\n",
+          "error": "TypeError: 'NoneType' object is not iterable",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    n = len(l)\"}}\n</function_call>",
+          "generation_time_s": 8.638938068994321,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/34",
+      "samples": [
+        {
+          "task_id": "HumanEval/34",
+          "passed": false,
+          "completion": "    seen = set()\n    result = []\n    for item in l:\n        if item not in seen:\n            seen.add(item)\n            result.append(item)\n    return sorted(result\n",
+          "error": "SyntaxError: '(' was never closed (<string>, line 14)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    seen = set()\\n    result = []\\n    for item in l:\\n        if item not in seen:\\n            seen.add(item)\\n            result.append(item)\\n    return sorted(result\"}}\n</function_call>",
+          "generation_time_s": 8.064481756009627,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/35",
+      "samples": [
+        {
+          "task_id": "HumanEval/35",
+          "passed": true,
+          "completion": "    if not l:\n        return None\n    return max(l)\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not l:\\n        return None\\n    return max(l)\"}}\n</function_call>",
+          "generation_time_s": 8.115180359993246,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/36",
+      "samples": [
+        {
+          "task_id": "HumanEval/36",
+          "passed": false,
+          "completion": "    count = 0\n    for i in range(1, n)\n        if i % 11 == 0 or i % 13 == 0:\n            count += 1\n    return count\n",
+          "error": "SyntaxError: expected ':' (<string>, line 13)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    count = 0\\n    for i in range(1, n)\\n        if i % 11 == 0 or i % 13 == 0:\\n            count += 1\\n    return count\"}}\n</function_call>",
+          "generation_time_s": 8.121537422994152,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/37",
+      "samples": [
+        {
+          "task_id": "HumanEval/37",
+          "passed": false,
+          "completion": "    even_indices = l\n",
+          "error": "TypeError: 'NoneType' object is not iterable",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    even_indices = l\"}}\n</function_call>",
+          "generation_time_s": 8.256405827007256,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/38",
+      "samples": [
+        {
+          "task_id": "HumanEval/38",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    # split string to groups. Each of length 3.\\n    groups = [s[(3 * i):min((3 * i + 3), len(s))] for i in range((len(s) + 2) // 3)]\\n    # cycle elements in each group. Unless group has fewer elements than 3.\\n    groups = [(group[1:] + group[0]) if len(group) == 3 else group for group in groups]\\n    return \"\".join(groups)}}\\\n</function_call>",
+          "generation_time_s": 13.046162081009243,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/39",
+      "samples": [
+        {
+          "task_id": "HumanEval/39",
+          "passed": false,
+          "completion": "    if is <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    elif n == 2:\n        return 2\n    elif n == 3:\n        return 3\n    elif n == 4:\n        return 5\n    elif n == 5:\n        return 8\n    elif n == 6:\n        return 13\n    elif n == 7:\n        return 21\n    elif n == 8:\n        return 34\n    elif n == 9:\n        return 55\n    elif n == 10:\n        return 89\n    elif n == 11:\n        return 144\n    elif n == 12:\n        return 233\n    elif n == 13:\n        return 377\n    elif n == 14:\n        return 610\n    elif n == 15:\n        return 987\n    elif n == 16:\n        return 1597\n    elif n == 17:\n        return 2584\n    elif n == 18:\n        return 4181\n    elif n == 19:\n        return 6765\n    elif n == 20:\n        return 10946\n    elif n == 21:\n        return 17711\n    elif n == 22:\n        return 28657\n    elif n == 23:\n        return 46368\n    elif n == 24:\n        return 75025\n    elif n == 25:\n        return 121393\n    elif n == 26:\n        return 196418\n    elif n == 27:\n        return 317811\n    elif n == 28:\n        return 514229\n    else:\n        raise ValueError(\"n must be a positive integer (1 <= 28)\")\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 17)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if is <= 0:\\n        return 0\\n    elif n == 1:\\n        return 1\\n    elif n == 2:\\n        return 2\\n    elif n == 3:\\n        return 3\\n    elif n == 4:\\n        return 5\\n    elif n == 5:\\n        return 8\\n    elif n == 6:\\n        return 13\\n    elif n == 7:\\n        return 21\\n    elif n == 8:\\n        return 34\\n    elif n == 9:\\n        return 55\\n    elif n == 10:\\n        return 89\\n    elif n == 11:\\n        return 144\\n    elif n == 12:\\n        return 233\\n    elif n == 13:\\n        return 377\\n    elif n == 14:\\n        return 610\\n    elif n == 15:\\n        return 987\\n    elif n == 16:\\n        return 1597\\n    elif n == 17:\\n        return 2584\\n    elif n == 18:\\n        return 4181\\n    elif n == 19:\\n        return 6765\\n    elif n == 20:\\n        return 10946\\n    elif n == 21:\\n        return 17711\\n    elif n == 22:\\n        return 28657\\n    elif n == 23:\\n        return 46368\\n    elif n == 24:\\n        return 75025\\n    elif n == 25:\\n        return 121393\\n    elif n == 26:\\n        return 196418\\n    elif n == 27:\\n        return 317811\\n    elif n == 28:\\n        return 514229\\n    else:\\n        raise ValueError(\"n must be a positive integer (1 <= 28)\")\"}}\n</function_call>",
+          "generation_time_s": 16.37213308700302,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/40",
+      "samples": [
+        {
+          "task_id": "HumanEval/40",
+          "passed": false,
+          "completion": "    return len(l)\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return len(l)}}\n</function_call>",
+          "generation_time_s": 8.67239794600755,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/41",
+      "samples": [
+        {
+          "task_id": "HumanEval/41",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if n == 0:\\n        return 0\\n    return n // 2\"}}\n</function_call",
+          "generation_time_s": 8.639898609995726,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/42",
+      "samples": [
+        {
+          "task_id": "HumanEval/42",
+          "passed": true,
+          "completion": "    return [x + 1 for x in l]\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return [x + 1 for x in l]}}\n</function_call>",
+          "generation_time_s": 8.225985082011903,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/43",
+      "samples": [
+        {
+          "task_id": "HumanEval/43",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return len(l)==0\"}}\n</function>",
+          "generation_time_s": 8.658759008991183,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/44",
+      "samples": [
+        {
+          "task_id": "HumanEval/44",
+          "passed": false,
+          "completion": "    if base >= 10:\n        raise ValueError('Invalid base number')\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if base >= 10:\\n        raise ValueError('Invalid base number')\"}}\n</function_call>",
+          "generation_time_s": 8.180163670011098,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/45",
+      "samples": [
+        {
+          "task_id": "HumanEval/45",
+          "passed": true,
+          "completion": "    return 0.5 * a * h\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return 0.5 * a * h\"}}\n</function_call>",
+          "generation_time_s": 7.95126774100936,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/46",
+      "samples": [
+        {
+          "task_id": "HumanEval/46",
+          "passed": false,
+          "completion": "    if n == 0:\n        return 0\n    elif n == 1:\n        return 0\n    elif n == 2:\n        return 2\n    elif n == 3:\n        return 0\n    elif: ==        return fib4(n-1) + fib4(n-2) + fib4(n-3) + fib4(n-4)\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 26)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if n == 0:\\n        return 0\\n    elif n == 1:\\n        return 0\\n    elif n == 2:\\n        return 2\\n    elif n == 3:\\n        return 0\\n    elif: ==        return fib4(n-1) + fib4(n-2) + fib4(n-3) + fib4(n-4)\"}}\n</function_call>",
+          "generation_time_s": 8.712730995001039,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/47",
+      "samples": [
+        {
+          "task_id": "HumanEval/47",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    l = sorted(l)\\n    return l[len(l) // 2]}}\n</function_call",
+          "generation_time_s": 8.09407611899951,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/48",
+      "samples": [
+        {
+          "task_id": "HumanEval/48",
+          "passed": true,
+          "completion": "    return text == text[::-1]\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return text == text[::-1]}}\n</function_call>",
+          "generation_time_s": 8.104107684004703,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/49",
+      "samples": [
+        {
+          "task_id": "HumanEval/49",
+          "passed": true,
+          "completion": "    return (2 **n) % p\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return (2 **n) % p\"}}\n</function_call>",
+          "generation_time_s": 8.224620731998584,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/50",
+      "samples": [
+        {
+          "task_id": "HumanEval/50",
+          "passed": false,
+          "completion": "    return \"\".join([chr(((ord(ch) - 5 + ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return \"\".join([chr(((ord(ch) - 5 + ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\"}}\n</function_call>",
+          "generation_time_s": 8.158482870989246,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/51",
+      "samples": [
+        {
+          "task_id": "HumanEval/51",
+          "passed": true,
+          "completion": "    vowels = 'aeiouAEIOU'\n    return ''.join([char for char in text if char not in vowels])\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    vowels = 'aeiouAEIOU'\\n    return ''.join([char for char in text if char not in vowels])\"}}\n</function_call>",
+          "generation_time_s": 8.277400746999774,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/52",
+      "samples": [
+        {
+          "task_id": "HumanEval/52",
+          "passed": true,
+          "completion": "    return all(x < t for x in l)\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return all(x < t for x in l)}}\n</function_call>",
+          "generation_time_s": 8.105134935001843,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/53",
+      "samples": [
+        {
+          "task_id": "HumanEval/53",
+          "passed": true,
+          "completion": "    return x + y\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return x + y\"}}\n</function_call>",
+          "generation_time_s": 7.978932904996327,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/54",
+      "samples": [
+        {
+          "task_id": "HumanEval/54",
+          "passed": false,
+          "completion": "    return sorted(s == sorted1\n",
+          "error": "SyntaxError: '(' was never closed (<string>, line 19)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return sorted(s == sorted1\"}}\n</function_call>",
+          "generation_time_s": 8.291211474002921,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/55",
+      "samples": [
+        {
+          "task_id": "HumanEval/55",
+          "passed": false,
+          "completion": "    if n <= 1:\n        return 1\n    return fib(n - 1) + fib(n - 2)\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if n <= 1:\\n        return 1\\n    return fib(n - 1) + fib(n - 2)\"}}\n</function_call>",
+          "generation_time_s": 7.990168959993753,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/56",
+      "samples": [
+        {
+          "task_id": "HumanEval/56",
+          "passed": false,
+          "completion": "    stack = []\n    for char in brackets:\n        if char == '[':\n            stack.append(char)\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    stack = []\\n    for char in brackets:\\n        if char == '[':\\n            stack.append(char)\"}}\n</function_call>",
+          "generation_time_s": 8.153419827998732,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/57",
+      "samples": [
+        {
+          "task_id": "HumanEval/57",
+          "passed": false,
+          "completion": "    if not l:\n        return True\n    return all(i <= l[i-1] for x in reversed(l))\n",
+          "error": "NameError: name 'i' is not defined",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not l:\\n        return True\\n    return all(i <= l[i-1] for x in reversed(l))\"}}\n</function_call>",
+          "generation_time_s": 8.113939748989651,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/58",
+      "samples": [
+        {
+          "task_id": "HumanEval/58",
+          "passed": true,
+          "completion": "    return sorted(set(l1) & set(l2))\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return sorted(set(l1) & set(l2))\"}}\n</function_call>",
+          "generation_time_s": 8.2492260440049,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/59",
+      "samples": [
+        {
+          "task_id": "HumanEval/59",
+          "passed": false,
+          "completion": "    if math > 2:\"\n",
+          "error": "SyntaxError: unterminated string literal (detected at line 10) (<string>, line 10)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if math > 2:\"\"}}\n</function_call>",
+          "generation_time_s": 8.031813689987757,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/60",
+      "samples": [
+        {
+          "task_id": "HumanEval/60",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return sum(range((n + 1,))\"}}\n</_call>",
+          "generation_time_s": 8.190011175000109,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/61",
+      "samples": [
+        {
+          "task_id": "HumanEval/61",
+          "passed": false,
+          "completion": "    stack = []\n    for char in brackets:\n        if char == '(':n            stack.append(char)\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 18)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    stack = []\\n    for char in brackets:\\n        if char == '(':n            stack.append(char)\"}}\n</function_call>",
+          "generation_time_s": 8.153810239004088,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/62",
+      "samples": [
+        {
+          "task_id": "HumanEval/62",
+          "passed": false,
+          "completion": "    result = []\\    for i in range(len(xs)):\n        result.append(i * xs[i])\n    return result\n",
+          "error": "SyntaxError: unexpected character after line continuation character (<string>, line 12)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    result = []\\    for i in range(len(xs)):\\n        result.append(i * xs[i])\\n    return result\"}}\n</function_call>",
+          "generation_time_s": 8.209073314996203,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/63",
+      "samples": [
+        {
+          "task_id": "HumanEval/63",
+          "passed": false,
+          "completion": "    def fibfib0():\n        return 0\n    def fibfib1():\n        return 0\n    def fibfib2():\n        return 1\n    def fibfib(n):n        return fibfib0() + fibfib1() + fibfib2()\\    return fibfib())\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 23)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def fibfib0():\\n        return 0\\n    def fibfib1():\\n        return 0\\n    def fibfib2():\\n        return 1\\n    def fibfib(n):n        return fibfib0() + fibfib1() + fibfib2()\\    return fibfib())}}\n</function_call>",
+          "generation_time_s": 8.629381395003293,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/64",
+      "samples": [
+        {
+          "task_id": "HumanEval/64",
+          "passed": false,
+          "completion": "    vowels = 'aeiouyy'\n    return sum(1 for char in s if char in vowels)\n",
+          "error": "AssertionError: Test 2",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    vowels = 'aeiouyy'\\n    return sum(1 for char in s if char in vowels)\"}}\n</function_call>",
+          "generation_time_s": 8.272846385007142,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/65",
+      "samples": [
+        {
+          "task_id": "HumanEval/65",
+          "passed": false,
+          "completion": "    x = str(x)\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    x = str(x)\"}}\n</function_call>",
+          "generation_time_s": 8.12022599199554,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/66",
+      "samples": [
+        {
+          "task_id": "HumanEval/66",
+          "passed": false,
+          "completion": "    return sum(ord(char) for c in s if char.isupper())\n",
+          "error": "NameError: name 'char' is not defined",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return sum(ord(char) for c in s if char.isupper())}}\n</function_call>",
+          "generation_time_s": 8.233472446008818,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/67",
+      "samples": [
+        {
+          "task_id": "HumanEval/67",
+          "passed": false,
+          "completion": "    return n - apples - oranges\n",
+          "error": "NameError: name 'apples' is not defined",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return n - apples - oranges\"}}\n</function_call>",
+          "generation_time_s": 8.911904109001625,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/68",
+      "samples": [
+        {
+          "task_id": "HumanEval/68",
+          "passed": false,
+          "completion": "    if not arr:\n        return []\n\n\n    smallest_even = float('inf')\\n    smallest_indexeven_1 = -1\\n\n\n    for i, num in enumerate enumerate(arr):\n        if num % 2 == 0:\n            if num < smallest_even:\n                smallest_even = num\\                smallest_indexeven_1 = i\\n            elif num == smallest_even:\n                smallest_indexeven_1 = i\\n\n\n    return [smallest_even, smallest_indexeven_1]\n",
+          "error": "SyntaxError: unexpected character after line continuation character (<string>, line 40)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not arr:\\n        return []\\n\\n\\n    smallest_even = float('inf')\\\\n    smallest_indexeven_1 = -1\\\\n\\n\\n    for i, num in enumerate enumerate(arr):\\n        if num % 2 == 0:\\n            if num < smallest_even:\\n                smallest_even = num\\\\                smallest_indexeven_1 = i\\\\n            elif num == smallest_even:\\n                smallest_indexeven_1 = i\\\\n\\n\\n    return [smallest_even, smallest_indexeven_1]}}\n</function_call>",
+          "generation_time_s": 14.751089254001272,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/69",
+      "samples": [
+        {
+          "task_id": "HumanEval/69",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    from collections import Counter\\n    counter = Counter(lst)\\n    return max(counter,_common, -1)\"}}\n</function",
+          "generation_time_s": 8.683576461000484,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/70",
+      "samples": [
+        {
+          "task_id": "HumanEval/70",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not lst:\\n        return []\\n    result = lst[:()\"}}\nfunction_call",
+          "generation_time_s": 8.263800770000671,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/71",
+      "samples": [
+        {
+          "task_id": "HumanEval/71",
+          "passed": false,
+          "completion": "    import math\n",
+          "error": "AssertionError: This prints if this assert fails 1 (good for debugging!)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    import math\\n\"}}\n</function_call>",
+          "generation_time_s": 8.247801923003863,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/72",
+      "samples": [
+        {
+          "task_id": "HumanEval/72",
+          "passed": false,
+          "completion": "    def is_palindrome(l:\n        return s == s[::-1]\n",
+          "error": "SyntaxError: '(' was never closed (<string>, line 20)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def is_palindrome(l:\\n        return s == s[::-1]}}\n</function_call>",
+          "generation_time_s": 8.956395030996646,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/73",
+      "samples": [
+        {
+          "task_id": "HumanEval/73",
+          "passed": false,
+          "completion": "    arr = set(arr(arr[::-1]))\n",
+          "error": "TypeError: 'list' object is not callable",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    arr = set(arr(arr[::-1]))\"}}\n</function_call>",
+          "generation_time_s": 8.644657691998873,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/74",
+      "samples": [
+        {
+          "task_id": "HumanEval/74",
+          "passed": false,
+          "completion": "    if len(lst1) < len(lst2):\n        return lst1\n    return lst2\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if len(lst1) < len(lst2):\\n        return lst1\\n    return lst2\\n}}\n</function_call>",
+          "generation_time_s": 8.812786563008558,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/75",
+      "samples": [
+        {
+          "task_id": "HumanEval/75",
+          "passed": false,
+          "completion": "    def is_prime(n: int) -> bool:\n        \"\"\"Check if a number is prime\"\"\" return False\n        if n <= 1:\n            return False\n        if n <= 3:\n            return True\n        if n % 2 == 0 or n % 3 == 0:\n            return False\n        i = 5\n        while i * i <= n:\n            if n % i == 0 or n % (i + 2) == 0:\n                return False\n            i += 6\n        return True\n    \n    primes = False\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 11)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def is_prime(n: int) -> bool:\\n        \"\"\"Check if a number is prime\"\"\" return False\\n        if n <= 1:\\n            return False\\n        if n <= 3:\\n            return True\\n        if n % 2 == 0 or n % 3 == 0:\\n            return False\\n        i = 5\\n        while i * i <= n:\\n            if n % i == 0 or n % (i + 2) == 0:\\n                return False\\n            i += 6\\n        return True\\n    \\n    primes = False\"}}\n</function_call>",
+          "generation_time_s": 12.163572689998546,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/76",
+      "samples": [
+        {
+          "task_id": "HumanEval/76",
+          "passed": false,
+          "completion": "    return x ** n == x\n",
+          "error": "AssertionError: This prints if this assert fails 1 (good for debugging!)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return x ** n == x\"}}\n</function_call>",
+          "generation_time_s": 8.298274306987878,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/77",
+      "samples": [
+        {
+          "task_id": "HumanEval/77",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: First test error: None",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return round(a**(1/3)) == a\"}}\n</function_call",
+          "generation_time_s": 8.212476904998766,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/78",
+      "samples": [
+        {
+          "task_id": "HumanEval/78",
+          "passed": false,
+          "completion": "    count = 0\n",
+          "error": "AssertionError: First test error: None",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    count = 0\"}}\n</function_call>",
+          "generation_time_s": 9.792331128992373,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/79",
+      "samples": [
+        {
+          "task_id": "HumanEval/79",
+          "passed": false,
+          "completion": "    if decimal == 0:\n        return 'db0db'\n    return '' + bin(decimal)\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if decimal == 0:\\n        return 'db0db'\\n    return '' + bin(decimal)}}\n</function_call>>",
+          "generation_time_s": 8.621347911001067,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/80",
+      "samples": [
+        {
+          "task_id": "HumanEval/80",
+          "passed": false,
+          "completion": "    if len(s) < 3:\n        return False\n    seen = set()\\    for i in range(len(s) - 2):\n        if tuple(s[i:i+3]) in seen:\n            return False\n    return True\n",
+          "error": "SyntaxError: unexpected character after line continuation character (<string>, line 16)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if len(s) < 3:\\n        return False\\n    seen = set()\\    for i in range(len(s) - 2):\\n        if tuple(s[i:i+3]) in seen:\\n            return False\\n    return True\"}}\n</function_call>",
+          "generation_time_s": 8.232856474991422,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/81",
+      "samples": [
+        {
+          "task_id": "HumanEval/81",
+          "passed": false,
+          "completion": "    letter numerical inletter_grade\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 27)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    letter numerical inletter_grade\"}}\n</function_call>",
+          "generation_time_s": 9.63786708599946,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/82",
+      "samples": [
+        {
+          "task_id": "HumanEval/82",
+          "passed": false,
+          "completion": "    def is_prime(n):\n        if n <= 1:\n            return False\n        for i in range(2, int(n**0.5) + 1):\n            if n % i == 0:\n                return False\n        return True\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def is_prime(n):\\n        if n <= 1:\\n            return False\\n        for i in range(2, int(n**0.5) + 1):\\n            if n % i == 0:\\n                return False\\n        return True\"}}\n</function_call>",
+          "generation_time_s": 8.072474348999094,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/83",
+      "samples": [
+        {
+          "task_id": "HumanEval/83",
+          "passed": false,
+          "completion": "    if n == 0:\n        return 0\n    return 1\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if n == 0:\\n        return 0\\n    return 1\\n\"}}\n</function_call>",
+          "generation_time_s": 7.947201009010314,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/84",
+      "samples": [
+        {
+          "task_id": "HumanEval/84",
+          "passed": false,
+          "completion": "    return bin(N)\n",
+          "error": "AssertionError: Error",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return bin(N)}}\n</function_call>",
+          "generation_time_s": 8.628312953995191,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/85",
+      "samples": [
+        {
+          "task_id": "HumanEval/85",
+          "passed": false,
+          "completion": "    result = 0\n    for i in range(1, len(lst), 2):\n        result += lst[i]\n    return result\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    result = 0\\n    for i in range(1, len(lst), 2):\\n        result += lst[i]\\n    return result\"}}\n</function_call>",
+          "generation_time_s": 7.993980182000087,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/86",
+      "samples": [
+        {
+          "task_id": "HumanEval/86",
+          "passed": true,
+          "completion": "    words = s.split()\n    ordered_words = [''.join(sorted(word)) for word in words]\n    return ' '.join(ordered_words)\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    words = s.split()\\n    ordered_words = [''.join(sorted(word)) for word in words]\\n    return ' '.join(ordered_words)\"}}\n</function_call>",
+          "generation_time_s": 8.298609767007292,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/87",
+      "samples": [
+        {
+          "task_id": "HumanEval/87",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    result = [](lst) \"\n\n<function_call_call",
+          "generation_time_s": 9.581266018998576,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/88",
+      "samples": [
+        {
+          "task_id": "HumanEval/88",
+          "passed": false,
+          "completion": "    if not array:\n        return array\n    return sorted(array)\n",
+          "error": "AssertionError: Error",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not array:\\n        return array\\n    return sorted(array)}}\n</function_call>>",
+          "generation_time_s": 8.85669042301015,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/89",
+      "samples": [
+        {
+          "task_id": "HumanEval/89",
+          "passed": false,
+          "completion": "    encrypted = ''\n    for char in s:\n        if char.isalpha():\n            encrypted += chr((ord(char) - ord('a') * 2) % 26 + ord('a'))\n    return encrypted\n",
+          "error": "AssertionError: This prints if this assert fails 1 (good for debugging!)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    encrypted = ''\\n    for char in s:\\n        if char.isalpha():\\n            encrypted += chr((ord(char) - ord('a') * 2) % 26 + ord('a'))\\n    return encrypted\"}}\n</function_call>",
+          "generation_time_s": 8.21459569700528,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/90",
+      "samples": [
+        {
+          "task_id": "HumanEval/90",
+          "passed": false,
+          "completion": "    if len(lst) < 2:\n        return None\n    return sorted(lst)[1]\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if len(lst) < 2:\\n        return None\\n    return sorted(lst)[1]}}\n</function_call>",
+          "generation_time_s": 8.246175731997937,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/91",
+      "samples": [
+        {
+          "task_id": "HumanEval/91",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: Test 1",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    words = S.split()}}\n</_call>",
+          "generation_time_s": 8.207440084006521,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/92",
+      "samples": [
+        {
+          "task_id": "HumanEval/92",
+          "passed": false,
+          "completion": "    if not isinstance(x, int) or not isinstance(y, int) or not isinstance(z, int):\n        return False\n    return x == y + z\n",
+          "error": "AssertionError: This prints if this assert fails 1 (good for debugging!)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not isinstance(x, int) or not isinstance(y, int) or not isinstance(z, int):\\n        return False\\n    return x == y + z\"}}\n</function_call>",
+          "generation_time_s": 8.61395195699879,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/93",
+      "samples": [
+        {
+          "task_id": "HumanEval/93",
+          "passed": false,
+          "completion": "    vowels = 'aeiouAEIOU'\n    encoded_message = ''\n",
+          "error": "AssertionError: This prints if this assert fails 1 (good for debugging!)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    vowels = 'aeiouAEIOU'\\n    encoded_message = ''\"}}\n</function_call>",
+          "generation_time_s": 8.223510400988744,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/94",
+      "samples": [
+        {
+          "task_id": "HumanEval/94",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: This prints if this assert fails 1 (good for debugging!)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def is_prime(n):n        if n <= 1:\\n            return False\\n        if n <= 3:\\n            return True\\n        if n % 2 == 0 or n % 3 == 0:\\n            return False\\n        i = 5\\n        while i * i <= n:\\n            if n % i == 0 or n % (i + 2) == 0:\\n                return False\\n            i += 6\\n        return True\\n\\n       def sum_of_digits(n):        return sum(int(d) for d in str(n))\"}}\n</function_call",
+          "generation_time_s": 14.667969415007974,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/95",
+      "samples": [
+        {
+          "task_id": "HumanEval/95",
+          "passed": false,
+          "completion": "    if not dict:\n        return False\n    return all(key.islower() for key in dict)\n",
+          "error": "AttributeError: 'int' object has no attribute 'islower'",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not dict:\\n        return False\\n    return all(key.islower() for key in dict)\"}}\n</function_call>",
+          "generation_time_s": 8.741633917990839,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/96",
+      "samples": [
+        {
+          "task_id": "HumanEval/96",
+          "passed": false,
+          "completion": "    if is_prime(i): \"\n",
+          "error": "SyntaxError: unterminated string literal (detected at line 13) (<string>, line 13)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if is_prime(i): \"\"}}\n</function_call>",
+          "generation_time_s": 8.650274595012888,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/97",
+      "samples": [
+        {
+          "task_id": "HumanEval/97",
+          "passed": false,
+          "completion": "    return a % 10 * b % 10\n",
+          "error": "AssertionError: First test error: 6",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return a % 10 * b % 10\"}}\n</function_call>",
+          "generation_time_s": 8.219281889003469,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/98",
+      "samples": [
+        {
+          "task_id": "HumanEval/98",
+          "passed": false,
+          "completion": "    count = 0\n    for i in range(0, len(s), 2):\n        if s[i].isupper():\n            count += 1\n    return count\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    count = 0\\n    for i in range(0, len(s), 2):\\n        if s[i].isupper():\\n            count += 1\\n    return count\"}}\n</function_call>",
+          "generation_time_s": 8.054185989996768,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/99",
+      "samples": [
+        {
+          "task_id": "HumanEval/99",
+          "passed": false,
+          "completion": "    return int(value)\n",
+          "error": "ValueError: invalid literal for int() with base 10: '14.5'",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return int(value)\"}}\n</function_call>",
+          "generation_time_s": 8.680875809004647,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/100",
+      "samples": [
+        {
+          "task_id": "HumanEval/100",
+          "passed": false,
+          "completion": "    pile = [n]\n    for i in range(n):n        pile.append(n + 2)\n    return pile\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 17)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    pile = [n]\\n    for i in range(n):n        pile.append(n + 2)\\n    return pile\"}}\n</function_call>",
+          "generation_time_s": 8.291033253000933,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/101",
+      "samples": [
+        {
+          "task_id": "HumanEval/101",
+          "passed": false,
+          "completion": "    return s.split(\",\")\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return s.split(\",\")\"}}\n</function_call>",
+          "generation_time_s": 8.222626709990436,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/102",
+      "samples": [
+        {
+          "task_id": "HumanEval/102",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return -1\"}}\n</function_call\n>",
+          "generation_time_s": 8.158605570002692,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/103",
+      "samples": [
+        {
+          "task_id": "HumanEval/103",
+          "passed": false,
+          "completion": "    if n > m:\n        return -1\n    avg = (n + m) / 2\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if n > m:\\n        return -1\\n    avg = (n + m) / 2\"}}\n</function_call>",
+          "generation_time_s": 8.624216242998955,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/104",
+      "samples": [
+        {
+          "task_id": "HumanEval/104",
+          "passed": false,
+          "completion": "    result = set()\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    result = set()}}\n</function_call>",
+          "generation_time_s": 8.245928482007002,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/105",
+      "samples": [
+        {
+          "task_id": "HumanEval/105",
+          "passed": false,
+          "completion": "    def collections_sorted(arr):\n        return collections.unique(arr)\n",
+          "error": "AssertionError: Error",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def collections_sorted(arr):\\n        return collections.unique(arr)\"}}\n</function_call>",
+          "generation_time_s": 9.651689021993661,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/106",
+      "samples": [
+        {
+          "task_id": "HumanEval/106",
+          "passed": false,
+          "completion": "    result = []\n    for i in range(1, n):\n",
+          "error": "IndentationError: expected an indented block after 'for' statement on line 12 (<string>, line 14)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    result = []\\n    for i in range(1, n):\"}}\n</function_call>",
+          "generation_time_s": 8.259829318005359,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/107",
+      "samples": [
+        {
+          "task_id": "HumanEval/107",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def is_palindrome(x):\\n        return str(x) == str(x)[::-1]\\n    even_count = 0\"}}\n",
+          "generation_time_s": 8.926485876989318,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/108",
+      "samples": [
+        {
+          "task_id": "HumanEval/108",
+          "passed": false,
+          "completion": "    count = 0\n    for num in arr:\n        if sum(abs(d) for d in str(num)):\n            count += 1\n    return count\n",
+          "error": "TypeError: bad operand type for abs(): 'str'",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    count = 0\\n    for num in arr:\\n        if sum(abs(d) for d in str(num)):\\n            count += 1\\n    return count\"}}\n</function_call>",
+          "generation_time_s": 8.272306784012471,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/109",
+      "samples": [
+        {
+          "task_id": "HumanEval/109",
+          "passed": false,
+          "completion": "    if not arr:\n        return True\n    \n    n = len(arr)\n    arr = sorted(arr)\n    \n    # Check in range of       for i in range(n - 1):\n        if arr[i] > arr[i + 1]:\n            return False    \n    # Check in range of\n    return True\n",
+          "error": "IndentationError: unexpected indent (<string>, line 36)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not arr:\\n        return True\\n    \n    n = len(arr)\\n    arr = sorted(arr)\\n    \n    # Check in range of       for i in range(n - 1):\n        if arr[i] > arr[i + 1]:\\n            return False    \n    # Check in range of\\n    return True\"}}\n</function_call>",
+          "generation_time_s": 9.738818344005267,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/110",
+      "samples": [
+        {
+          "task_id": "HumanEval/110",
+          "passed": false,
+          "completion": "    def even_lst(l(lst1)\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 15)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def even_lst(l(lst1)\"}}\n</function_call>",
+          "generation_time_s": 8.805494029002148,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/111",
+      "samples": [
+        {
+          "task_id": "HumanEval/111",
+          "passed": false,
+          "completion": "    from collections import Counter\n    return Counter(test.split())())\n",
+          "error": "SyntaxError: unmatched ')' (<string>, line 16)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    from collections import Counter\\n    return Counter(test.split())())}}\n</function_call>",
+          "generation_time_s": 8.643104341012076,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/112",
+      "samples": [
+        {
+          "task_id": "HumanEval/112",
+          "passed": false,
+          "completion": "    def is_palindrome(s):n        return s == s[::-1]\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 13)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def is_palindrome(s):n        return s == s[::-1]}}\n</function_call>",
+          "generation_time_s": 8.687473742989823,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/113",
+      "samples": [
+        {
+          "task_id": "HumanEval/113",
+          "passed": false,
+          "completion": "    result = []\n    for i, s in enumerate(lst):\n        result.append(f'the number of odd elements { the string { of the input.')\n",
+          "error": "SyntaxError: invalid syntax. Perhaps you forgot a comma? (<string>, line 16)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    result = []\\n    for i, s in enumerate(lst):\\n        result.append(f'the number of odd elements { the string { of the input.')}}\n</function_call>",
+          "generation_time_s": 8.756328845003736,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/114",
+      "samples": [
+        {
+          "task_id": "HumanEval/114",
+          "passed": false,
+          "completion": "    return min(nums)\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return min(nums)\"}}\n</function_call>",
+          "generation_time_s": 8.100251313007902,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/115",
+      "samples": [
+        {
+          "task_id": "HumanEval/115",
+          "passed": false,
+          "completion": "    import collections\n0\n\n    def collections.deque.append(self):n        return self.deque()\n          def collections.deque.append(self(self):n        return self.deque()\n    -    def collections.deque.clear(self):n        return self.deque()\n          def collections.deque.empty(self):n        return self.deque()\n          def collections.deque.pop(self):n        return self.deque()\n          def collections.deque.popleft(self):n        return self.deque()\n    -    def collections.deque.right(self):n        return self.deque()\n    -    def collections.deque.left(self)\n        return self.deque()\n    -    def collections.deque.pop(self):n        return self.deque()\n    -    def collections.deque.remove(self)\n        return self.deque()\n    -    def collections.deque.reverse(self)\n        return self.deque()\n    -    def collections.deque.reverse(self)\n        return self.deque()\n    -    def collections.deque.remove(self)\n        return self.deque()\n    -    def collections.deque.remove(self)\n        return self.deque()\n    -    def collections.deque.remove(self)\n        return self.deque()\n    -    def collections.deque.remove(self)\n        return self.deque()\n    -    def collections.deque.remove(self)\n        return self.deque()\n    -    def collections.deque.remove(self)\n        return self.deque()\n    -    def collections.deque.remove(self)\n        return self.deque()\n    -    def collections.deque.remove(self)\n        return self.deque()\n    -    def collections.deque.remove(self)\n        return self.deque()\n    -    def collections.deque.remove(self)\n        return self.deque()\n    -    def collections.deque.remove(self)\n        return self.deque()\n    -    def collections.deque.remove(self)\n        return self.deque()\n    -    def collections.deque.remove(self)\n        return self.deque()\n    \n",
+          "error": "IndentationError: unexpected indent (<string>, line 40)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    import collections\\n0\\n\\n    def collections.deque.append(self):n        return self.deque()\\n          def collections.deque.append(self(self):n        return self.deque()\\n    -    def collections.deque.clear(self):n        return self.deque()\\n          def collections.deque.empty(self):n        return self.deque()\\n          def collections.deque.pop(self):n        return self.deque()\\n          def collections.deque.popleft(self):n        return self.deque()\\n    -    def collections.deque.right(self):n        return self.deque()\\n    -    def collections.deque.left(self)\\n        return self.deque()\\n    -    def collections.deque.pop(self):n        return self.deque()\\n    -    def collections.deque.remove(self)\\n        return self.deque()\\n    -    def collections.deque.reverse(self)\\n        return self.deque()\\n    -    def collections.deque.reverse(self)\\n        return self.deque()\\n    -    def collections.deque.remove(self)\\n        return self.deque()\\n    -    def collections.deque.remove(self)\\n        return self.deque()\\n    -    def collections.deque.remove(self)\\n        return self.deque()\\n    -    def collections.deque.remove(self)\\n        return self.deque()\\n    -    def collections.deque.remove(self)\\n        return self.deque()\\n    -    def collections.deque.remove(self)\\n        return self.deque()\\n    -    def collections.deque.remove(self)\\n        return self.deque()\\n    -    def collections.deque.remove(self)\\n        return self.deque()\\n    -    def collections.deque.remove(self)\\n        return self.deque()\\n    -    def collections.deque.remove(self)\\n        return self.deque()\\n    -    def collections.deque.remove(self)\\n        return self.deque()\\n    -    def collections.deque.remove(self)\\n        return self.deque()\\n    -    def collections.deque.remove(self)\\n        return self.deque()\\n    \"}}\n</function_call>",
+          "generation_time_s": 19.687443158007227,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/116",
+      "samples": [
+        {
+          "task_id": "HumanEval/116",
+          "passed": false,
+          "completion": "    def collections_ones(x):\n        return bin(x).count('1')\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def collections_ones(x):\\n        return bin(x).count('1')\"}}\n</function_call>",
+          "generation_time_s": 8.711364823990152,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/117",
+      "samples": [
+        {
+          "task_id": "HumanEval/117",
+          "passed": false,
+          "completion": "    def re_match):\n        return re.split()\n",
+          "error": "SyntaxError: unmatched ')' (<string>, line 15)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def re_match):\\n        return re.split()\"}}\n</function_call>",
+          "generation_time_s": 8.756402956001693,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/118",
+      "samples": [
+        {
+          "task_id": "HumanEval/118",
+          "passed": false,
+          "completion": "    vowels = 'aeiouiouAEIOU'\n    consonants = 'bcdfghjJKmnpqrSTVWXYZ'\n    n = len(word)\n    for i in range(n-  n - 1):\n        if word[i] in vowels and word[i+1] in consonants:\n            return word[i]\n    return ''\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    vowels = 'aeiouiouAEIOU'\\n    consonants = 'bcdfghjJKmnpqrSTVWXYZ'\\n    n = len(word)\\n    for i in range(n-  n - 1):\\n        if word[i] in vowels and word[i+1] in consonants:\\n            return word[i]\\n    return ''\"}}\n</function_call>",
+          "generation_time_s": 8.66915205398982,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/119",
+      "samples": [
+        {
+          "task_id": "HumanEval/119",
+          "passed": false,
+          "completion": "    def len(lst) -> int:\n        return len(lst) // 2\n\n    def is_good(s: str) -> bool:\n        stack = []\n        for char in s:\n            if char == '(':n                stack.append('(')\n            elif char == '))'\n                if stack():\n                    return False\n        return stack()\n    return True\n\n    def check(lst) -> str:\n        if len(lst) != 2:\n            return 'No'\n        return is_good(lst[0]) + is_good(lst[1])\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 23)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def len(lst) -> int:\\n        return len(lst) // 2\\n\\n    def is_good(s: str) -> bool:\\n        stack = []\\n        for char in s:\\n            if char == '(':n                stack.append('(')\\n            elif char == '))'\\n                if stack():\\n                    return False\\n        return stack()\\n    return True\\n\\n    def check(lst) -> str:\\n        if len(lst) != 2:\\n            return 'No'\\n        return is_good(lst[0]) + is_good(lst[1])\"}}\n</function_call>",
+          "generation_time_s": 13.076136234987644,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/120",
+      "samples": [
+        {
+          "task_id": "HumanEval/120",
+          "passed": false,
+          "completion": "    return sorted(arr)[-k:]\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return sorted(arr)[-k:]}}\n</function_call>",
+          "generation_time_s": 8.94971352799621,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/121",
+      "samples": [
+        {
+          "task_id": "HumanEval/121",
+          "passed": false,
+          "completion": "    total = 0\n    for i in range(len(lst))\n        if lst[i] % 2 != 0\n            result += lst[i]\n    return result\n",
+          "error": "SyntaxError: expected ':' (<string>, line 12)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    total = 0\\n    for i in range(len(lst))\\n        if lst[i] % 2 != 0\\n            result += lst[i]\\n    return result\"}}\n</function_call>",
+          "generation_time_s": 8.173872058003326,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/122",
+      "samples": [
+        {
+          "task_id": "HumanEval/122",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    total_sum = 0\"}}\n</_call>",
+          "generation_time_s": 8.296126225992339,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/123",
+      "samples": [
+        {
+          "task_id": "HumanEval/123",
+          "passed": false,
+          "completion": "    defatzatz  = [n]\n    def collatz_sequence():n        while n != 1:\n            if n % 2 == 0:\n                n = n // 2\n            else:\n                n = (n * n % 3) + 1\n        defatzatz.append(collatz_sequence)\n    collatz_sequence = collatz_sequence()    return [num for num in collatz_sequence if num % 2 != 0].sort()\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 20)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    defatzatz  = [n]\\n    def collatz_sequence():n        while n != 1:\\n            if n % 2 == 0:\\n                n = n // 2\\n            else:\\n                n = (n * n % 3) + 1\\n        defatzatz.append(collatz_sequence)\\n    collatz_sequence = collatz_sequence()    return [num for num in collatz_sequence if num % 2 != 0].sort()}}\n</function_call>",
+          "generation_time_s": 13.43332462500257,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/124",
+      "samples": [
+        {
+          "task_id": "HumanEval/124",
+          "passed": false,
+          "completion": "    if not date:\n        return False\n   \n    month, date.split('-')[0].split('-')[0].split('-'), date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')\n",
+          "error": "SyntaxError: '[' was never closed (<string>, line 25)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not date:\\n        return False\\n   \n    month, date.split('-')[0].split('-')[0].split('-'), date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')[date.split('-')[0].split('-')[1].split('-')[0].split('-')\"}}\n</function_call>",
+          "generation_time_s": 19.35731875000056,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/125",
+      "samples": [
+        {
+          "task_id": "HumanEval/125",
+          "passed": false,
+          "completion": "    words = txt.split()\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    words = txt.split()\"}}\n</function_call>",
+          "generation_time_s": 8.599407189991325,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/126",
+      "samples": [
+        {
+          "task_id": "HumanEval/126",
+          "passed": false,
+          "completion": "    return sorted(lst) == lst\n",
+          "error": "AssertionError: This prints if this assert fails 5 (good for debugging!)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return sorted(lst) == lst\"}}\n</function_call>",
+          "generation_time_s": 9.012757768010488,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/127",
+      "samples": [
+        {
+          "task_id": "HumanEval/127",
+          "passed": false,
+          "completion": "    def is_prime(n): int        -> bool:n        \"\"\"Check if a number is prime.\"\"\"\"\"\"\"n        if n <= 1:\n            return False\n        if n <= 3:\n            return True\n        if n % 2 == 0 or n % 3 == 0:\n            return False\n        i = 5\n        while i * i <= n:\n            if n % i == 0 or n % (i + 2) == 0:\n                return False\n            i += 6\n        return True\n       def get_intersection(interval1, interval2):n        \"\"\"Calculate the intersection of two intervals.\"\"\"\"\"\"\"n        start1, end1 = interval1\n        start2, end2 = interval2\n        if start1 > end2:\n            return (NO, 0)\n        if start2 > end1:\n            return (NO, 0)\n        if_start = max(start1, start2)\n        if_end = min(end1, end2)\n        if if_end > if_start:\n            return (NO, 0)\n        return (if_start, if_end-1)\n\n    def get_prime(interval1, interval2)\n        \"\"\"Calculate the union of two intervals.\"\"\"\"\"\"\"\"\"n        start1, end1 = interval1\n        start2, end2 = interval2\n        if start1 > end2:\n            return (NO, 0)\n        if start2 > end1:\n            return (NO, 0)\n        if_start = max(start1, start2)\n        if_end = min(end1, end2)\n        if if_end > if_start:\n            return (NO, 0)\n        return (if_start, if_end-1)\n\n    if_start, length = get_intersection(interval1, interval2)\n    if length == 0:\n        return \"NO\"\n    if is_prime(length):\n        return \"YES\"\n    if if_start == 1:\n        return \"YESYES\"\n    if if_start == 1:\n        return \"YESYES\"\n    else:\n        return \"NO\"\n",
+          "error": "SyntaxError: unterminated string literal (detected at line 34) (<string>, line 34)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def is_prime(n): int        -> bool:n        \"\"\"Check if a number is prime.\"\"\"\"\"\"\"n        if n <= 1:\\n            return False\\n        if n <= 3:\\n            return True\\n        if n % 2 == 0 or n % 3 == 0:\\n            return False\\n        i = 5\\n        while i * i <= n:\\n            if n % i == 0 or n % (i + 2) == 0:\\n                return False\\n            i += 6\\n        return True\\n       def get_intersection(interval1, interval2):n        \"\"\"Calculate the intersection of two intervals.\"\"\"\"\"\"\"n        start1, end1 = interval1\\n        start2, end2 = interval2\\n        if start1 > end2:\\n            return (NO, 0)\\n        if start2 > end1:\\n            return (NO, 0)\\n        if_start = max(start1, start2)\\n        if_end = min(end1, end2)\\n        if if_end > if_start:\\n            return (NO, 0)\\n        return (if_start, if_end-1)\\n\\n    def get_prime(interval1, interval2)\\n        \"\"\"Calculate the union of two intervals.\"\"\"\"\"\"\"\"\"n        start1, end1 = interval1\\n        start2, end2 = interval2\\n        if start1 > end2:\\n            return (NO, 0)\\n        if start2 > end1:\\n            return (NO, 0)\\n        if_start = max(start1, start2)\\n        if_end = min(end1, end2)\\n        if if_end > if_start:\\n            return (NO, 0)\\n        return (if_start, if_end-1)\\n\\n    if_start, length = get_intersection(interval1, interval2)\\n    if length == 0:\\n        return \\\"NO\\\"\\n    if is_prime(length):\\n        return \\\"YES\\\"\\n    if if_start == 1:\\n        return \\\"YESYES\\\"\\n    if if_start == 1:\\n        return \\\"YESYES\\\"\\n    else:\\n        return \\\"NO\\\"\"}}\n</function_call>",
+          "generation_time_s": 18.125835143000586,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/128",
+      "samples": [
+        {
+          "task_id": "HumanEval/128",
+          "passed": false,
+          "completion": "    if not arr:\n        return None\n    magnitude = sum(arr)\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not arr:\\n        return None\\n    magnitude = sum(arr)\"}}\n</function_call>",
+          "generation_time_s": 8.230237504001707,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/129",
+      "samples": [
+        {
+          "task_id": "HumanEval/129",
+          "passed": false,
+          "completion": "    minPath(grid)\n    result = minPath(grid)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n)\n    result =(grid)\n",
+          "error": "SyntaxError: unmatched ')' (<string>, line 35)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    from collections import deque\\n    result = minPath(grid)\\n    def minPath(grid,\n        k):\\        \"\"\" = \"\"\"n(grid)\\n        minPath(grid)\\n        result = minPath(grid)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\\n)\\n        result =(grid)\"}}\n</function_call>",
+          "generation_time_s": 21.275894714999595,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/130",
+      "samples": [
+        {
+          "task_id": "HumanEval/130",
+          "passed": false,
+          "completion": "    if n == 0:\n        return [1]\n    elif n == 1:\n        return [1,     ]n    n    even = [  n == 0 and n %  2 == 0]\n    n    odd =  n == 0 and n %  2 == 0 \n    if    n == 2:\n        return [1, 2]\n    elif    n == 3:\n        return [1, 3, 2]\n    elif    n == 4:\n        return [1, 3, 2, ]    elif    n == 5:\n        return [1, 3, 2, 8]\n    elif    n == 6:\n        return [1, 3, 2, 8, ]    elif    n == 7:\n        return [1, 3, 2, 8, 5]\n    elif    n == 8:\n        return [1, 3, 2, 8, 5, ]    elif    n == 9:\n        return [1, 3, 2, 8, 5, 7]\n    elif    elif    n == 10:\n        return [1, 3, 2, 8, 5, 7,     elif    elif elif    n == 11:\n        return [1, 3, 2, 8, 5, 7, 6]\n    elif    elif    n == 12:\n        return [1, 3, 2, 8, 5, 7, 6, ]    elif    elif    n == 13:\n        return [1, 3, 2, 8, 5, 7, 6, 4]\n    elif    elif    n == 14:\n        return [1, 3, 2, 8, 5, 7, 6, 4, ]    elif    elif    else   :\n        return [1, 3, 2, 8, 5, 7, 6, 4]\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 22)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if n == 0:\\n        return [1]\\n    elif n == 1:\\n        return [1,     ]n    n    even = [  n == 0 and n %  2 == 0]\\n    n    odd =  n == 0 and n %  2 == 0 \\n    if    n == 2:\\n        return [1, 2]\\n    elif    n == 3:\\n        return [1, 3, 2]\\n    elif    n == 4:\\n        return [1, 3, 2, ]    elif    n == 5:\\n        return [1, 3, 2, 8]\\n    elif    n == 6:\\n        return [1, 3, 2, 8, ]    elif    n == 7:\\n        return [1, 3, 2, 8, 5]\\n    elif    n == 8:\\n        return [1, 3, 2, 8, 5, ]    elif    n == 9:\\n        return [1, 3, 2, 8, 5, 7]\\n    elif    elif    n == 10:\\n        return [1, 3, 2, 8, 5, 7,     elif    elif elif    n == 11:\\n        return [1, 3, 2, 8, 5, 7, 6]\\n    elif    elif    n == 12:\\n        return [1, 3, 2, 8, 5, 7, 6, ]    elif    elif    n == 13:\\n        return [1, 3, 2, 8, 5, 7, 6, 4]\\n    elif    elif    n == 14:\\n        return [1, 3, 2, 8, 5, 7, 6, 4, ]    elif    elif    else   :\\n        return [1, 3, 2, 8, 5, 7, 6, 4]}}\n</function_call>",
+          "generation_time_s": 17.931449470008374,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/131",
+      "samples": [
+        {
+          "task_id": "HumanEval/131",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    n = str(n)\"}}\n</_call_function>",
+          "generation_time_s": 8.049241988002905,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/132",
+      "samples": [
+        {
+          "task_id": "HumanEval/132",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: This prints if this assert fails 1 (good for debugging!)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    stack = []\\n    for char in string:\\n        if char == '[':\\n            stack.append(char)\\n        elif char == ']':\\n            if stack:\\n                stack.pop()\\n    return not stack\"}}\n</function_call",
+          "generation_time_s": 8.598598961005337,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/133",
+      "samples": [
+        {
+          "task_id": "HumanEval/133",
+          "passed": false,
+          "completion": "    return sum(math.ceil(x) ** 2 for x in lst)\n",
+          "error": "NameError: name 'math' is not defined",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return sum(math.ceil(x) ** 2 for x in lst)\"}}\n</function_call>",
+          "generation_time_s": 8.667678642988903,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/134",
+      "samples": [
+        {
+          "task_id": "HumanEval/134",
+          "passed": false,
+          "completion": "    if not txt:\n        return False\n    return txt[-1].isalpha() \n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not txt:\\n        return False\\n    return txt[-1].isalpha() \"}}\n</function_call>",
+          "generation_time_s": 8.608287114999257,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/135",
+      "samples": [
+        {
+          "task_id": "HumanEval/135",
+          "passed": false,
+          "completion": "    for i in range(len(arr))\n        if arr[i] < arr[i - 1]:\n            return i\n    return -1\n",
+          "error": "SyntaxError: expected ':' (<string>, line 12)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    for i in range(len(arr))\\n        if arr[i] < arr[i - 1]:\\n            return i\\n    return -1\"}}\n</function_call>",
+          "generation_time_s": 8.16608102399914,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/136",
+      "samples": [
+        {
+          "task_id": "HumanEval/136",
+          "passed": false,
+          "completion": "    if not lst = \"        return (None, None)\n",
+          "error": "SyntaxError: unterminated string literal (detected at line 14) (<string>, line 14)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not lst = \"        return (None, None)\"}}\n</function_call>",
+          "generation_time_s": 8.586440225000842,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/137",
+      "samples": [
+        {
+          "task_id": "HumanEval/137",
+          "passed": false,
+          "completion": "    if not(a, b), not isinstance, b) or not isinstance, b)\n        return None\n    if isinstance(a, int) and isinstance(b, int):\n        return a > b\n    if isinstance(a, float) and isinstance(b, float):\n        return a > b\n    elif isinstance(a, str) and isinstance(b, str):\n        if a == b:\n            return None\n        elif a\n            return b\n",
+          "error": "SyntaxError: unmatched ')' (<string>, line 14)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if not(a, b), not isinstance, b) or not isinstance, b)\n        return None\n    if isinstance(a, int) and isinstance(b, int):\n        return a > b\n    if isinstance(a, float) and isinstance(b, float):\n        return a > b\n    elif isinstance(a, str) and isinstance(b, str):\n        if a == b:\n            return None\n        elif a\n            return b\"}}\n</function_call>",
+          "generation_time_s": 8.609226404994843,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/138",
+      "samples": [
+        {
+          "task_id": "HumanEval/138",
+          "passed": false,
+          "completion": "    if n < 8:\n        return False\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if n < 8:\\n        return False\"}}\n</function_call>",
+          "generation_time_s": 8.064317746000597,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/139",
+      "samples": [
+        {
+          "task_id": "HumanEval/139",
+          "passed": false,
+          "completion": "    result = 1\n    for i in range(1, n + 1):\n        result *= i\n    return result\n",
+          "error": "AssertionError: Test 4",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    result = 1\\n    for i in range(1, n + 1):\\n        result *= i\\n    return result\"}}\n</function_call>",
+          "generation_time_s": 8.174273608005024,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/140",
+      "samples": [
+        {
+          "task_id": "HumanEval/140",
+          "passed": false,
+          "completion": "    return text.replace(' ', '_')\"\n",
+          "error": "SyntaxError: unterminated string literal (detected at line 13) (<string>, line 13)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return text.replace(' ', '_')\"\"}}\n</function_call>",
+          "generation_time_s": 8.209725174005143,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/141",
+      "samples": [
+        {
+          "task_id": "HumanEval/141",
+          "passed": false,
+          "completion": "    if re_name.match(file_name):\n        return 'Yes'\n    return 'No'\n",
+          "error": "NameError: name 're_name' is not defined",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if re_name.match(file_name):\\n        return 'Yes'\\n    return 'No'}}\n</function_call>",
+          "generation_time_s": 8.881141834004666,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/142",
+      "samples": [
+        {
+          "task_id": "HumanEval/142",
+          "passed": false,
+          "completion": "    total = 0\n    for i, num in enumerate(lst):\n        if i % 3 == 0:\n            total += num ** 2\n        elif i % 4 == 0:\n            total += num ** 3\n    return total\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    total = 0\\n    for i, num in enumerate(lst):\\n        if i % 3 == 0:\\n            total += num ** 2\\n        elif i % 4 == 0:\\n            total += num ** 3\\n    return total\"}}\n</function_call>",
+          "generation_time_s": 8.719217826990644,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/143",
+      "samples": [
+        {
+          "task_id": "HumanEval/143",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def is_prime(n):\\n        if n <= 1:\\n            return False\\n        if n <= 3:\\n            return True\\n        if n % 2 == 0 or n % 3 == 0:\\n            return False\\n        i = 5\\n        while i * i <= n:\\n            if n % i == 0 or n % (i + 2) == 0:\\n                return False\\n            i += 6\\n        return True\\n       = \"}}\n</_call>",
+          "generation_time_s": 13.00471348100109,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/144",
+      "samples": [
+        {
+          "task_id": "HumanEval/144",
+          "passed": false,
+          "completion": "    import fractions import Fraction\n    return Fraction(x) * Fraction(n).is_integer()\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 14)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    import fractions import Fraction\\n    return Fraction(x) * Fraction(n).is_integer()\"}}\n</function_call>",
+          "generation_time_s": 8.645036992005771,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/145",
+      "samples": [
+        {
+          "task_id": "HumanEval/145",
+          "passed": false,
+          "completion": "    def sum_of_digits(n):\n        return sum(int(d for d in str(n))\n",
+          "error": "SyntaxError: '(' was never closed (<string>, line 14)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def sum_of_digits(n):\\n        return sum(int(d for d in str(n))\"}}\n</function_call>",
+          "generation_time_s": 8.245926182004041,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/146",
+      "samples": [
+        {
+          "task_id": "HumanEval/146",
+          "passed": false,
+          "completion": "    count = 0\n    for num in nums:\n        if num > 10 and num[0].isdigit() and num[-1].digit():\n            count += 1\n    return count\n",
+          "error": "TypeError: 'int' object is not subscriptable",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    count = 0\\n    for num in nums:\\n        if num > 10 and num[0].isdigit() and num[-1].digit():\\n            count += 1\\n    return count\"}} </function_call>",
+          "generation_time_s": 8.261258569007623,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/147",
+      "samples": [
+        {
+          "task_id": "HumanEval/147",
+          "passed": false,
+          "completion": "    a = [i * i - i + 1 for i in range(n)\n    count = 0\n    for i in range(n)\n        for j in range(i + 1, n)\n            for k in range(j + 1, n)\n",
+          "error": "SyntaxError: '[' was never closed (<string>, line 16)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    a = [i * i - i + 1 for i in range(n)\\n    count = 0\\n    for i in range(n)\\n        for j in range(i + 1, n)\\n            for k in range(j + 1, n)\"}}\n</function_call>",
+          "generation_time_s": 8.70089254899358,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/148",
+      "samples": [
+        {
+          "task_id": "HumanEval/148",
+          "passed": false,
+          "completion": "    planets = {'Mercuryury': 'Mercury', 'Venus': 'Venus', 'Earth': 'Earth', 'Mars': 'Mars', 'Jupiter': 'Jupiter', 'Saturn': 'Saturn', 'Uranus': 'Uranus', 'Neptune': 'Neptune'}\n    if planet1 not in planets or planet2 not in planets:\n        return (\nresult = planets[planet1].lower()for planet < planet2:\n        result.append(planet)\n    return tuple(result)\n",
+          "error": "SyntaxError: '(' was never closed (<string>, line 20)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    planets = {'Mercuryury': 'Mercury', 'Venus': 'Venus', 'Earth': 'Earth', 'Mars': 'Mars', 'Jupiter': 'Jupiter', 'Saturn': 'Saturn', 'Uranus': 'Uranus', 'Neptune': 'Neptune'}\\n    if planet1 not in planets or planet2 not in planets:\\n        return (\\nresult = planets[planet1].lower()for planet < planet2:\\n        result.append(planet)\\n    return tuple(result)}}\n</function_call>",
+          "generation_time_s": 13.315045428986195,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/149",
+      "samples": [
+        {
+          "task_id": "HumanEval/149",
+          "passed": false,
+          "completion": "    return sorted(lst, key=len)\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return sorted(lst, key=len)\"}}\n</function_call>",
+          "generation_time_s": 8.777498486000695,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/150",
+      "samples": [
+        {
+          "task_id": "HumanEval/150",
+          "passed": false,
+          "completion": "    if is_prime(n):\n        x\n    else:\n        y\n",
+          "error": "NameError: name 'is_prime' is not defined",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    if is_prime(n):\\n        x\\n    else:\\n        y\"}}\n</function_call>",
+          "generation_time_s": 8.130301266995957,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/151",
+      "samples": [
+        {
+          "task_id": "HumanEval/151",
+          "passed": false,
+          "completion": "    result = 0\n",
+          "error": "AssertionError: This prints if this assert fails 1 (good for debugging!)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    result = 0\"}}\n</function_call>",
+          "generation_time_s": 8.6053909129987,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/152",
+      "samples": [
+        {
+          "task_id": "HumanEval/152",
+          "passed": false,
+          "completion": "    return [abs(g-s) for g, g in zip(game, guess)]\n",
+          "error": "NameError: name 's' is not defined",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return [abs(g-s) for g, g in zip(game, guess)]\"}}\n</function_call>",
+          "generation_time_s": 8.941025253006956,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/153",
+      "samples": [
+        {
+          "task_id": "HumanEval/153",
+          "passed": false,
+          "completion": "    def calculate =rength(extension):\n        cap =  sum(1 forupper in  extension if.isupper()\n        sm = sum(1 for lower in extension if lower.islower())\n        return cap - sm\n\n    max_st = = float('inf')\n    ext in = [    for ext ext in extensions]\n    max_strength = [    for ext for ext in extensions]\n        ext_strength = calculate_strength(ext)\n        if ext_strength > max_strength:\n            max_strength = ext_strength\n            strongest_extension = ext\n\n    return f\"{class_name}.{strongest_extension}\n",
+          "error": "SyntaxError: expected '(' (<string>, line 19)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def calculate =rength(extension):\n        cap =  sum(1 forupper in  extension if.isupper()\n        sm = sum(1 for lower in extension if lower.islower())\n        return cap - sm\n\n    max_st = = float('inf')\n    ext in = [    for ext ext in extensions]\n    max_strength = [    for ext for ext in extensions]\n        ext_strength = calculate_strength(ext)\n        if ext_strength > max_strength:\n            max_strength = ext_strength\n            strongest_extension = ext\n\n    return f\"{class_name}.{strongest_extension}\"}}\n</function_call>",
+          "generation_time_s": 14.428894640994258,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/154",
+      "samples": [
+        {
+          "task_id": "HumanEval/154",
+          "passed": false,
+          "completion": "    pass\n",
+          "error": "AssertionError: test #0",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    def cycpattern_check(a, b):\"}}\n</function_call",
+          "generation_time_s": 8.271286624003551,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/155",
+      "samples": [
+        {
+          "task_id": "HumanEval/155",
+          "passed": false,
+          "completion": "    num_str = str(num)\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    num_str = str(num)\"}}\n</function_call>",
+          "generation_time_s": 8.050077748994227,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/156",
+      "samples": [
+        {
+          "task_id": "HumanEval/156",
+          "passed": false,
+          "completion": "    roman = < 10000, 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1, n        <m', 'cm', 'm', 'cm', 'd', 'cd', 'c', 'c', '', 'l', 'xl', 'x', 'iv', 'i', 'i' >\n",
+          "error": "SyntaxError: unterminated string literal (detected at line 13) (<string>, line 13)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    roman = < 10000, 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1, n        <m', 'cm', 'm', 'cm', 'd', 'cd', 'c', 'c', '', 'l', 'xl', 'x', 'iv', 'i', 'i' >\"}}\n</function_call>",
+          "generation_time_s": 12.344135385996196,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/157",
+      "samples": [
+        {
+          "task_id": "HumanEval/157",
+          "passed": false,
+          "completion": "    return a**2 + b**2 == c**2\n",
+          "error": "AssertionError: ",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return a**2 + b**2 == c**2\"}}\n</function_call>",
+          "generation_time_s": 8.201231771003222,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/158",
+      "samples": [
+        {
+          "task_id": "HumanEval/158",
+          "passed": false,
+          "completion": "    max not in in\"\n",
+          "error": "SyntaxError: unterminated string literal (detected at line 12) (<string>, line 12)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    max not in in\"\"}}\n</function_call>",
+          "generation_time_s": 8.238823529012734,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/159",
+      "samples": [
+        {
+          "task_id": "HumanEval/159",
+          "passed": false,
+          "completion": "    return [number + need, remaining - need]\n",
+          "error": "AssertionError: Error",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return [number + need, remaining - need]}}\n</function_call>",
+          "generation_time_s": 9.698349434998818,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/160",
+      "samples": [
+        {
+          "task_id": "HumanEval/160",
+          "passed": false,
+          "completion": "    result = operand[0] * operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand\n",
+          "error": "SyntaxError: invalid syntax (<string>, line 27)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    result = operand[0] * operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand operand\"}}\n</function_call>",
+          "generation_time_s": 17.744403940989287,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/161",
+      "samples": [
+        {
+          "task_id": "HumanEval/161",
+          "passed": false,
+          "completion": "    result = ''\n    for char in s:\n        if char.isalpha():\n            result += char.swapcase()\n        else:\n            result += char\n       return result\n",
+          "error": "IndentationError: unindent does not match any outer indentation level (<string>, line 19)",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    result = ''\\n    for char in s:\\n        if char.isalpha():\\n            result += char.swapcase()\\n        else:\\n            result += char\\n       return result\"}}\n</function_call>",
+          "generation_time_s": 8.213556226997753,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/162",
+      "samples": [
+        {
+          "task_id": "HumanEval/162",
+          "passed": true,
+          "completion": "    import hashlib\n\n    if not text:\n        return None\n\n    return hashlib.md5(text.encode()).hexdigest()\n",
+          "error": null,
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    import hashlib\\n\\n    if not text:\\n        return None\\n\\n    return hashlib.md5(text.encode()).hexdigest()\"}}\n</function_call>",
+          "generation_time_s": 8.114111258997582,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/163",
+      "samples": [
+        {
+          "task_id": "HumanEval/163",
+          "passed": false,
+          "completion": "    return list(range(a, b + 1, 2))\n",
+          "error": "AssertionError: Test 1",
+          "raw_output": "<function_call>\n{\"name\": \"execute_code\", \"arguments\": {\"code\": \"    return list(range(a, b + 1, 2))\"}}\n</function_call>",
+          "generation_time_s": 8.187450924000586,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    }
+  ]
+}
