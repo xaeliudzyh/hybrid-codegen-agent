@@ -317,15 +317,16 @@ def run_engine_mode(
 AGENT_SYSTEM_PROMPT = (
     "You are a Python code assistant with access to an execute_code tool.\n"
     "You will be given a Python function signature with a docstring.\n"
-    "Your job is to write ONLY the function body — the indented code that goes after the docstring.\n"
+    "First, write 2-3 sentences describing your implementation approach.\n"
+    "Then wrap ONLY the function body (indented lines after the docstring) in a single execute_code call.\n"
     "Do NOT repeat the function signature or docstring.\n"
-    "Do NOT add print statements, asserts, or test calls.\n"
-    "Wrap the body code inside a single execute_code function call."
+    "Do NOT add print statements, asserts, or test calls."
 )
 
 AGENT_TASK_TEMPLATE = (
     "Complete the body of the following Python function.\n"
-    "Output ONLY the indented body code (what goes after the docstring), nothing else.\n\n"
+    "Start with 2-3 sentences explaining your approach, "
+    "then call execute_code with ONLY the indented body code.\n\n"
     "{prompt}"
 )
 
