@@ -4,6 +4,7 @@ MODEL_DIFF=GSAI-ML/LLaDA-8B-Instruct
 DEVICE=cuda
 export OUTDIR=src/experiments/mode2/results_df/low_confidence/results_lc_k1
 
+for STRAT in low_confidence entropy random fc_priority structural_boost; do     python src/experiments/run_humaneval.py         --engine diffusion --model $MODEL_DIFF --device $DEVICE   --speculative   --mode agent --temperature 0.2 --max_tokens 256 --steps 128 --block_length 128      --remasking $STRAT         --k 5 -o $OUTDIR/${STRAT}.json; done
 
 python src/experiments/run_humaneval.py \
   --engine diffusion --model GSAI-ML/LLaDA-8B-Instruct \
