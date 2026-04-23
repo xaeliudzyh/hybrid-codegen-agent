@@ -23,6 +23,16 @@ def format_prompt_llama2_chat(prompt: str) -> str:
 
 def format_prompt_llama3_instruct(prompt: str) -> str:
     """Format prompt for LLaMA-3-Instruct models."""
+    task_marker = "\nTask:\n"
+    idx = prompt.find(task_marker)
+    if idx != -1:
+        system = prompt[:idx].strip()
+        user = prompt[idx + len(task_marker):].strip()
+        return (
+            f"<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n"
+            f"{system}<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n"
+            f"{user}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
+        )
     return f"<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\n{prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n"
 
 
