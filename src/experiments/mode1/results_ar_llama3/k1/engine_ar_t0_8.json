@@ -1,0 +1,2807 @@
+{
+  "engine_type": "autoregressive",
+  "model_name": "unsloth/Meta-Llama-3.1-8B-Instruct",
+  "remasking": null,
+  "mode": "engine",
+  "k": 1,
+  "n_tasks": 164,
+  "temperature": 0.8,
+  "max_tokens": 256,
+  "diffusion_steps": null,
+  "block_length": null,
+  "fc_boost": null,
+  "structural_boost": null,
+  "structural_window": null,
+  "pass_at_k": 0.5365853658536586,
+  "mean_generation_time_s": 1.7652803555907535,
+  "tasks": [
+    {
+      "task_id": "HumanEval/0",
+      "samples": [
+        {
+          "task_id": "HumanEval/0",
+          "passed": true,
+          "completion": "    for i in range(len(numbers)):\n        for j in range(i + 1, len(numbers)):\n            if abs(numbers[i] - numbers[j]) <= threshold:\n                return True\n    return False\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.7928750620339997,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/1",
+      "samples": [
+        {
+          "task_id": "HumanEval/1",
+          "passed": true,
+          "completion": "    result = []\n    current_group = ''\n    level = 0\n    for char in paren_string:\n        if char == '(':\n            level += 1\n            current_group += char\n        elif char == ')':\n            level -= 1\n            current_group += char\n            if level == 0:\n                result.append(current_group)\n                current_group = ''\n        else:\n            continue\n    return result\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 3.016101337969303,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/2",
+      "samples": [
+        {
+          "task_id": "HumanEval/2",
+          "passed": true,
+          "completion": "    return number - int(number)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.6170055840048008,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/3",
+      "samples": [
+        {
+          "task_id": "HumanEval/3",
+          "passed": true,
+          "completion": "    balance = 0\n    for operation in operations:\n        balance += operation\n        if balance < 0:\n            return True\n    return False\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.3405727589852177,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/4",
+      "samples": [
+        {
+          "task_id": "HumanEval/4",
+          "passed": true,
+          "completion": "    mean = sum(numbers) / len(numbers)\n    return sum(abs(num - mean) for num in numbers) / len(numbers)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.3669539020047523,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/5",
+      "samples": [
+        {
+          "task_id": "HumanEval/5",
+          "passed": false,
+          "completion": "    if not numbers:\n        return []\n    result = [numbers[0]]\n    for num in numbers[1:]:\n        result.append(delimeter)\n        result.append(num)\n    return result[:-1]\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.8608909180038609,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/6",
+      "samples": [
+        {
+          "task_id": "HumanEval/6",
+          "passed": true,
+          "completion": "    def max_depth(s: str) -> int:\n        max_depth = 0\n        depth = 0\n        for char in s:\n            if char == '(':\n                depth += 1\n                max_depth = max(max_depth, depth)\n            elif char == ')':\n                depth -= 1\n        return max_depth\n\n    return [max_depth(group) for group in paren_string.split()]\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.9536365080275573,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/7",
+      "samples": [
+        {
+          "task_id": "HumanEval/7",
+          "passed": true,
+          "completion": "    return [s for s in strings if substring in s]\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.1219892260269262,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/8",
+      "samples": [
+        {
+          "task_id": "HumanEval/8",
+          "passed": true,
+          "completion": "    sum_result = 0\n    product_result = 1\n    for num in numbers:\n        sum_result += num\n        product_result *= num\n    return sum_result, product_result\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.8065186510211788,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/9",
+      "samples": [
+        {
+          "task_id": "HumanEval/9",
+          "passed": true,
+          "completion": "    result = []\n    max_num = float('-inf')\n    for num in numbers:\n        max_num = max(max_num, num)\n        result.append(max_num)\n    return result\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.6475765249924734,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/10",
+      "samples": [
+        {
+          "task_id": "HumanEval/10",
+          "passed": false,
+          "completion": "    if not string:\n        return ''\n    \n    longest_palindrome = ''\n    for i in range(len(string), 0, -1):\n        for j in range(len(string) - i + 1):\n            substring = string[j:j+i]\n            if is_palindrome(substring) and len(substring) > len(longest_palindrome):\n                longest_palindrome = substring\n                \n    return string + longest_palindrome[::-1]\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 2.8486379089881666,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/11",
+      "samples": [
+        {
+          "task_id": "HumanEval/11",
+          "passed": true,
+          "completion": "    return ''.join('1' if (int(a[i]) + int(b[i])) % 2 else '0' for i in range(max(len(a), len(b))))\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.4997734350035898,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/12",
+      "samples": [
+        {
+          "task_id": "HumanEval/12",
+          "passed": true,
+          "completion": "    if not strings:\n        return None\n    max_len = max(len(s) for s in strings)\n    return next((s for s in strings if len(s) == max_len), None)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.6221222240128554,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/13",
+      "samples": [
+        {
+          "task_id": "HumanEval/13",
+          "passed": true,
+          "completion": "    while b:\n        a, b = b, a % b\n    return abs(a)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.1240818460355513,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/14",
+      "samples": [
+        {
+          "task_id": "HumanEval/14",
+          "passed": true,
+          "completion": "    prefixes = []\n    for i in range(1, len(string) + 1):\n        prefixes.append(string[:i])\n    return prefixes\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.2806803210405633,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/15",
+      "samples": [
+        {
+          "task_id": "HumanEval/15",
+          "passed": false,
+          "completion": "    return''.join(str(i) for i in range(n + 1))\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 0.7590995919890702,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/16",
+      "samples": [
+        {
+          "task_id": "HumanEval/16",
+          "passed": true,
+          "completion": "    return len(set(string.lower()))\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.6554071719874628,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/17",
+      "samples": [
+        {
+          "task_id": "HumanEval/17",
+          "passed": true,
+          "completion": "    notes = {'o': 4, 'o|': 2, '.|': 1}\n    result = []\n    for note in music_string.split():\n        result.append(notes[note])\n    return result\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.754054006014485,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/18",
+      "samples": [
+        {
+          "task_id": "HumanEval/18",
+          "passed": false,
+          "completion": "    return (len(string) - len(string) % len(substring)) // len(substring)\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.0942974119680002,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/19",
+      "samples": [
+        {
+          "task_id": "HumanEval/19",
+          "passed": false,
+          "completion": "    num_dict = {'zero': 0, 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5,'six': 6,'seven': 7, 'eight': 8, 'nine': 9}\n    numbers = numbers.split()\n    numbers = sorted(numbers, key=lambda x: num_dict[x])\n    return''.join(numbers)\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 3.054955226019956,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/20",
+      "samples": [
+        {
+          "task_id": "HumanEval/20",
+          "passed": true,
+          "completion": "    numbers.sort()\n    min_diff = float('inf')\n    closest_pair = (numbers[0], numbers[0])\n    for i in range(len(numbers) - 1):\n        diff = numbers[i + 1] - numbers[i]\n        if diff < min_diff:\n            min_diff = diff\n            closest_pair = (numbers[i], numbers[i + 1])\n    return closest_pair\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 3.056952766957693,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/21",
+      "samples": [
+        {
+          "task_id": "HumanEval/21",
+          "passed": true,
+          "completion": "    min_value = min(numbers)\n    max_value = max(numbers)\n    return [(n - min_value) / (max_value - min_value) for n in numbers]\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.6366240109782666,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/22",
+      "samples": [
+        {
+          "task_id": "HumanEval/22",
+          "passed": true,
+          "completion": "    return [value for value in values if isinstance(value, int)]\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.8844613509718329,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/23",
+      "samples": [
+        {
+          "task_id": "HumanEval/23",
+          "passed": true,
+          "completion": "    return len(string)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.5239661689847708,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/24",
+      "samples": [
+        {
+          "task_id": "HumanEval/24",
+          "passed": true,
+          "completion": "    for i in range(n - 1, 1, -1):\n        if n % i == 0:\n            return i\n    return 1\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.2433106630342081,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/25",
+      "samples": [
+        {
+          "task_id": "HumanEval/25",
+          "passed": true,
+          "completion": "    i = 2\n    factors = []\n    while i * i <= n:\n        if n % i:\n            i += 1\n        else:\n            n //= i\n            factors.append(i)\n    if n > 1:\n        factors.append(n)\n    return factors\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.2149570760084316,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/26",
+      "samples": [
+        {
+          "task_id": "HumanEval/26",
+          "passed": false,
+          "completion": "    seen = set()\n    result = []\n    for num in numbers:\n        if num not in seen:\n            result.append(num)\n            seen.add(num)\n    return result\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.4638438179972582,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/27",
+      "samples": [
+        {
+          "task_id": "HumanEval/27",
+          "passed": true,
+          "completion": "    return ''.join(char.swapcase() for char in string)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.661675444978755,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/28",
+      "samples": [
+        {
+          "task_id": "HumanEval/28",
+          "passed": true,
+          "completion": "    return ''.join(strings)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.7161920320359059,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/29",
+      "samples": [
+        {
+          "task_id": "HumanEval/29",
+          "passed": true,
+          "completion": "    return [s for s in strings if s.startswith(prefix)]\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.963129359006416,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/30",
+      "samples": [
+        {
+          "task_id": "HumanEval/30",
+          "passed": true,
+          "completion": "    return [num for num in l if num > 0]\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.7198604429722764,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/31",
+      "samples": [
+        {
+          "task_id": "HumanEval/31",
+          "passed": true,
+          "completion": "    if n <= 1:\n        return False\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            return False\n    return True\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.5840136759798042,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/32",
+      "samples": [
+        {
+          "task_id": "HumanEval/32",
+          "passed": false,
+          "completion": "    n = len(xs) // 2\n    p = -xs[1] / xs[0]\n    q = -xs[0] / xs[2]\n    a = (p + math.sqrt(p**2 - 4 * q)) / 2\n    b = (p - math.sqrt(p**2 - 4 * q)) / 2\n    if n == 1:\n        return a\n    elif n == 2:\n        return a\n    elif n == 3:\n        return min(a, b)\n    else:\n        c = -xs[3] / xs[2]\n        r = -xs[4] / xs[2]\n        a1 = (c + math.sqrt(c**2 - 4 * r)) / 2\n        b1 = (c - math.sqrt(c**2 - 4 * r)) / 2\n        return min(a, b, a1, b1)\n",
+          "error": "IndexError: list index out of range",
+          "raw_output": null,
+          "generation_time_s": 5.995829008985311,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/33",
+      "samples": [
+        {
+          "task_id": "HumanEval/33",
+          "passed": false,
+          "completion": "    return [x if i % 3!= 0 else sorted([y for i, y in enumerate(l) if i % 3 == 0])[k // 3] for i, x in enumerate(l) for k in range(i, len(l), 3)]\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.9402315859915689,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/34",
+      "samples": [
+        {
+          "task_id": "HumanEval/34",
+          "passed": true,
+          "completion": "    return sorted(set(l))\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.4657729319878854,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/35",
+      "samples": [
+        {
+          "task_id": "HumanEval/35",
+          "passed": true,
+          "completion": "    return max(l)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.46432285103946924,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/36",
+      "samples": [
+        {
+          "task_id": "HumanEval/36",
+          "passed": true,
+          "completion": "    count = 0\n    for i in range(n):\n        if i % 11 == 0 or i % 13 == 0:\n            str_i = str(i)\n            count += str_i.count('7')\n    return count\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.6240437140222639,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/37",
+      "samples": [
+        {
+          "task_id": "HumanEval/37",
+          "passed": false,
+          "completion": "    return [x if i % 2!= 0 else y for i, x in enumerate(l) for y in sorted([y for i, y in enumerate(l) if i % 2 == 0])]\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.6413972620503046,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/38",
+      "samples": [
+        {
+          "task_id": "HumanEval/38",
+          "passed": true,
+          "completion": "    # split string to groups. Each of length 3.\n    groups = [s[(3 * i):min((3 * i + 3), len(s))] for i in range((len(s) + 2) // 3)]\n    # reverse cycling in each group. Unless group has fewer elements than 3.\n    groups = [(group[-1] + group[:-1]) if len(group) == 3 else group for group in groups]\n    return \"\".join(groups)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 3.8340517879696563,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/39",
+      "samples": [
+        {
+          "task_id": "HumanEval/39",
+          "passed": false,
+          "completion": "    a, b = 0, 1\n    count = 0\n    while True:\n        if is_prime(a):\n            count += 1\n            if count == n:\n                return a\n        a, b = b, a + b\n",
+          "error": "NameError: name 'is_prime' is not defined",
+          "raw_output": null,
+          "generation_time_s": 3.3681388559634797,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/40",
+      "samples": [
+        {
+          "task_id": "HumanEval/40",
+          "passed": false,
+          "completion": "    l = sorted(set(l))  # Remove duplicates and sort the list\n    for i in range(len(l)):\n        for j in range(i+1, len(l)):\n            for k in range(j+1, len(l)):\n                if l[i] + l[j] + l[k] == 0:\n                    return True\n    return False\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 2.2133197450311854,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/41",
+      "samples": [
+        {
+          "task_id": "HumanEval/41",
+          "passed": false,
+          "completion": "    total_collisions = 0\n    for i in range(1, n + 1):\n        total_collisions += i\n    return total_collisions\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.29407003702363,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/42",
+      "samples": [
+        {
+          "task_id": "HumanEval/42",
+          "passed": true,
+          "completion": "    return [i + 1 for i in l]\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.6649255270021968,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/43",
+      "samples": [
+        {
+          "task_id": "HumanEval/43",
+          "passed": true,
+          "completion": "    return len([i for i in set(l) for j in l if i + j == 0 if i!= j]) > 1\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.1881381470011547,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/44",
+      "samples": [
+        {
+          "task_id": "HumanEval/44",
+          "passed": true,
+          "completion": "    if x == 0:\n        return '0'\n    digits = \"0123456789\"\n    result = \"\"\n    while x:\n        x, remainder = divmod(x, base)\n        result = digits[remainder] + result\n    return result\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.9284024199587293,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/45",
+      "samples": [
+        {
+          "task_id": "HumanEval/45",
+          "passed": true,
+          "completion": "    return 0.5 * a * h\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.4938398450030945,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/46",
+      "samples": [
+        {
+          "task_id": "HumanEval/46",
+          "passed": true,
+          "completion": "    if n <= 1:\n        return 0\n    elif n == 2:\n        return 2\n    elif n == 3:\n        return 0\n    else:\n        a, b, c, d = 0, 0, 2, 0\n        for _ in range(4, n + 1):\n            a, b, c, d = b, c, d, a + b + c + d\n        return d\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 3.094453124969732,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/47",
+      "samples": [
+        {
+          "task_id": "HumanEval/47",
+          "passed": true,
+          "completion": "    sorted_l = sorted(l)\n    n = len(sorted_l)\n    if n % 2 == 0:\n        return (sorted_l[n // 2 - 1] + sorted_l[n // 2]) / 2\n    else:\n        return sorted_l[n // 2]\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.9881902370252647,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/48",
+      "samples": [
+        {
+          "task_id": "HumanEval/48",
+          "passed": true,
+          "completion": "    return text == text[::-1]\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.6591258439584635,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/49",
+      "samples": [
+        {
+          "task_id": "HumanEval/49",
+          "passed": true,
+          "completion": "    result = 1\n    for _ in range(n):\n        result = (result * 2) % p\n    return result\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.3192187490058132,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/50",
+      "samples": [
+        {
+          "task_id": "HumanEval/50",
+          "passed": true,
+          "completion": "    return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.747279972943943,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/51",
+      "samples": [
+        {
+          "task_id": "HumanEval/51",
+          "passed": true,
+          "completion": "    vowels = 'aeiouAEIOU'\n    return ''.join([char for char in text if char not in vowels])\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.0497878500027582,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/52",
+      "samples": [
+        {
+          "task_id": "HumanEval/52",
+          "passed": true,
+          "completion": "    return all(i < t for i in l)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.6308734900085256,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/53",
+      "samples": [
+        {
+          "task_id": "HumanEval/53",
+          "passed": true,
+          "completion": "    return x + y\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.5757774550002068,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/54",
+      "samples": [
+        {
+          "task_id": "HumanEval/54",
+          "passed": false,
+          "completion": "    return sorted(s0) == sorted(s1)\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 0.804133644036483,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/55",
+      "samples": [
+        {
+          "task_id": "HumanEval/55",
+          "passed": false,
+          "completion": "    if n <= 0:\n        return \"Input should be a positive integer\"\n    elif n == 1:\n        return 1\n    else:\n        return fib(n-1) + fib(n-2)\n",
+          "error": "TypeError: unsupported operand type(s) for +: 'int' and 'str'",
+          "raw_output": null,
+          "generation_time_s": 1.42107246798696,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/56",
+      "samples": [
+        {
+          "task_id": "HumanEval/56",
+          "passed": false,
+          "completion": "    return brackets.count(\"<\") == brackets.count(\">\")\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 0.604640648001805,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/57",
+      "samples": [
+        {
+          "task_id": "HumanEval/57",
+          "passed": true,
+          "completion": "    return all(l[i] <= l[i+1] for i in range(len(l)-1)) or all(l[i] >= l[i+1] for i in range(len(l)-1))\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.4616641870234162,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/58",
+      "samples": [
+        {
+          "task_id": "HumanEval/58",
+          "passed": true,
+          "completion": "    return sorted(set(l1) & set(l2))\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.8048031330108643,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/59",
+      "samples": [
+        {
+          "task_id": "HumanEval/59",
+          "passed": true,
+          "completion": "    i = 2\n    while i * i <= n:\n        if n % i:\n            i += 1\n        else:\n            n //= i\n    return n\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.3960714649874717,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/60",
+      "samples": [
+        {
+          "task_id": "HumanEval/60",
+          "passed": true,
+          "completion": "    total = 0\n    for i in range(1, n + 1):\n        total += i\n    return total\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.994958504976239,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/61",
+      "samples": [
+        {
+          "task_id": "HumanEval/61",
+          "passed": false,
+          "completion": "    return brackets.count(\"(\") == brackets.count(\")\")\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 0.7151929709943943,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/62",
+      "samples": [
+        {
+          "task_id": "HumanEval/62",
+          "passed": false,
+          "completion": "    return [i * x for i, x in enumerate(xs[1:], 1)\n            if i < len(xs) - 1]\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.1296302289701998,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/63",
+      "samples": [
+        {
+          "task_id": "HumanEval/63",
+          "passed": true,
+          "completion": "    if n <= 0:\n        return 0\n    elif n == 1:\n        return 0\n    elif n == 2:\n        return 1\n    else:\n        a, b, c = 0, 0, 1\n        for _ in range(3, n+1):\n            a, b, c = b, c, a + b + c\n        return c\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.765174158033915,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/64",
+      "samples": [
+        {
+          "task_id": "HumanEval/64",
+          "passed": false,
+          "completion": "    vowels = 'aeiouy'\n    s = s.lower()\n    return sum(1 for char in s if char in vowels or (char == 'y' and s.endswith(char)))\n",
+          "error": "AssertionError: Test 4",
+          "raw_output": null,
+          "generation_time_s": 1.3492320229997858,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/65",
+      "samples": [
+        {
+          "task_id": "HumanEval/65",
+          "passed": false,
+          "completion": "    x_str = str(x)\n    shift = shift % len(x_str)\n    return x_str[-shift:] + x_str[:-shift]\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.129054537974298,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/66",
+      "samples": [
+        {
+          "task_id": "HumanEval/66",
+          "passed": true,
+          "completion": "    return sum(ord(c) for c in s if c.isupper())\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.6938469600281678,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/67",
+      "samples": [
+        {
+          "task_id": "HumanEval/67",
+          "passed": true,
+          "completion": "    s = s.replace('apples', '0').replace('oranges', '0').replace('and','')\n    num_fruits = sum(int(word) for word in s.split())\n    return n - num_fruits\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.6583024899591692,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/68",
+      "samples": [
+        {
+          "task_id": "HumanEval/68",
+          "passed": false,
+          "completion": "    even_nodes = [(val, idx) for idx, val in enumerate(arr) if val % 2 == 0]\n    if even_nodes:\n        return min(even_nodes, key=lambda x: (x[0], x[1]))\n    else:\n        return []\n",
+          "error": "AssertionError: Error",
+          "raw_output": null,
+          "generation_time_s": 1.8820835869992152,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/69",
+      "samples": [
+        {
+          "task_id": "HumanEval/69",
+          "passed": true,
+          "completion": "    freq_dict = {}\n    for num in lst:\n        if num in freq_dict:\n            freq_dict[num] += 1\n        else:\n            freq_dict[num] = 1\n    max_freq = max(freq_dict.values())\n    max_num = -1\n    for num in freq_dict:\n        if freq_dict[num] >= num and num > max_num:\n            max_num = num\n    return max_num\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.6897141829831526,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/70",
+      "samples": [
+        {
+          "task_id": "HumanEval/70",
+          "passed": false,
+          "completion": "    if not lst:\n        return lst\n    result = [lst[0]]\n    min_val = max_val = lst[0]\n    for i in range(1, len(lst)):\n        if lst[i] < min_val:\n            min_val = lst[i]\n        elif lst[i] > max_val:\n            max_val = lst[i]\n        result.append(min_val)\n        result.append(max_val)\n    return result\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 2.7700098119676113,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/71",
+      "samples": [
+        {
+          "task_id": "HumanEval/71",
+          "passed": false,
+          "completion": "    if a + b <= c or a + c <= b or b + c <= a:\n        return -1\n    s = (a + b + c) / 2\n    area = math.sqrt(s * (s - a) * (s - b) * (s - c))\n    return round(area, 2)\n",
+          "error": "NameError: name 'math' is not defined",
+          "raw_output": null,
+          "generation_time_s": 2.4959025300340727,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/72",
+      "samples": [
+        {
+          "task_id": "HumanEval/72",
+          "passed": true,
+          "completion": "    return q == q[::-1] and sum(q) <= w\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.79974616097752,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/73",
+      "samples": [
+        {
+          "task_id": "HumanEval/73",
+          "passed": false,
+          "completion": "    counts = {}\n    for num in arr:\n        counts[num] = counts.get(num, 0) + 1\n    odd_count = 0\n    for k, v in counts.items():\n        if v % 2!= 0:\n            odd_count += 1\n    return max(0, odd_count - 1)\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 2.283924388990272,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/74",
+      "samples": [
+        {
+          "task_id": "HumanEval/74",
+          "passed": true,
+          "completion": "    sum1 = sum(len(s) for s in lst1)\n    sum2 = sum(len(s) for s in lst2)\n    return lst1 if sum1 <= sum2 else lst2\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.5841065349522978,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/75",
+      "samples": [
+        {
+          "task_id": "HumanEval/75",
+          "passed": false,
+          "completion": "    def is_prime(n):\n        if n < 2:\n            return False\n        for i in range(2, int(n**0.5) + 1):\n            if n % i == 0:\n                return False\n        return True\n\n    for i in range(2, 100):\n        if is_prime(i) and is_prime(a // i) and (a // i // i) <= 100 and is_prime(a // (i * (a // i))):\n            return True\n    return False\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 3.373126848018728,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/76",
+      "samples": [
+        {
+          "task_id": "HumanEval/76",
+          "passed": false,
+          "completion": "    return x > 0 and round(x ** (1/n)) ** n == x\n",
+          "error": "AssertionError: This prints if this assert fails 1 (good for debugging!)",
+          "raw_output": null,
+          "generation_time_s": 0.9253873020061292,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/77",
+      "samples": [
+        {
+          "task_id": "HumanEval/77",
+          "passed": false,
+          "completion": "    return a ** (1/3) % 1 == 0\n",
+          "error": "TypeError: unsupported operand type(s) for %: 'complex' and 'int'",
+          "raw_output": null,
+          "generation_time_s": 0.7154154210002162,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/78",
+      "samples": [
+        {
+          "task_id": "HumanEval/78",
+          "passed": true,
+          "completion": "    def is_prime(n):\n        if n < 2:\n            return False\n        for i in range(2, int(n**0.5) + 1):\n            if n % i == 0:\n                return False\n        return True\n\n    hex_primes = {'2': True, '3': True, '5': True, '7': True, 'B': True, 'D': True}\n    count = 0\n    for char in num:\n        if char in hex_primes:\n            count += 1\n    return count\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 3.566582310013473,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/79",
+      "samples": [
+        {
+          "task_id": "HumanEval/79",
+          "passed": true,
+          "completion": "    return \"db\" + bin(decimal)[2:] + \"db\"\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.7156224619830027,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/80",
+      "samples": [
+        {
+          "task_id": "HumanEval/80",
+          "passed": false,
+          "completion": "    if len(s) < 3:\n        return False\n    for i in range(len(s) - 2):\n        if s[i] == s[i+1] == s[i+2]:\n            return False\n    return True\n",
+          "error": "AssertionError: aabb",
+          "raw_output": null,
+          "generation_time_s": 1.7408127600210719,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/81",
+      "samples": [
+        {
+          "task_id": "HumanEval/81",
+          "passed": false,
+          "completion": "    return [letter_grade(gpa) for gpa in grades]\n",
+          "error": "NameError: name 'letter_grade' is not defined",
+          "raw_output": null,
+          "generation_time_s": 6.251501691003796,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/82",
+      "samples": [
+        {
+          "task_id": "HumanEval/82",
+          "passed": true,
+          "completion": "    def is_prime(n):\n        if n <= 1:\n            return False\n        for i in range(2, int(n**0.5) + 1):\n            if n % i == 0:\n                return False\n        return True\n\n    return is_prime(len(string))\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.8029462589765899,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/83",
+      "samples": [
+        {
+          "task_id": "HumanEval/83",
+          "passed": true,
+          "completion": "    count = 0\n    for i in range(10**(n-1), 10**n):\n        if i // 10**(n-1) == 1 or i % 10 == 1:\n            count += 1\n    return count\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.8194543370045722,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/84",
+      "samples": [
+        {
+          "task_id": "HumanEval/84",
+          "passed": false,
+          "completion": "    bin_N = bin(N)[2:]  # convert N to binary and remove the '0b' prefix\n    return bin(sum(map(int, bin_N)))[2:]  # sum the digits and convert to binary\n",
+          "error": "AssertionError: Error",
+          "raw_output": null,
+          "generation_time_s": 1.5389936339925043,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/85",
+      "samples": [
+        {
+          "task_id": "HumanEval/85",
+          "passed": true,
+          "completion": "    return sum(num for i, num in enumerate(lst) if i % 2!= 0 and num % 2 == 0)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.9250937309698202,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/86",
+      "samples": [
+        {
+          "task_id": "HumanEval/86",
+          "passed": false,
+          "completion": "    words = s.split()\n    ordered_words = [sorted(word) for word in words]\n    return''.join(''.join(word) for word in ordered_words)\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.236777459969744,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/87",
+      "samples": [
+        {
+          "task_id": "HumanEval/87",
+          "passed": true,
+          "completion": "    coordinates = []\n    for i, row in enumerate(lst):\n        for j, value in enumerate(row):\n            if value == x:\n                coordinates.append((i, j))\n    coordinates.sort(key=lambda x: (x[0], -x[1]))\n    return coordinates\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.0040743260178715,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/88",
+      "samples": [
+        {
+          "task_id": "HumanEval/88",
+          "passed": true,
+          "completion": "    if len(array) < 2:\n        return array\n    first, last = array[0], array[-1]\n    total = first + last\n    if total % 2 == 0:\n        return sorted(array, reverse=True)\n    else:\n        return sorted(array)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.9958882419741713,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/89",
+      "samples": [
+        {
+          "task_id": "HumanEval/89",
+          "passed": true,
+          "completion": "    result = ''\n    for char in s:\n        if char.isalpha():\n            ascii_offset = 97 if char.islower() else 65\n            result += chr((ord(char) - ascii_offset + 2 * 2) % 26 + ascii_offset)\n    return result\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.989133448980283,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/90",
+      "samples": [
+        {
+          "task_id": "HumanEval/90",
+          "passed": true,
+          "completion": "    if len(lst) < 2 or len(set(lst)) < 2:\n        return None\n    lst.sort()\n    return lst[1]\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.2004222830291837,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/91",
+      "samples": [
+        {
+          "task_id": "HumanEval/91",
+          "passed": false,
+          "completion": "    return sum(1 for sentence in S.split('.') for word in sentence.split() if word == 'I')\n",
+          "error": "AssertionError: Test 6",
+          "raw_output": null,
+          "generation_time_s": 0.9788881769636646,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/92",
+      "samples": [
+        {
+          "task_id": "HumanEval/92",
+          "passed": true,
+          "completion": "    return (x == y + z or y == x + z or z == x + y) and isinstance(x, int) and isinstance(y, int) and isinstance(z, int)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.5324470199993812,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/93",
+      "samples": [
+        {
+          "task_id": "HumanEval/93",
+          "passed": false,
+          "completion": "    vowels = 'aeiouAEIOU'\n    encoded_message = ''\n    for char in message:\n        if char in vowels:\n            encoded_char = chr(ord(char) + 2)\n            encoded_message += encoded_char\n        else:\n            encoded_message += char.swapcase()\n    return encoded_message\n",
+          "error": "AssertionError: This prints if this assert fails 1 (good for debugging!)",
+          "raw_output": null,
+          "generation_time_s": 2.0444579150062054,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/94",
+      "samples": [
+        {
+          "task_id": "HumanEval/94",
+          "passed": true,
+          "completion": "    def is_prime(n):\n        if n < 2:\n            return False\n        for i in range(2, int(n**0.5) + 1):\n            if n % i == 0:\n                return False\n        return True\n\n    max_prime = max([i for i in lst if is_prime(i)])\n    return sum(int(digit) for digit in str(max_prime))\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.7883519289898686,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/95",
+      "samples": [
+        {
+          "task_id": "HumanEval/95",
+          "passed": false,
+          "completion": "    if not dict:\n        return False\n    keys = dict.keys()\n    return all(key.islower() for key in keys) or all(key.isupper() for key in keys)\n",
+          "error": "AttributeError: 'int' object has no attribute 'islower'",
+          "raw_output": null,
+          "generation_time_s": 1.4105151330004446,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/96",
+      "samples": [
+        {
+          "task_id": "HumanEval/96",
+          "passed": true,
+          "completion": "    def is_prime(num):\n        if num < 2:\n            return False\n        for i in range(2, int(num**0.5) + 1):\n            if num % i == 0:\n                return False\n        return True\n\n    primes = []\n    for i in range(2, n):\n        if is_prime(i):\n            primes.append(i)\n    return primes\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.6831942789722234,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/97",
+      "samples": [
+        {
+          "task_id": "HumanEval/97",
+          "passed": true,
+          "completion": "    return (a % 10) * (b % 10)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.7464665459701791,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/98",
+      "samples": [
+        {
+          "task_id": "HumanEval/98",
+          "passed": false,
+          "completion": "    count = 0\n    for i, c in enumerate(s):\n        if c.upper() in 'AEIOU' and i % 2 == 0:\n            count += 1\n    return count\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.5777193719986826,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/99",
+      "samples": [
+        {
+          "task_id": "HumanEval/99",
+          "passed": false,
+          "completion": "    return round(float(value))\n",
+          "error": "AssertionError: Test 2",
+          "raw_output": null,
+          "generation_time_s": 0.4633613799815066,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/100",
+      "samples": [
+        {
+          "task_id": "HumanEval/100",
+          "passed": false,
+          "completion": "    pile = [n]\n    for i in range(1, n):\n        if n % 2 == 0:\n            pile.append(n + 2)\n        else:\n            pile.append(n + 1)\n        n = pile[-1]\n    return pile\n",
+          "error": "AssertionError: Test 3",
+          "raw_output": null,
+          "generation_time_s": 1.9733293720055372,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/101",
+      "samples": [
+        {
+          "task_id": "HumanEval/101",
+          "passed": true,
+          "completion": "    s = s.replace(\",\", \" \")\n    return s.split()\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 0.6668596579693258,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/102",
+      "samples": [
+        {
+          "task_id": "HumanEval/102",
+          "passed": true,
+          "completion": "    if x % 2!= 0 and y % 2!= 0:\n        return -1\n    else:\n        even_nums = [i for i in range(x, y+1) if i % 2 == 0]\n        return max(even_nums) if even_nums else -1\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.228904452989809,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/103",
+      "samples": [
+        {
+          "task_id": "HumanEval/103",
+          "passed": false,
+          "completion": "    if n > m:\n        return -1\n    avg = (n + m) / 2\n    return bin(round(avg))[2:]\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.2432151319808327,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/104",
+      "samples": [
+        {
+          "task_id": "HumanEval/104",
+          "passed": true,
+          "completion": "    return sorted([i for i in x if not any(int(digit) % 2 == 0 for digit in str(i))])\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.1279225469916128,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/105",
+      "samples": [
+        {
+          "task_id": "HumanEval/105",
+          "passed": true,
+          "completion": "    names = [\"One\", \"Two\", \"Three\", \"Four\", \"Five\", \"Six\", \"Seven\", \"Eight\", \"Nine\"]\n    filtered_arr = [num for num in arr if 1 <= num <= 9]\n    filtered_arr.sort()\n    filtered_arr.reverse()\n    return [names[num - 1] for num in filtered_arr]\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.436038040963467,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/106",
+      "samples": [
+        {
+          "task_id": "HumanEval/106",
+          "passed": false,
+          "completion": "    result = []\n    for i in range(1, n + 1):\n        if i % 2 == 0:\n            result.append(math.factorial(i))\n        else:\n            result.append(sum(range(1, i + 1)))\n    return result\n",
+          "error": "NameError: name 'math' is not defined",
+          "raw_output": null,
+          "generation_time_s": 1.8573984350077808,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/107",
+      "samples": [
+        {
+          "task_id": "HumanEval/107",
+          "passed": true,
+          "completion": "    even_count = 0\n    odd_count = 0\n    for i in range(1, n + 1):\n        if str(i) == str(i)[::-1]:\n            if i % 2 == 0:\n                even_count += 1\n            else:\n                odd_count += 1\n    return even_count, odd_count\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.447614938020706,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/108",
+      "samples": [
+        {
+          "task_id": "HumanEval/108",
+          "passed": false,
+          "completion": "    def is_positive(num):\n        return sum(int(digit) for digit in str(abs(num))) > 0\n\n    return sum(1 for num in arr if is_positive(num))\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.3413912600371987,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/109",
+      "samples": [
+        {
+          "task_id": "HumanEval/109",
+          "passed": false,
+          "completion": "    n = len(arr)\n    for i in range(n):\n        for j in range(n - 1):\n            if arr[j] > arr[j + 1]:\n                return False\n        if n == 1:\n            return True\n        arr = arr[1:] + arr[:1]\n    return True\n",
+          "error": "AssertionError: This prints if this assert fails 1 (good for debugging!)",
+          "raw_output": null,
+          "generation_time_s": 2.181961600028444,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/110",
+      "samples": [
+        {
+          "task_id": "HumanEval/110",
+          "passed": false,
+          "completion": "    odd_lst1 = [num for num in lst1 if num % 2!= 0]\n    odd_lst2 = [num for num in lst2 if num % 2!= 0]\n    \n    if len(odd_lst1) == 0:\n        return \"YES\"\n    elif len(odd_lst1) <= len(odd_lst2):\n        return \"YES\"\n    else:\n        return \"NO\"\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 2.7809992959955707,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/111",
+      "samples": [
+        {
+          "task_id": "HumanEval/111",
+          "passed": true,
+          "completion": "    if not test:\n        return {}\n    letter_counts = {}\n    max_count = 0\n    for letter in test.split():\n        if letter in letter_counts:\n            letter_counts[letter] += 1\n        else:\n            letter_counts[letter] = 1\n        if letter_counts[letter] > max_count:\n            max_count = letter_counts[letter]\n    result = {letter: count for letter, count in letter_counts.items() if count == max_count}\n    return result\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 3.1605494170216843,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/112",
+      "samples": [
+        {
+          "task_id": "HumanEval/112",
+          "passed": false,
+          "completion": "    for char in c:\n        s = s.replace(char, '', 1)\n    return (s, s == s[::-1])\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.0735633120057173,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/113",
+      "samples": [
+        {
+          "task_id": "HumanEval/113",
+          "passed": false,
+          "completion": "    return [f\"the number of odd elements {len([digit for digit in s if int(digit) % 2!= 0])}n the str{len(s)}ng {len(s)} of the {len(s)}nput.\" for s in lst]\n",
+          "error": "AssertionError: Test 1",
+          "raw_output": null,
+          "generation_time_s": 1.8520433730445802,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/114",
+      "samples": [
+        {
+          "task_id": "HumanEval/114",
+          "passed": true,
+          "completion": "    min_sum = float('inf')\n    current_sum = 0\n    for num in nums:\n        current_sum = min(num, current_sum + num)\n        min_sum = min(min_sum, current_sum)\n    return min_sum\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.6770150699885562,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/115",
+      "samples": [
+        {
+          "task_id": "HumanEval/115",
+          "passed": true,
+          "completion": "    bucket_count = 0\n    for row in grid:\n        total = 0\n        for col in row:\n            if col == 1:\n                total += 1\n        bucket_count += math.ceil(total / capacity)\n    return bucket_count\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.812211754033342,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/116",
+      "samples": [
+        {
+          "task_id": "HumanEval/116",
+          "passed": false,
+          "completion": "    return sorted(arr, key=lambda x: (bin(abs(x)).count('1'), abs(x)))\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 0.85405660799006,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/117",
+      "samples": [
+        {
+          "task_id": "HumanEval/117",
+          "passed": false,
+          "completion": "    result = []\n    words = s.split()\n    for word in words:\n        word = word.replace(\"a\", \"\").replace(\"e\", \"\").replace(\"i\", \"\").replace(\"o\", \"\").replace(\"u\", \"\").lower()\n        if len(word) == n:\n            result.append(word)\n    return [word for word in s.split() if len(word.replace(\"a\", \"\").replace(\"e\", \"\").replace(\"i\", \"\").replace(\"o\", \"\").replace(\"u\", \"\").lower()) == n]\n",
+          "error": "AssertionError: Fifth test error: []",
+          "raw_output": null,
+          "generation_time_s": 3.1853117190185003,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/118",
+      "samples": [
+        {
+          "task_id": "HumanEval/118",
+          "passed": false,
+          "completion": "    vowels = 'aeiouAEIOU'\n    for i in range(len(word) - 1):\n        if word[i] not in vowels and word[i + 1] not in vowels:\n            return word[i + 1]\n    return \"\"\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.7987740479875356,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/119",
+      "samples": [
+        {
+          "task_id": "HumanEval/119",
+          "passed": false,
+          "completion": "    def is_balanced(s):\n        return s.count('(') == s.count(')')\n\n    if is_balanced(lst[0] + lst[1]):\n        return 'Yes'\n    if is_balanced(lst[0] + lst[1][::-1]):\n        return 'Yes'\n    if is_balanced(lst[1] + lst[0]):\n        return 'Yes'\n    if is_balanced(lst[1] + lst[0][::-1]):\n        return 'Yes'\n    return 'No'\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 3.3268015459761955,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/120",
+      "samples": [
+        {
+          "task_id": "HumanEval/120",
+          "passed": false,
+          "completion": "    return sorted(arr, reverse=True)[:k]\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 0.5869609890505672,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/121",
+      "samples": [
+        {
+          "task_id": "HumanEval/121",
+          "passed": false,
+          "completion": "    return sum(i for i in lst[1::2] if i % 2!= 0)\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 0.8568130880012177,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/122",
+      "samples": [
+        {
+          "task_id": "HumanEval/122",
+          "passed": false,
+          "completion": "    return sum(num for num in arr[:k] if 10 <= num <= 99)\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 0.8823609600076452,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/123",
+      "samples": [
+        {
+          "task_id": "HumanEval/123",
+          "passed": false,
+          "completion": "    sequence = [n]\n    while n!= 1:\n        if n % 2 == 0:\n            n = n // 2\n        else:\n            n = 3 * n + 1\n        if n % 2!= 0:\n            sequence.append(n)\n    return sorted(list(set(sequence)))\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 2.1887916839914396,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/124",
+      "samples": [
+        {
+          "task_id": "HumanEval/124",
+          "passed": true,
+          "completion": "    parts = date.split('-')\n    if len(parts)!= 3:\n        return False\n    if len(parts[0])!= 2 or len(parts[1])!= 2 or len(parts[2])!= 4:\n        return False\n    month, day, year = map(int, parts)\n    if month < 1 or month > 12:\n        return False\n    if day < 1:\n        return False\n    if (month in [1, 3, 5, 7, 8, 10, 12] and day > 31) or \\\n       (month in [4, 6, 9, 11] and day > 30) or (month == 2 and day > 29):\n        return False\n    return True\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 4.903061438002624,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/125",
+      "samples": [
+        {
+          "task_id": "HumanEval/125",
+          "passed": false,
+          "completion": "    if ',' in txt:\n        return txt.replace(',','').split()\n    elif'' in txt:\n        return txt.split()\n    else:\n        return sum(1 for i, char in enumerate(txt) if char.islower() and i % 2!= 0)\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.8477440110291354,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/126",
+      "samples": [
+        {
+          "task_id": "HumanEval/126",
+          "passed": false,
+          "completion": "    return len(lst) == len(set(lst)) and all(lst[i] <= lst[i+1] for i in range(len(lst)-1))\n",
+          "error": "AssertionError: This prints if this assert fails 7 (good for debugging!)",
+          "raw_output": null,
+          "generation_time_s": 1.1121326410211623,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/127",
+      "samples": [
+        {
+          "task_id": "HumanEval/127",
+          "passed": false,
+          "completion": "    start1, end1 = interval1\n    start2, end2 = interval2\n    start = max(start1, start2)\n    end = min(end1, end2)\n    if start <= end:\n        length = end - start + 1\n        if length > 1:\n            if length == 2:\n                return \"YES\"\n            for i in range(2, int(length**0.5) + 1):\n                if length % i == 0:\n                    return \"NO\"\n            return \"YES\"\n        else:\n            return \"YES\"\n    else:\n        return \"NO\"\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 4.059540246031247,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/128",
+      "samples": [
+        {
+          "task_id": "HumanEval/128",
+          "passed": true,
+          "completion": "    if not arr:\n        return None\n    product = 1\n    for num in arr:\n        if num == 0:\n            return 0\n        elif num < 0:\n            product *= -1\n    return sum(abs(num) for num in arr) * product\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.0572220610338263,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/129",
+      "samples": [
+        {
+          "task_id": "HumanEval/129",
+          "passed": false,
+          "completion": "    n = len(grid)\n    m = len(grid[0])\n    values = [num for row in grid for num in row]\n    mset = set(values)\n    min_path = []\n    min_val = float('inf')\n\n    def dfs(i, j, path, k):\n        nonlocal min_val, min_path\n        if k == 0:\n            if path < min_val:\n                min_val = path\n                min_path = path\n            return\n        for x, y in [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]:\n            if 0 <= x < n and 0 <= y < m and grid[x][y] in mset:\n                dfs(x, y, path + [grid[x][y]], k-1)\n\n    for i in range(n):\n        for j in range(m):\n            dfs(i, j, [grid[i][j]], k)\n\n    return min_path\n",
+          "error": "TypeError: '<' not supported between instances of 'list' and 'float'",
+          "raw_output": null,
+          "generation_time_s": 6.056631707993802,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/130",
+      "samples": [
+        {
+          "task_id": "HumanEval/130",
+          "passed": false,
+          "completion": "    trib = [0] * (n + 1)\n    trib[1] = 3\n    if n > 1:\n        trib[2] = 1 + 2 / 2\n    for i in range(3, n + 1):\n        if i % 2 == 0:\n            trib[i] = 1 + i / 2\n        else:\n            trib[i] = trib[i - 1] + trib[i - 2] + trib[i + 1 - 1]\n    return trib\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 3.479513760015834,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/131",
+      "samples": [
+        {
+          "task_id": "HumanEval/131",
+          "passed": false,
+          "completion": "    product = 1\n    for digit in str(n):\n        if int(digit) % 2!= 0:\n            product *= int(digit)\n    return product\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.2785732200136408,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/132",
+      "samples": [
+        {
+          "task_id": "HumanEval/132",
+          "passed": false,
+          "completion": "    stack = []\n    for bracket in string:\n        if bracket == '[':\n            stack.append(bracket)\n        elif bracket == ']':\n            if not stack:\n                return False\n            stack.pop()\n    return stack\n",
+          "error": "AssertionError: This prints if this assert fails 1 (good for debugging!)",
+          "raw_output": null,
+          "generation_time_s": 1.509187668969389,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/133",
+      "samples": [
+        {
+          "task_id": "HumanEval/133",
+          "passed": false,
+          "completion": "    return sum(math.ceil(num ** 2) for num in lst)\n",
+          "error": "NameError: name 'math' is not defined",
+          "raw_output": null,
+          "generation_time_s": 0.796248578990344,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/134",
+      "samples": [
+        {
+          "task_id": "HumanEval/134",
+          "passed": false,
+          "completion": "    return txt and txt[-1].isalpha() and txt[-1] not in txt[:-1].split()\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.0710868500173092,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/135",
+      "samples": [
+        {
+          "task_id": "HumanEval/135",
+          "passed": false,
+          "completion": "    for i in range(1, len(arr)):\n        if arr[i] >= arr[i - 1]:\n            return i\n    return -1\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.1944550600019284,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/136",
+      "samples": [
+        {
+          "task_id": "HumanEval/136",
+          "passed": true,
+          "completion": "    negative = [x for x in lst if x < 0]\n    positive = [x for x in lst if x > 0]\n    if negative:\n        largest_negative = max(negative)\n    else:\n        largest_negative = None\n    if positive:\n        smallest_positive = min(positive)\n    else:\n        smallest_positive = None\n    return (largest_negative, smallest_positive)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.6122953859739937,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/137",
+      "samples": [
+        {
+          "task_id": "HumanEval/137",
+          "passed": false,
+          "completion": "    def to_float(x):\n        try:\n            return float(x.replace(',', '.'))\n        except ValueError:\n            return x\n\n    a = to_float(a)\n    b = to_float(b)\n    return max(a, b) if a!= b else None\n",
+          "error": "AttributeError: 'int' object has no attribute 'replace'",
+          "raw_output": null,
+          "generation_time_s": 1.7842796710319817,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/138",
+      "samples": [
+        {
+          "task_id": "HumanEval/138",
+          "passed": true,
+          "completion": "    for a in range(2, n+1, 2):\n        for b in range(a, n+1, 2):\n            for c in range(b, n+1, 2):\n                for d in range(c, n+1, 2):\n                    if a + b + c + d == n:\n                        return True\n    return False\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.461105583992321,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/139",
+      "samples": [
+        {
+          "task_id": "HumanEval/139",
+          "passed": false,
+          "completion": "    result = 1\n    for i in range(n, 0, -1):\n        result *= math.factorial(i)\n    return result\n",
+          "error": "NameError: name 'math' is not defined",
+          "raw_output": null,
+          "generation_time_s": 1.1878781070117839,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/140",
+      "samples": [
+        {
+          "task_id": "HumanEval/140",
+          "passed": false,
+          "completion": "    text = text.replace('  ', '-')\n    while''in text:\n        text = text.replace('  ', '-')\n    return text.replace(' ', '_')\n",
+          "error": "timeout",
+          "raw_output": null,
+          "generation_time_s": 1.2083672559820116,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/141",
+      "samples": [
+        {
+          "task_id": "HumanEval/141",
+          "passed": false,
+          "completion": "    import re\n    if len(re.findall('\\d', file_name)) > 3:\n        return 'No'\n    elif '.' not in file_name:\n        return 'No'\n    elif not re.search('^[a-zA-Z]', file_name.split('.')[0]):\n        return 'No'\n    elif file_name.split('.')[1] not in ['txt', 'exe', 'dll']:\n        return 'No'\n    else:\n        return 'Yes'\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 2.8603177029872313,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/142",
+      "samples": [
+        {
+          "task_id": "HumanEval/142",
+          "passed": false,
+          "completion": "    return sum(i**2 if i % 3 == 0 else i**3 if i % 4 == 0 and i % 3!= 0 else i for i in lst)\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.4806894659996033,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/143",
+      "samples": [
+        {
+          "task_id": "HumanEval/143",
+          "passed": false,
+          "completion": "    def is_prime(n):\n        if n <= 1:\n            return False\n        if n <= 3:\n            return True\n        if n % 2 == 0 or n % 3 == 0:\n            return False\n        i = 5\n        while i * i <= n:\n            if n % i == 0 or n % (i + 2) == 0:\n                return False\n            i += 6\n        return True\n\n    words = sentence.split()\n    return''.join([word for word in words if is_prime(len(word))])\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 3.6804297550115734,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/144",
+      "samples": [
+        {
+          "task_id": "HumanEval/144",
+          "passed": true,
+          "completion": "    from fractions import Fraction\n\n    a = Fraction(x)\n    b = Fraction(n)\n    return a * b == int(a * b)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.0996526749804616,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/145",
+      "samples": [
+        {
+          "task_id": "HumanEval/145",
+          "passed": false,
+          "completion": "    return sorted((num, i) for i, num in enumerate(nums)) if nums else []\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 0.8533858269802295,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/146",
+      "samples": [
+        {
+          "task_id": "HumanEval/146",
+          "passed": true,
+          "completion": "    count = 0\n    for num in nums:\n        if num > 10 and str(num)[0] in '13579' and str(num)[-1] in '13579':\n            count += 1\n    return count\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.653498589002993,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/147",
+      "samples": [
+        {
+          "task_id": "HumanEval/147",
+          "passed": true,
+          "completion": "    count = 0\n    a = [i * i - i + 1 for i in range(1, n + 1)]\n    for i in range(n - 2):\n        for j in range(i + 1, n - 1):\n            for k in range(j + 1, n):\n                if (a[i] + a[j] + a[k]) % 3 == 0:\n                    count += 1\n    return count\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 3.1428630190202966,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/148",
+      "samples": [
+        {
+          "task_id": "HumanEval/148",
+          "passed": true,
+          "completion": "    planets = [\"Mercury\", \"Venus\", \"Earth\", \"Mars\", \"Jupiter\", \"Saturn\", \"Uranus\", \"Neptune\"]\n    if planet1 not in planets or planet2 not in planets:\n        return ()\n    index1, index2 = planets.index(planet1), planets.index(planet2)\n    if index1 > index2:\n        index1, index2 = index2, index1\n    return tuple([p for p in planets[index1 + 1:index2]])\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 3.388498035026714,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/149",
+      "samples": [
+        {
+          "task_id": "HumanEval/149",
+          "passed": false,
+          "completion": "    return sorted([s for s in lst if len(s) % 2 == 0])\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 0.7487845770083368,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/150",
+      "samples": [
+        {
+          "task_id": "HumanEval/150",
+          "passed": true,
+          "completion": "    def is_prime(num):\n        if num < 2:\n            return False\n        for i in range(2, int(num ** 0.5) + 1):\n            if num % i == 0:\n                return False\n        return True\n    return x if is_prime(n) else y\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.2746474140440114,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/151",
+      "samples": [
+        {
+          "task_id": "HumanEval/151",
+          "passed": false,
+          "completion": "    return sum(i**2 for i in lst if isinstance(i, int) and i % 2!= 0)\n",
+          "error": "AssertionError: This prints if this assert fails 5 (also good for debugging!)",
+          "raw_output": null,
+          "generation_time_s": 1.0455556780216284,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/152",
+      "samples": [
+        {
+          "task_id": "HumanEval/152",
+          "passed": true,
+          "completion": "    return [abs(g - s) if g!= s else 0 for g, s in zip(game, guess)]\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.0511882809805684,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/153",
+      "samples": [
+        {
+          "task_id": "HumanEval/153",
+          "passed": true,
+          "completion": "    strongest_extension = max(extensions, key=lambda x: sum(1 for c in x if c.isupper()) - sum(1 for c in x if c.islower()))\n    return f\"{class_name}.{strongest_extension}\"\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.8456825799657963,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/154",
+      "samples": [
+        {
+          "task_id": "HumanEval/154",
+          "passed": false,
+          "completion": "    return b in a + a\n",
+          "error": "AssertionError: test #3",
+          "raw_output": null,
+          "generation_time_s": 0.6114511819905601,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/155",
+      "samples": [
+        {
+          "task_id": "HumanEval/155",
+          "passed": true,
+          "completion": "    even = 0\n    odd = 0\n    for digit in str(abs(num)):\n        if int(digit) % 2 == 0:\n            even += 1\n        else:\n            odd += 1\n    return (even, odd)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.9070070600137115,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/156",
+      "samples": [
+        {
+          "task_id": "HumanEval/156",
+          "passed": true,
+          "completion": "    val = [\n        1000, 900, 500, 400, 100, 90, 50, 40,\n        10, 9, 5, 4, 1\n    ]\n    syb = [\n        \"M\", \"CM\", \"D\", \"CD\", \"C\", \"XC\",\n        \"L\", \"XL\", \"X\", \"IX\", \"V\", \"IV\", \"I\"\n    ]\n    roman_num = ''\n    i = 0\n    while number > 0:\n        for _ in range(number // val[i]):\n            roman_num += syb[i]\n            number -= val[i]\n        i += 1\n    return roman_num.lower()\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 4.7328971570241265,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/157",
+      "samples": [
+        {
+          "task_id": "HumanEval/157",
+          "passed": true,
+          "completion": "    return a**2 + b**2 == c**2 or a**2 + c**2 == b**2 or b**2 + c**2 == a**2\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 1.539088183955755,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/158",
+      "samples": [
+        {
+          "task_id": "HumanEval/158",
+          "passed": false,
+          "completion": "    return max(words, key=lambda x: (len(set(x)), x))\n",
+          "error": "AssertionError: t2",
+          "raw_output": null,
+          "generation_time_s": 0.751309328014031,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/159",
+      "samples": [
+        {
+          "task_id": "HumanEval/159",
+          "passed": false,
+          "completion": "    total_eaten = number + need\n    remaining -= (total_eaten - remaining)\n    return [total_eaten, remaining]\n",
+          "error": "AssertionError: Error",
+          "raw_output": null,
+          "generation_time_s": 1.1900409669615328,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/160",
+      "samples": [
+        {
+          "task_id": "HumanEval/160",
+          "passed": true,
+          "completion": "    if len(operator)!= len(operand) - 1:\n        raise ValueError(\"Invalid input\")\n    expression = ''\n    for i in range(len(operand)):\n        expression += str(operand[i])\n        if i < len(operator):\n            expression += operator[i]\n    return eval(expression)\n",
+          "error": null,
+          "raw_output": null,
+          "generation_time_s": 2.116590218967758,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/161",
+      "samples": [
+        {
+          "task_id": "HumanEval/161",
+          "passed": false,
+          "completion": "    result = ''\n    for char in s:\n        if char.isalpha():\n            result += char.swapcase()\n        else:\n            result += char\n    return result[::-1]\n",
+          "error": "AssertionError: ",
+          "raw_output": null,
+          "generation_time_s": 1.3270106730051339,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/162",
+      "samples": [
+        {
+          "task_id": "HumanEval/162",
+          "passed": false,
+          "completion": "    if not text:\n        return None\n    return hashlib.md5(text.encode()).hexdigest()\n",
+          "error": "NameError: name 'hashlib' is not defined",
+          "raw_output": null,
+          "generation_time_s": 0.9802930979640223,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/163",
+      "samples": [
+        {
+          "task_id": "HumanEval/163",
+          "passed": false,
+          "completion": "    even_digits = [i for i in range(min(a, b), max(a, b) + 1) if i % 2 == 0]\n    return sorted(even_digits)\n",
+          "error": "AssertionError: Test 1",
+          "raw_output": null,
+          "generation_time_s": 1.5375795530271716,
+          "detection_step": null,
+          "total_steps": null,
+          "speculative_hit": null,
+          "time_saved": null
+        }
+      ]
+    }
+  ]
+}
