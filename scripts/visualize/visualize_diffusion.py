@@ -59,7 +59,7 @@ To call a tool, emit EXACTLY this format:
 </function_call>
 
 ALWAYS start your response with exactly one sentence:
-"I will call <tool1> and <tool2> with radius=<value>."
+"Hello! I will call <tool1> and <tool2> with radius=<value> to solve this task."
 Right after that sentence, emit the required <function_call> blocks back-to-back.
 Each block must contain exactly one JSON object with "name" and "arguments" keys.
 Do NOT put any text between or after the function_call blocks.
@@ -67,7 +67,7 @@ Do NOT put any text between or after the function_call blocks.
 Example.
 User: For r=2, give the circle area and the sphere volume.
 Assistant:
-I will call circle_area and sphere_volume with radius=2.
+Hello! I will call circle_area and sphere_volume with radius=2 to solve this task.
 <function_call>
 {"name": "circle_area", "arguments": {"radius": 2}}
 </function_call>
@@ -77,7 +77,7 @@ I will call circle_area and sphere_volume with radius=2.
 
 GEOMETRY_TWO_TASK = (
     "For r=3, compute the circle area and the sphere volume. "
-    "Start with: \"I will call circle_area and sphere_volume with radius=3.\" "
+    "Start with: \"Hello! I will call circle_area and sphere_volume with radius=3 to solve this task.\" "
     "Then emit EXACTLY two <function_call> blocks: circle_area, then sphere_volume. "
     "Do not put any text between or after the function_call blocks."
 )
