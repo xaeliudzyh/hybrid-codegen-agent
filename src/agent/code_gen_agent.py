@@ -130,9 +130,9 @@ class CodeGenAgent:
         self.system_prompt = system_prompt or self._default_system_prompt()
     
     def _default_system_prompt(self) -> str:
-        return """You are a Python code assistant with access to an execute_code tool.
-You MUST use the execute_code function to run any code you write. NEVER output bare code without wrapping it in a function call.
-Always put ALL code (imports, function definitions, calls, print statements) in a SINGLE execute_code call."""
+        return """You are a Python programming assistant. You have access to an execute_code tool that runs Python code and returns its output.
+    When asked to write and run code, put the COMPLETE runnable script inside a single execute_code call.
+    Always include all imports, function definitions, and print statements in that single call."""
     
     def _build_prompt(self, task: str) -> str:
         """Build the full prompt including system prompt, available functions, and task."""
@@ -144,26 +144,19 @@ Always put ALL code (imports, function definitions, calls, print statements) in 
             "Available functions:",
             functions_description,
             "",
+            "",
             "To call a function, use EXACTLY this format:",
             "<function_call>",
             '{"name": "execute_code", "arguments": {"code": "<your code here>"}}',
             "</function_call>",
             "",
             "Example:",
-            "User: Complete the body of the following Python function.",
-            "def factorial(n: int) -> int:",
-            '    """Return factorial of n."""',
+            "User: Write a Python function that computes the sum of digits of a number, then check it for 12345 and print the result.",
             "",
-            "Assistant: I'll use recursion for this task: return 1 for the base case, otherwise multiply n by factorial(n-1).",
+            "Assistant: I will define the function and immediately call it with 12345, printing the result.",
             "<function_call>",
-            '{"name": "execute_code", "arguments": {"code": "    if n <= 1:\\n        return 1\\n    return n * factorial(n - 1)"}}',
+            '{"name": "execute_code", "arguments": {"code": "def digit_sum(n):\\n    return sum(int(d) for d in str(n))\\n\\nresult = digit_sum(12345)\\nprint(f\'Sum of digits of 12345: {result}\')"}}',
             "</function_call>",
-            "",
-            "IMPORTANT:",
-            "- Write 2-3 sentences explaining your approach BEFORE the function call.",
-            "- Wrap your code inside <function_call> tags using the execute_code function.",
-            "- Output ONLY the function body (indented implementation lines).",
-            "- Do NOT include the function signature, docstring or test calls.",
             "",
             "Task:",
             task,

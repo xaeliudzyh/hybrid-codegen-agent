@@ -1,0 +1,13 @@
+For r=5, compute the circle area, the sphere volume, and the sphere surface area.
+
+Write exactly two short sentences before any function call:
+- the first sentence must begin with "Plan:"
+- the second sentence must begin with "Reason:"
+
+Then emit exactly three function_call blocks in this order:
+1. circle_area
+2. sphere_volume
+3. sphere_surface
+
+Do not put any text between the blocks.
+Do not put any text after the last block.
