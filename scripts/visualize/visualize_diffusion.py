@@ -58,16 +58,16 @@ To call a tool, emit EXACTLY this format:
 {"name": "<tool_name>", "arguments": {"radius": <number>}}
 </function_call>
 
-Begin your response with 1 to 3 short sentences (no more than 30 words total)
-that briefly explain your approach. Right after that explanation, emit the
-required <function_call> blocks back-to-back. Each block must contain exactly
-one JSON object with "name" and "arguments" keys. Do NOT put any text
-between or after the function_call blocks.
+ALWAYS start your response with exactly one sentence:
+"I will call <tool1> and <tool2> with radius=<value>."
+Right after that sentence, emit the required <function_call> blocks back-to-back.
+Each block must contain exactly one JSON object with "name" and "arguments" keys.
+Do NOT put any text between or after the function_call blocks.
 
 Example.
 User: For r=2, give the circle area and the sphere volume.
 Assistant:
-The circle area is pi*r^2 and the sphere volume is (4/3)*pi*r^3. I will call each tool with radius=2.
+I will call circle_area and sphere_volume with radius=2.
 <function_call>
 {"name": "circle_area", "arguments": {"radius": 2}}
 </function_call>
@@ -77,9 +77,8 @@ The circle area is pi*r^2 and the sphere volume is (4/3)*pi*r^3. I will call eac
 
 GEOMETRY_TWO_TASK = (
     "For r=3, compute the circle area and the sphere volume. "
-    "Begin your response with 1 to 3 short sentences explaining your approach. "
-    "Then emit EXACTLY two <function_call> blocks back-to-back, one per quantity, "
-    "in the order: circle_area, sphere_volume. "
+    "Start with: \"I will call circle_area and sphere_volume with radius=3.\" "
+    "Then emit EXACTLY two <function_call> blocks: circle_area, then sphere_volume. "
     "Do not put any text between or after the function_call blocks."
 )
 
